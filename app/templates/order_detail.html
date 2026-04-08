@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OT #{{ order.id }} - Detalle</title>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>[x-cloak] { display: none !important; }</style>
+</head>
+<body class="bg-gray-50 min-h-screen text-gray-800" x-data="{ state: '{{ order.status }}' }">
+    {% include 'components/confirm_modal.html' %}
+    
+    <!-- Área de Notificaciones Emergentes -->
+    <div id="notification-area" class="fixed top-4 right-4 z-[200]"></div>
+
+    <!-- Cabecera Reactiva -->
+    <div id="order-header" hx-get="/order/{{ order.id }}/header" hx-trigger="load, refresh-header from:body">
+        {% include 'components/order_header.html' %}
+    </div>
+
+    <main class="container mx-auto py-8 px-4 grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Columna Izquierda: Info y Estado (FIJA) -->
+        <div class="lg:col-span-1 space-y-6">
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
+                <h2 class="text-lg font-bold mb-4 border-b pb-2 flex items-center justify-between">
+                    Vehículo
+                    <span class="text-xs font-normal text-gray-400">ID: {{ order.vehicle.internal_code }}</span>
+                </h2>
+                <div class="space-y-3">
+                    <p class="flex justify-between"><span class="text-gray-500 text-sm italic">Marca:</span> <span class="font-bold text-slate-700">{{ order.vehicle.brand.name }}</span></p>
+                    <p class="flex justify-between"><span class="text-gray-500 text-sm italic">Modelo:</span> <span class="font-bold text-slate-700">{{ order.vehicle.model }}</span></p>
+                    <p class="flex justify-between"><span class="text-gray-500 text-sm italic">Patente:</span> <span class="font-mono bg-amber-50 text-amber-800 px-2 py-0.5 rounded border border-amber-100">{{ order.vehicle.plate }}</span></p>
+                </div>
+            </div>
+
+            <div id="order-summary" hx-get="/order/{{ order.id }}/summary" hx-trigger="load, refreshSummary from:body">
+                <div class="animate-pulse bg-gray-200 h-32 rounded-2xl"></div>
+            </div>
+
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200" 
+                 x-data="{ selectedStatus: '{{ order.status }}' }"
+                 @refresh-status.window="htmx.ajax('GET', '/order/{{ order.id }}/status-only', { target: '#status-display' })">
+                <h2 class="text-lg font-bold mb-4 border-b pb-2">Estado de la Orden</h2>
+                <div id="status-display" class="mb-4">
+                    <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded font-bold uppercase text-xs">{{ order.status }}</span>
+                </div>
+                
+                {% if not is_closed %}
+                <div class="space-y-4" x-data="{ selectedStatus: '{{ order.status }}' }">
+                    <select x-model="selectedStatus" class="w-full p-2.5 border rounded-xl focus:ring-2 focus:ring-sky-500 outline-none bg-gray-50 font-bold text-sm">
+                        <option value="Pendiente">Pendiente</option>
+                        <option value="En Ejecución">En Ejecución</option>
+                        <option value="Terminada">Terminada (Cerrar)</option>
+                        <option value="Anulada">Anulada</option>
+                    </select>
+
+                    <!-- Campos de Cierre (Solo si es Terminada) -->
+                    <div x-show="selectedStatus == 'Terminada'" x-transition class="p-4 bg-sky-50 rounded-2xl border border-sky-100 space-y-4">
+                        <p class="text-[10px] font-black text-sky-700 uppercase tracking-widest">Datos Obligatorios de Cierre</p>
+                        <div>
+                            <label class="block text-[9px] font-bold text-slate-400 uppercase mb-1">Solución Realizada</label>
+                            <textarea id="solution-input" placeholder="Detalle técnico de la reparación..." class="w-full p-2 text-sm border rounded-lg h-20 outline-none focus:ring-2 focus:ring-sky-500"></textarea>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-[9px] font-bold text-slate-400 uppercase mb-1">Kilometraje Actual</label>
+                                <input type="number" id="mileage-input" value="{{ order.vehicle.current_mileage }}" class="w-full p-2 text-sm border rounded-lg outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-[9px] font-bold text-slate-400 uppercase mb-1">Próxima Visita</label>
+                                <input type="date" id="next-visit-input" class="w-full p-2 text-sm border rounded-lg outline-none">
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="button" 
+                            @click="
+                                const vals = { status: selectedStatus };
+                                if(selectedStatus === 'Terminada') {
+                                    vals.solution = document.getElementById('solution-input').value;
+                                    vals.mileage = document.getElementById('mileage-input').value;
+                                    vals.next_visit = document.getElementById('next-visit-input').value;
+                                }
+                                htmx.ajax('POST', '/order/{{ order.id }}/status', { values: vals })
+                            }"
+                            class="w-full bg-slate-900 text-white py-3 rounded-xl hover:bg-black font-black shadow-xl transition-all active:scale-95 uppercase text-xs tracking-widest">
+                        Actualizar Estado
+                    </button>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Columna Derecha: Tablas Auxiliares (COLAPSABLES) -->
+        <div class="lg:col-span-2 space-y-8">
+            {% set is_closed = (order.status == 'Terminada' or order.status == 'Anulada') %}
+            
+            <!-- Tareas (Colapsable) -->
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden" x-data="{ expanded: false }">
+                <div class="p-6 bg-white border-b border-gray-100 flex justify-between items-center cursor-pointer" @click="expanded = !expanded">
+                    <h2 class="text-xl font-bold flex items-center gap-2">
+                        <span class="w-2 h-6 bg-green-500 rounded-full"></span>
+                        Tareas Realizadas
+                    </h2>
+                    <svg class="w-6 h-6 transform transition-transform" :class="expanded ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                </div>
+                
+                <div x-show="expanded" x-collapse x-cloak class="p-6">
+                    {% if not is_closed %}
+                    <div class="mb-8 p-6 bg-green-50/50 border border-green-100 rounded-2xl">
+                        <form hx-post="/order/{{ order.id }}/task" hx-target="#task-list"
+                              @htmx:after-request="if($event.detail.successful) { $el.reset(); }"
+                              class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                            <input type="text" name="description" placeholder="Trabajo" required class="md:col-span-2 p-2.5 border rounded-xl">
+                            <input type="number" name="duration" placeholder="Min" required class="p-2.5 border rounded-xl">
+                            <select name="tech_id" class="p-2.5 border rounded-xl">
+                                {% for tech in technicians %}<option value="{{ tech.id }}">{{ tech.name }}</option>{% endfor %}
+                            </select>
+                            <button type="submit" class="md:col-span-4 bg-green-600 text-white py-2.5 rounded-xl font-bold">Guardar Tarea</button>
+                        </form>
+                    </div>
+                    {% endif %}
+                    <div id="task-list">{% include 'components/task_list.html' %}</div>
+                </div>
+            </div>
+
+            <!-- Repuestos (Colapsable) -->
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden" x-data="{ expanded: false }">
+                <div class="p-6 bg-white border-b border-gray-100 flex justify-between items-center cursor-pointer" @click="expanded = !expanded">
+                    <h2 class="text-xl font-bold flex items-center gap-2">
+                        <span class="w-2 h-6 bg-amber-500 rounded-full"></span>
+                        Materiales e Insumos
+                    </h2>
+                    <svg class="w-6 h-6 transform transition-transform" :class="expanded ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                </div>
+                
+                <div x-show="expanded" x-collapse x-cloak class="p-6">
+                    {% if not is_closed %}
+                    <div class="mb-8 p-6 bg-amber-50/50 border border-amber-100 rounded-2xl">
+                        <form hx-post="/order/{{ order.id }}/part" hx-target="#part-list"
+                              @htmx:after-request="if($event.detail.successful) { $el.reset(); }"
+                              class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                            <input type="text" name="description" placeholder="Insumo" required class="md:col-span-1 p-2.5 border rounded-xl">
+                            <input type="number" step="0.01" name="qty" placeholder="Cant" required class="p-2.5 border rounded-xl">
+                            <input type="number" step="0.01" name="price" placeholder="$ Unit" required class="p-2.5 border rounded-xl">
+                            <input type="text" name="uom" placeholder="Medida" class="p-2.5 border rounded-xl">
+                            <button type="submit" class="md:col-span-4 bg-amber-600 text-white py-2.5 rounded-xl font-bold">Guardar Material</button>
+                        </form>
+                    </div>
+                    {% endif %}
+                    <div id="part-list">{% include 'components/part_list.html' %}</div>
+                </div>
+            </div>
+
+            <!-- Tercerizados (Colapsable) -->
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden" x-data="{ expanded: false }">
+                <div class="p-6 bg-white border-b border-gray-100 flex justify-between items-center cursor-pointer" @click="expanded = !expanded">
+                    <h2 class="text-xl font-bold flex items-center gap-2">
+                        <span class="w-2 h-6 bg-red-500 rounded-full"></span>
+                        Trabajos de Terceros
+                    </h2>
+                    <svg class="w-6 h-6 transform transition-transform" :class="expanded ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                </div>
+                
+                <div x-show="expanded" x-collapse x-cloak class="p-6">
+                    {% if not is_closed %}
+                    <div class="mb-8 p-6 bg-red-50/50 border border-red-100 rounded-2xl">
+                        <form hx-post="/order/{{ order.id }}/third-party" hx-target="#third-party-list"
+                              @htmx:after-request="if($event.detail.successful) { $el.reset(); }"
+                              class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                            <input type="text" name="provider" placeholder="Proveedor" required class="p-2.5 border rounded-xl">
+                            <input type="text" name="description" placeholder="Trabajo" required class="md:col-span-2 p-2.5 border rounded-xl">
+                            <input type="number" step="0.01" name="price" placeholder="$" required class="p-2.5 border rounded-xl">
+                            <button type="submit" class="md:col-span-4 bg-red-600 text-white py-2.5 rounded-xl font-bold">Guardar Tercerizado</button>
+                        </form>
+                    </div>
+                    {% endif %}
+                    <div id="third-party-list">
+                        {% with third_parties = order.third_parties %}{% include 'components/third_party_list.html' %}{% endwith %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.body.addEventListener('htmx:afterRequest', function(evt) {
+            if (evt.detail.xhr.status >= 400) {
+                setTimeout(() => {
+                    const notify = document.getElementById('notification-area');
+                    if (notify && notify.firstChild) notify.firstChild.remove();
+                }, 4000);
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Antigravity - Gestión de Órdenes de Trabajo</title>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        .glass { background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.3); }
+        .bg-gradient { background: linear-gradient(135deg, #0ea5e9 0%, #0369a1 100%); }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen text-slate-800 font-sans flex flex-col">
+    <nav class="bg-gradient text-white p-4 shadow-xl sticky top-0 z-50">
+        <div class="container mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <h1 class="text-2xl font-black tracking-tighter">ANTIGRAVITY <span class="font-light text-sky-200">WORKFLOW</span></h1>
+                <a href="/vehicles" class="bg-white/10 hover:bg-white/20 px-5 py-2.5 rounded-xl transition-all border border-white/20 backdrop-blur-sm text-sm font-bold flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    Móviles
+                </a>
+                <a href="/reports" class="bg-white/10 hover:bg-white/20 px-5 py-2.5 rounded-xl transition-all border border-white/20 backdrop-blur-sm text-sm font-bold flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                    Reportes
+                </a>
+                <a href="/admin" class="bg-white/10 hover:bg-white/20 px-5 py-2.5 rounded-xl transition-all border border-white/20 backdrop-blur-sm text-sm font-bold flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                    Tablas
+                </a>
+                <button hx-get="/order/new" hx-target="#main-panel" class="bg-amber-400 hover:bg-amber-500 text-amber-950 px-6 py-2.5 rounded-xl transition-all shadow-lg font-black flex items-center gap-2">
+                    <span>+</span> NUEVA ORDEN
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto py-8 px-4 flex-grow">
+        <div id="main-panel" class="grid gap-8">
+            <div class="glass p-8 rounded-[2rem] shadow-2xl border-white/40">
+                <div class="flex justify-between items-center mb-8">
+                    <h2 class="text-2xl font-black text-slate-800 flex items-center gap-3">
+                        <span class="w-3 h-8 bg-sky-500 rounded-full shadow-lg shadow-sky-200"></span>
+                        Gestión de Operaciones
+                    </h2>
+                </div>
+                
+                <div class="overflow-x-auto -mx-4 md:mx-0">
+                    <table class="w-full text-left">
+                        <thead>
+                            <tr class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] border-b border-slate-100">
+                                <th class="pb-5 px-4">Orden</th>
+                                <th class="pb-5 px-4">Vehículo</th>
+                                <th class="pb-5 px-4">Status</th>
+                                <th class="pb-5 px-6">Productividad</th>
+                                <th class="pb-5 px-6 text-right">Inversión</th>
+                                <th class="pb-5 px-4 text-center">Gestión</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-50">
+                            {% if not orders %}
+                                <tr>
+                                    <td colspan="6" class="py-20 text-center text-slate-300 italic font-light">No hay registros en el sistema.</td>
+                                </tr>
+                            {% endif %}
+                            {% for order in orders %}
+                            <tr class="hover:bg-sky-50/50 transition-all group">
+                                <td class="py-6 px-4">
+                                    <span class="text-lg font-black text-sky-600">#{{ order.id }}</span>
+                                </td>
+                                <td class="py-6 px-4">
+                                    <div class="font-bold text-slate-700">{{ order.vehicle.brand.name }} <span class="font-light">{{ order.vehicle.model }}</span></div>
+                                    <div class="text-[10px] bg-slate-100 text-slate-500 inline-block px-1.5 py-0.5 rounded font-mono mt-1 border border-slate-200">{{ order.vehicle.plate }}</div>
+                                </td>
+                                <td class="py-6 px-4">
+                                    <span class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-tighter"
+                                          :class="state === 'Terminada' ? 'bg-slate-200 text-slate-700' : 'bg-sky-100 text-sky-700'">
+                                        {{ order.status }}
+                                    </span>
+                                </td>
+                                <td class="py-6 px-6">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-1.5 h-1.5 rounded-full bg-sky-400"></div>
+                                        <span class="font-mono font-bold text-slate-600">{{ order.formatted_time }}</span>
+                                    </div>
+                                </td>
+                                <td class="py-6 px-6 text-right">
+                                    <span class="text-lg font-black text-slate-800">${{ order.total_cost }}</span>
+                                </td>
+                                <td class="py-6 px-4 text-center">
+                                    <a href="/order/{{ order.id }}" class="bg-slate-800 text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-sky-600 transition-colors shadow-md">
+                                        ABRIR OT
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="py-10 text-center text-slate-400 text-[10px] tracking-widest uppercase font-light">
+        &copy; 2026 Antigravity Workflow Engine &bull; Argentina
+    </footer>
+</body>
+</html>

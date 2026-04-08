@@ -1,0 +1,37 @@
+<div class="overflow-x-auto">
+    <table class="w-full text-left">
+        <thead>
+            <tr class="text-[10px] font-bold text-gray-400 uppercase tracking-widest border-b">
+                <th class="pb-3 text-sky-700/50">Proveedor</th>
+                <th class="pb-3 text-sky-700/50">Trabajo Realizado</th>
+                <th class="pb-3 text-right text-sky-700/50">Precio ($)</th>
+                <th class="pb-3 px-4"></th>
+            </tr>
+        </thead>
+        <tbody class="divide-y text-sm">
+            {% for tp in third_parties %}
+            <tr class="group hover:bg-slate-50 transition-colors">
+                <td class="py-4 font-bold text-slate-700">{{ tp.provider_name }}</td>
+                <td class="py-4">{{ tp.description }}</td>
+                <td class="py-4 text-right font-mono font-bold text-red-600">${{ tp.price }}</td>
+                <td class="py-4 px-4 text-right">
+                    <button hx-delete="/third-party/{{ tp.id }}" 
+                            hx-confirm="¿Borrar este servicio de tercero?"
+                            hx-target="closest tr" 
+                            hx-swap="outerHTML"
+                            class="p-1.5 text-gray-300 hover:text-red-600 hover:bg-red-50 rounded-lg opacity-0 group-hover:opacity-100 transition-all">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                    </button>
+                </td>
+            </tr>
+            {% endfor %}
+            {% if not third_parties %}
+            <tr>
+                <td colspan="4" class="py-10 text-center text-gray-400 italic font-light">Sin trabajos especiales de terceros.</td>
+            </tr>
+            {% endif %}
+        </tbody>
+    </table>
+</div>

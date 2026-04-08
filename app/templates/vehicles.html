@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Móviles - Antigravity OT</title>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body class="bg-slate-50 min-h-screen text-slate-800 font-sans" x-data="{ showForm: false }">
+    <div id="notification-area" class="fixed top-4 right-4 z-[200]"></div>
+
+    <nav class="bg-slate-900 text-white p-4 shadow-xl sticky top-0 z-50">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-black tracking-tighter">ANTIGRAVITY <span class="text-sky-400">FLOTA</span></h1>
+            <div class="flex gap-4 items-center">
+                <a href="/" class="text-xs font-bold uppercase hover:text-sky-400 transition-colors">Dashboard</a>
+                <button @click="showForm = !showForm" class="bg-sky-500 hover:bg-sky-600 px-4 py-2 rounded-lg text-xs font-black shadow-lg transition-all uppercase">
+                    + Nuevo Móvil
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto py-8 px-4">
+        <!-- Formulario (Código Interno Automático) -->
+        <div x-show="showForm" x-transition x-cloak class="mb-12 bg-white p-8 rounded-[2rem] shadow-2xl border border-slate-200">
+            <h2 class="text-xl font-black mb-6 text-slate-700">Registro de Unidad <span class="text-sky-500 font-light text-sm">(Código Autonumérico)</span></h2>
+            <form hx-post="/vehicles/save" @htmx:after-request="if($event.detail.successful) window.location.reload()" class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div>
+                    <label class="block text-[10px] font-black text-slate-400 uppercase mb-2">Patente / Dominio</label>
+                    <input type="text" name="plate" required placeholder="ABC-123" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sky-500 outline-none uppercase">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-black text-slate-400 uppercase mb-2">Marca</label>
+                    <select name="brand_id" required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none">
+                        {% for brand in brands %}<option value="{{ brand.id }}">{{ brand.name }}</option>{% endfor %}
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-[10px] font-black text-slate-400 uppercase mb-2">Tipo</label>
+                    <select name="type_id" required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none">
+                        {% for t in types %}<option value="{{ t.id }}">{{ t.name }}</option>{% endfor %}
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-[10px] font-black text-slate-400 uppercase mb-2">Modelo</label>
+                    <input type="text" name="model" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-black text-slate-400 uppercase mb-2">Año</label>
+                    <input type="number" name="year" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-black text-slate-400 uppercase mb-2">Kilometraje Act.</label>
+                    <input type="number" name="current_mileage" value="0" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-black text-slate-400 uppercase mb-2">Últ. Propietario</label>
+                    <input type="text" name="last_owner" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-black text-slate-400 uppercase mb-2">Fecha Últ. Service</label>
+                    <input type="date" name="last_service_date" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none">
+                </div>
+                <div class="md:col-span-4">
+                    <button type="submit" class="w-full bg-slate-800 text-white p-4 rounded-xl font-black hover:bg-slate-700 shadow-xl transition-all">
+                        ALTA DE VEHÍCULO
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for v in vehicles %}
+            <div class="bg-white rounded-[2.5rem] shadow-xl border border-slate-100 p-8 hover:shadow-2xl transition-all group">
+                <div class="flex justify-between items-start mb-6">
+                    <div>
+                        <span class="bg-slate-900 text-white text-[9px] font-black px-2 py-1 rounded shadow-sm">ID: {{ v.internal_code }}</span>
+                        <h3 class="text-2xl font-black text-slate-800 mt-2">{{ v.brand.name }} <span class="font-normal text-slate-500">{{ v.model }}</span></h3>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2 mb-8">
+                    <span class="bg-sky-500 text-white text-xs font-black px-3 py-1 rounded-lg uppercase tracking-widest shadow-lg shadow-sky-200">{{ v.plate }}</span>
+                    <span class="text-[10px] font-bold text-slate-400 uppercase">{{ v.vehicle_type.name }} &bull; {{ v.year or 'S/A' }}</span>
+                </div>
+
+                <div class="space-y-4 pt-6 border-t border-slate-50">
+                    <div class="flex justify-between text-sm">
+                        <span class="text-slate-400 font-bold uppercase tracking-tighter">Kilometraje</span>
+                        <span class="font-black text-slate-800">{{ "{:,}".format(v.current_mileage|default(0)) }} KM</span>
+                    </div>
+                    <div class="flex justify-between text-sm">
+                        <span class="text-slate-400 font-bold uppercase tracking-tighter">Último Propietario</span>
+                        <span class="font-medium text-slate-700">{{ v.last_owner or 'N/D' }}</span>
+                    </div>
+                </div>
+
+                <div class="mt-8 flex gap-3">
+                    <a href="/vehicles/{{ v.id }}/history" class="flex-1 bg-sky-50 text-sky-600 py-3 rounded-2xl text-center text-[10px] font-black uppercase hover:bg-sky-100 transition-all border border-sky-100">
+                        Ver Historia Clínica
+                    </a>
+                    <button hx-post="/vehicles/{{ v.id }}/delete" hx-confirm="¿Borrar unidad {{ v.internal_code }}?" class="p-3 text-slate-300 hover:text-red-500 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                    </button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </main>
+</body>
+</html>
