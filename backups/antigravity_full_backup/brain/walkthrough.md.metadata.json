@@ -1,0 +1,6 @@
+{
+  "artifactType":  "ARTIFACT_TYPE_WALKTHROUGH",
+  "summary":  "Despliegue exitoso de la nueva Skill 'security-expert'. El sistema cuenta ahora con una guía experta para la implementación de seguridad RBAC y auditoría tipo GAM.",
+  "updatedAt":  "2026-04-08T21:45:57.378660400Z",
+  "version":  "16"
+}

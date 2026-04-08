@@ -182,6 +182,17 @@
                     </div>
                 </div>
             </div>
+        <!-- Pie de Auditoria -->
+        <div class="mt-8 pt-6 border-t border-slate-100 flex justify-between items-center text-[10px] text-slate-400 uppercase font-bold tracking-widest px-4">
+            <div>
+                Creado por: <span class="text-slate-600">{{ order.created_by or 'Sistema' }}</span> &bull; 
+                Moment: <span class="text-slate-600">{{ order.entry_date.strftime('%d/%m/%Y %H:%M') }}</span>
+            </div>
+            {% if order.updated_at %}
+            <div>
+                Últ. Cambio: <span class="text-slate-600">{{ order.updated_at.strftime('%d/%m/%Y %H:%M') }}</span>
+            </div>
+            {% endif %}
         </div>
     </main>
 

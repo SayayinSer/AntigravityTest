@@ -1,0 +1,39 @@
+# Migración de Skills a Alcance Global
+
+Este plan detalla el proceso para convertir las 13 skills actualmente alojadas en el workspace `Entorno01` en skills globales de Antigravity. Esto permitirá que el agente utilice este conocimiento experto en cualquier proyecto futuro sin necesidad de copiarlas manualmente.
+
+## User Review Required
+
+> [!IMPORTANT]
+> Se realizará una copia de los directorios actuales hacia `C:\Users\Sergio\.gemini\antigravity\skills\`. ¿Deseas que **borre** las skills locales de `Entorno01` una vez copiadas o prefieres mantenerlas en ambos lugares como respaldo?
+
+## Proposed Changes
+
+### Migración de Skills
+
+#### [NEW] [Global Skills](file:///C:/Users/Sergio/.gemini/antigravity/skills/)
+Se copiarán los siguientes directorios desde `c:\aaProyectos\Entorno01\.agents\skills\` a la ubicación global:
+1. `creador-de-skills`
+2. `devops-expert`
+3. `fastapi-expert`
+4. `frontend-design`
+5. `frontend-moderno`
+6. `frontend-testing`
+7. `fullstack-python-app`
+8. `genexus-expert`
+9. `openapi-expert`
+10. `openapi-integration`
+11. `postgresql-crud`
+12. `sql-expert`
+13. `systems-analyst`
+
+## Open Questions
+
+- ¿Existe alguna skill de la lista anterior que prefieras mantener como **exclusiva** de `Entorno01`?
+- ¿Quieres que asigne permisos de solo lectura a las globales o que sigan siendo editables?
+
+## Verification Plan
+
+### Manual Verification
+1. Comprobar que los directorios han sido creados correctamente en el `appDataDir`.
+2. Validar que al iniciar una nueva conversación en un directorio diferente, el agente sea capaz de reconocer estas skills mediante su descripción.

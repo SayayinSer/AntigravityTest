@@ -1,0 +1,325 @@
+<current_dom_explanation>
+This is a temporary snapshot of the current page's DOM structure. The DOM will change if you navigate to or interact with another page. Use a tool like browser_get_dom to capture and preserve the DOM in your trajectory if needed for later reference.
+</current_dom_explanation>
+<current_dom>
+Skip to content
+Navigation Menu
+[0] (46,51)<a aria-label='Homepage' class='tmp-mr-lg-3 color-fg-inherit flex-order-2 js-prevent-focus-on-mobile-nav' href='/' />
+[1] (124,51)<button class='NavDropdown-module__button__PEHWX js-details-target'>Platform />
+[2] (219,51)<button class='NavDropdown-module__button__PEHWX js-details-target'>Solutions />
+[3] (319,51)<button class='NavDropdown-module__button__PEHWX js-details-target'>Resources />
+[4] (432,51)<button class='NavDropdown-module__button__PEHWX js-details-target'>Open Source />
+[5] (545,51)<button class='NavDropdown-module__button__PEHWX js-details-target'>Enterprise />
+[6] (628,51)<a class='NavLink-module__link__EG3d4 MarketingNavigation-module__navLink__hUomM' href='https://github.com/pricing' />
+	[7] (628,51)<span >Pricing />
+[8] (754,51)<button aria-label='Search or jump to…' class='header-search-button placeholder input-button form-control d-flex flex-1 flex-self-stretch flex-items-center no-wrap width-full py-0 pl-2 pr-0 text-left border-0 box-shadow-none' placeholder='Search or jump to...' />
+	[9] (754,51)<div  />
+[10] (813,51)<a class='HeaderMenu-link HeaderMenu-link--sign-in HeaderMenu-button flex-shrink-0 no-underline d-none d-lg-inline-flex border border-lg-0 rounded px-2 py-1' href='/login?return_to=https%3A%2F%2Fgithub.com%2Fgenexuslabs%2Fgenexus-skills%2Ftree%2Fmain%2Ffrontend'>Sign in />
+[11] (892,51)<a class='HeaderMenu-link HeaderMenu-link--sign-up HeaderMenu-button flex-shrink-0 d-flex d-lg-inline-flex no-underline border color-border-default rounded px-2 py-1' href='/signup?ref_cta=Sign+up&ref_loc=header+logged+out&ref_page=%2F%3Cuser-name%3E%2F%3Crepo-name%3E%2Ffiles%2Fdisambiguate&source=header-repo&source_repo=genexuslabs%2Fgenexus-skills'>Sign up />
+[12] (954,51)<button class='Button Button--iconOnly Button--invisible Button--medium AppHeader-button HeaderMenu-link border' id='icon-button-a1a769db-d80b-49ea-a408-eeeb210184c3' />
+[13] (106,145)<a class='url fn' href='/genexuslabs'>genexuslabs />
+/
+[14] (235,145)<a href='/genexuslabs/genexus-skills'>genexus-skills />
+Public
+[15] (704,143)<a aria-label='You must be signed in to change notification settings' class='btn-sm btn' href='/login?return_to=%2Fgenexuslabs%2Fgenexus-skills' id='repository-details-watch-button'>Notifications />
+[16] (817,143)<a class='btn-sm btn' href='/login?return_to=%2Fgenexuslabs%2Fgenexus-skills' id='fork-button'>Fork />
+	[17] (843,143)<span >5 />
+[18] (921,143)<a aria-label='You must be signed in to star a repository' class='tooltipped tooltipped-sw btn-sm btn' href='/login?return_to=%2Fgenexuslabs%2Fgenexus-skills' />
+	[19] (922,143)<span >Star />
+	[20] (947,143)<span >6 />
+[21] (66,222)<a class='UnderlineNav-item no-wrap js-responsive-underlinenav-item js-selected-navigation-item selected' href='/genexuslabs/genexus-skills' id='code-tab' />
+	[22] (78,222)<span >Code />
+[23] (147,222)<a class='UnderlineNav-item no-wrap js-responsive-underlinenav-item js-selected-navigation-item' href='/genexuslabs/genexus-skills/issues' id='issues-tab' />
+	[24] (158,222)<span >Issues />
+[25] (264,222)<a class='UnderlineNav-item no-wrap js-responsive-underlinenav-item js-selected-navigation-item' href='/genexuslabs/genexus-skills/pulls' id='pull-requests-tab' />
+	[26] (262,222)<span >Pull requests />
+	[27] (318,222)<span >1 />
+[28] (398,222)<a class='UnderlineNav-item no-wrap js-responsive-underlinenav-item js-selected-navigation-item' href='/genexuslabs/genexus-skills/discussions' id='discussions-tab' />
+	[29] (410,222)<span >Discussions />
+[30] (502,222)<a class='UnderlineNav-item no-wrap js-responsive-underlinenav-item js-selected-navigation-item' href='/genexuslabs/genexus-skills/actions' id='actions-tab' />
+	[31] (514,222)<span >Actions />
+[32] (632,222)<a class='UnderlineNav-item no-wrap js-responsive-underlinenav-item js-selected-navigation-item' href='/genexuslabs/genexus-skills/security' id='security-and-quality-tab' />
+	[33] (644,222)<span >Security and quality />
+[34] (763,222)<a class='UnderlineNav-item no-wrap js-responsive-underlinenav-item js-selected-navigation-item' href='/genexuslabs/genexus-skills/pulse' id='insights-tab' />
+	[35] (775,222)<span >Insights />
+[36] (31,301)<button class='prc-Button-ButtonBase-9n-Xk position-relative ExpandFileTreeButton-module__expandButton__hDOcv fgColor-muted prc-Button-IconButton-fyge7' />
+Files
+[37] (135,368)<button aria-label='main branch' class='prc-Button-ButtonBase-9n-Xk react-repos-tree-pane-ref-selector width-full ref-selector-class RefSelectorAnchoredOverlay-module__RefSelectorOverlayBtn__a3WK3' id='ref-picker-repos-header-ref-selector' />
+	[38] (135,368)<span  />
+		[39] (124,368)<span  />
+			[40] (124,368)<div  />
+				[41] (36,368)<div  />
+				[42] (64,368)<div  />
+					[43] (64,368)<span >main />
+[44] (278,368)<button class='prc-Button-ButtonBase-9n-Xk SearchButton-module__IconButton__SBlqu prc-Button-IconButton-fyge7' />
+[45] (154,425)<span  />
+	[46] (32,425)<span  />
+	[47] (162,425)<input aria-label='Go to file' class='prc-components-Input-IwWrt' placeholder='Go to file' role='combobox' />
+[48] (147,719)<div  />
+	[49] (147,600)<li class='PRIVATE_TreeView-item prc-TreeView-TreeViewItem-Ter5f' id='frontend-item' role='treeitem' />
+		[50] (147,487)<div  />
+			[51] (23,487)<div  />
+			[52] (155,487)<div  />
+				[53] (46,487)<div  />
+					[54] (46,487)<div  />
+				[55] (166,487)<span  />
+					[56] (88,486)<span >frontend />
+		[57] (147,532)<li class='PRIVATE_TreeView-item prc-TreeView-TreeViewItem-Ter5f' id='frontend/chameleon-controls-library-item' role='treeitem' />
+			[58] (147,532)<div  />
+				[59] (19,532)<div  />
+					[60] (19,532)<div  />
+						[61] (19,532)<div  />
+				[62] (31,532)<div  />
+				[63] (159,532)<div  />
+					[64] (54,532)<div  />
+						[65] (54,532)<div  />
+					[66] (170,532)<span  />
+						[67] (150,531)<span >chameleon-controls-library />
+		[68] (147,577)<li class='PRIVATE_TreeView-item prc-TreeView-TreeViewItem-Ter5f' id='frontend/design-system-builder-item' role='treeitem' />
+			[69] (147,577)<div  />
+				[70] (19,577)<div  />
+					[71] (19,577)<div  />
+						[72] (19,577)<div  />
+				[73] (31,577)<div  />
+				[74] (159,577)<div  />
+					[75] (54,577)<div  />
+						[76] (54,577)<div  />
+					[77] (170,577)<span  />
+						[78] (136,577)<span >design-system-builder />
+		[79] (147,623)<li class='PRIVATE_TreeView-item prc-TreeView-TreeViewItem-Ter5f' id='frontend/mercury-design-system-item' role='treeitem' />
+			[80] (147,623)<div  />
+				[81] (19,623)<div  />
+					[82] (19,623)<div  />
+						[83] (19,623)<div  />
+				[84] (31,623)<div  />
+				[85] (159,623)<div  />
+					[86] (54,623)<div  />
+						[87] (54,623)<div  />
+					[88] (170,623)<span  />
+						[89] (140,622)<span >mercury-design-system />
+		[90] (147,668)<li class='PRIVATE_TreeView-item prc-TreeView-TreeViewItem-Ter5f' id='frontend/ui-creator-item' role='treeitem' />
+			[91] (147,668)<div  />
+				[92] (19,668)<div  />
+					[93] (19,668)<div  />
+						[94] (19,668)<div  />
+				[95] (31,668)<div  />
+				[96] (159,668)<div  />
+					[97] (54,668)<div  />
+						[98] (54,668)<div  />
+					[99] (170,668)<span  />
+						[100] (99,667)<span >ui-creator />
+		[101] (147,713)<li class='PRIVATE_TreeView-item prc-TreeView-TreeViewItem-Ter5f' id='frontend/README.md-item' role='treeitem' />
+			[102] (147,713)<div  />
+				[103] (19,713)<div  />
+					[104] (19,713)<div  />
+						[105] (19,713)<div  />
+				[106] (159,713)<div  />
+					[107] (54,713)<div  />
+					[108] (170,713)<span  />
+						[109] (107,713)<span >README.md />
+	[110] (147,759)<li class='PRIVATE_TreeView-item prc-TreeView-TreeViewItem-Ter5f' id='nexa-item' role='treeitem' />
+		[111] (147,759)<div  />
+			[112] (23,759)<div  />
+			[113] (155,759)<div  />
+				[114] (46,758)<div  />
+					[115] (46,758)<div  />
+				[116] (166,759)<span  />
+					[117] (76,758)<span >nexa />
+	[118] (147,804)<li class='PRIVATE_TreeView-item prc-TreeView-TreeViewItem-Ter5f' id='.gitignore-item' role='treeitem' />
+		[119] (147,804)<div  />
+			[120] (155,804)<div  />
+				[121] (46,804)<div  />
+				[122] (166,804)<span  />
+					[123] (90,803)<span >.gitignore />
+	[124] (147,849)<li class='PRIVATE_TreeView-item prc-TreeView-TreeViewItem-Ter5f' id='CONTRIBUTING.md-item' role='treeitem' />
+		[125] (147,849)<div  />
+			[126] (155,849)<div  />
+				[127] (46,849)<div  />
+				[128] (166,849)<span  />
+					[129] (120,848)<span >CONTRIBUTING.md />
+	[130] (147,894)<li class='PRIVATE_TreeView-item prc-TreeView-TreeViewItem-Ter5f' id='LICENSE-item' role='treeitem' />
+		[131] (147,894)<div  />
+			[132] (155,894)<div  />
+				[133] (46,894)<div  />
+				[134] (166,894)<span  />
+					[135] (86,894)<span >LICENSE />
+	[136] (147,940)<li class='PRIVATE_TreeView-item prc-TreeView-TreeViewItem-Ter5f' id='README.md-item' role='treeitem' />
+		[137] (147,940)<div  />
+			[138] (155,940)<div  />
+				[139] (46,940)<div  />
+				[140] (166,940)<span  />
+					[141] (99,939)<span >README.md />
+[142] (309,756)<div aria-label='Draggable pane splitter' class='prc-PageLayout-DraggableHandle-9s6B4' role='slider' />
+Breadcrumbs
+[143] (374,300)<a class='Breadcrumb-module__repoLink__O2Nbs prc-Link-Link-9ZwDx' href='/genexuslabs/genexus-skills/tree/main'>genexus-skills />
+/
+frontend
+/
+[144] (548,301)<button class='prc-Button-ButtonBase-9n-Xk ml-2 prc-Button-IconButton-fyge7' />
+Directory actions
+More options
+[145] (969,301)<button class='prc-Button-ButtonBase-9n-Xk CodeViewHeader-module__IconButton__PYSHU prc-Button-IconButton-fyge7' id='_R_1beqjal1d_' title='More options' />
+Latest commit
+[146] (396,378)<a aria-label='commits by ag-silva' class='Link__StyledLink-sc-1syctfj-0 iIGVMW AuthorLink-module__authorNameLink__ClG6W prc-Link-Link-9ZwDx' href='/genexuslabs/genexus-skills/commits?author=ag-silva'>ag-silva />
+and
+ag-silva
+[147] (653,377)<a class='Link--secondary' href='/genexuslabs/genexus-skills/commit/c793e43a693b63d7ef24388409ca6569d4ab22a6'>Add frontend skills and README documentation ( />
+#2
+)
+[148] (758,378)<button class='prc-Button-ButtonBase-9n-Xk LatestCommit-module__IconButton__mkJr_ prc-Button-IconButton-fyge7' />
+[149] (800,378)<a aria-label='Commit c793e43' class='Link--secondary prc-Link-Link-9ZwDx' href='/genexuslabs/genexus-skills/commit/c793e43a693b63d7ef24388409ca6569d4ab22a6'>c793e43 />
+·
+History
+[150] (939,378)<a class='prc-Button-ButtonBase-9n-Xk d-none d-lg-flex LinkButton-module__linkButton__nFnov flex-items-center fgColor-default' href='/genexuslabs/genexus-skills/commits/main/frontend' />
+	[151] (939,378)<span  />
+		[152] (948,378)<span  />
+			[153] (948,378)<span >History />
+Folders and files
+Name
+Last commit message
+Last commit date
+[154] (655,518)<tr  />
+	parent directory
+	[155] (655,519)<a aria-label='Parent directory' class='DirectoryRow-module__PrimerLink__COEaW prc-Link-Link-9ZwDx' href='/genexuslabs/genexus-skills/tree/main' />
+		[156] (655,519)<div >.. />
+[157] (655,575)<tr  />
+	[158] (447,575)<a aria-label='chameleon-controls-library, (Directory)' class='Link--primary' href='/genexuslabs/genexus-skills/tree/main/frontend/chameleon-controls-library' title='chameleon-controls-library'>chameleon-controls-library />
+	[159] (753,575)<a class='Link--secondary' href='/genexuslabs/genexus-skills/commit/c793e43a693b63d7ef24388409ca6569d4ab22a6' title='Add frontend skills and README documentation (#2)
+
+* Add frontend skills and README documentation
+
+Add five frontend AI skills (Chameleon Controls Library, Design System Builder, Mercury Design System, UI Creator, WW Builder) for building enterprise web applications, along with a README documenting each skill's purpose and usage.
+
+* Check and apply guidelines
+
+* Reorganize reference docs into references/ directory and refine skill instructions
+
+Move platform-specific and reference documentation (design-tokens-guide, genexus-backend, image-to-component) into a references/ subdirectory. Split angular.md and react.md into references/platform-angular.md and references/platform-react.md with updated content. Add mock-server-template.md as a standalone reference. Update all internal links in SKILL.md, remove trailing periods for consistency, and normalize list indentation to tabs. Simplify capture-screenshot script.
+
+* Remove ww-builder
+
+* Minor indent fix
+
+* Add frontend skills group to README directory tree
+
+Document the new frontend/ directory structure in the root README, covering chameleon-controls-library, design-system-builder, mercury-design-system, and ui-creator skills with their reference directories.
+
+---------
+
+Co-authored-by: ag-silva <alejandro.silva@globant.com>'>Add frontend skills and README documentation ( />
+	#2
+	)
+[160] (655,632)<tr  />
+	[161] (433,632)<a aria-label='design-system-builder, (Directory)' class='Link--primary' href='/genexuslabs/genexus-skills/tree/main/frontend/design-system-builder' title='design-system-builder'>design-system-builder />
+	[162] (753,632)<a class='Link--secondary' href='/genexuslabs/genexus-skills/commit/c793e43a693b63d7ef24388409ca6569d4ab22a6' title='Add frontend skills and README documentation (#2)
+
+* Add frontend skills and README documentation
+
+Add five frontend AI skills (Chameleon Controls Library, Design System Builder, Mercury Design System, UI Creator, WW Builder) for building enterprise web applications, along with a README documenting each skill's purpose and usage.
+
+* Check and apply guidelines
+
+* Reorganize reference docs into references/ directory and refine skill instructions
+
+Move platform-specific and reference documentation (design-tokens-guide, genexus-backend, image-to-component) into a references/ subdirectory. Split angular.md and react.md into references/platform-angular.md and references/platform-react.md with updated content. Add mock-server-template.md as a standalone reference. Update all internal links in SKILL.md, remove trailing periods for consistency, and normalize list indentation to tabs. Simplify capture-screenshot script.
+
+* Remove ww-builder
+
+* Minor indent fix
+
+* Add frontend skills group to README directory tree
+
+Document the new frontend/ directory structure in the root README, covering chameleon-controls-library, design-system-builder, mercury-design-system, and ui-creator skills with their reference directories.
+
+---------
+
+Co-authored-by: ag-silva <alejandro.silva@globant.com>'>Add frontend skills and README documentation ( />
+	#2
+	)
+[163] (655,690)<tr  />
+	[164] (437,690)<a aria-label='mercury-design-system, (Directory)' class='Link--primary' href='/genexuslabs/genexus-skills/tree/main/frontend/mercury-design-system' title='mercury-design-system'>mercury-design-system />
+	[165] (753,690)<a class='Link--secondary' href='/genexuslabs/genexus-skills/commit/c793e43a693b63d7ef24388409ca6569d4ab22a6' title='Add frontend skills and README documentation (#2)
+
+* Add frontend skills and README documentation
+
+Add five frontend AI skills (Chameleon Controls Library, Design System Builder, Mercury Design System, UI Creator, WW Builder) for building enterprise web applications, along with a README documenting each skill's purpose and usage.
+
+* Check and apply guidelines
+
+* Reorganize reference docs into references/ directory and refine skill instructions
+
+Move platform-specific and reference documentation (design-tokens-guide, genexus-backend, image-to-component) into a references/ subdirectory. Split angular.md and react.md into references/platform-angular.md and references/platform-react.md with updated content. Add mock-server-template.md as a standalone reference. Update all internal links in SKILL.md, remove trailing periods for consistency, and normalize list indentation to tabs. Simplify capture-screenshot script.
+
+* Remove ww-builder
+
+* Minor indent fix
+
+* Add frontend skills group to README directory tree
+
+Document the new frontend/ directory structure in the root README, covering chameleon-controls-library, design-system-builder, mercury-design-system, and ui-creator skills with their reference directories.
+
+---------
+
+Co-authored-by: ag-silva <alejandro.silva@globant.com>'>Add frontend skills and README documentation ( />
+	#2
+	)
+[166] (655,747)<tr  />
+	[167] (396,747)<a aria-label='ui-creator, (Directory)' class='Link--primary' href='/genexuslabs/genexus-skills/tree/main/frontend/ui-creator' title='ui-creator'>ui-creator />
+	[168] (753,747)<a class='Link--secondary' href='/genexuslabs/genexus-skills/commit/c793e43a693b63d7ef24388409ca6569d4ab22a6' title='Add frontend skills and README documentation (#2)
+
+* Add frontend skills and README documentation
+
+Add five frontend AI skills (Chameleon Controls Library, Design System Builder, Mercury Design System, UI Creator, WW Builder) for building enterprise web applications, along with a README documenting each skill's purpose and usage.
+
+* Check and apply guidelines
+
+* Reorganize reference docs into references/ directory and refine skill instructions
+
+Move platform-specific and reference documentation (design-tokens-guide, genexus-backend, image-to-component) into a references/ subdirectory. Split angular.md and react.md into references/platform-angular.md and references/platform-react.md with updated content. Add mock-server-template.md as a standalone reference. Update all internal links in SKILL.md, remove trailing periods for consistency, and normalize list indentation to tabs. Simplify capture-screenshot script.
+
+* Remove ww-builder
+
+* Minor indent fix
+
+* Add frontend skills group to README directory tree
+
+Document the new frontend/ directory structure in the root README, covering chameleon-controls-library, design-system-builder, mercury-design-system, and ui-creator skills with their reference directories.
+
+---------
+
+Co-authored-by: ag-silva <alejandro.silva@globant.com>'>Add frontend skills and README documentation ( />
+	#2
+	)
+[169] (655,805)<tr  />
+	[170] (404,804)<a aria-label='README.md, (File)' class='Link--primary' href='/genexuslabs/genexus-skills/blob/main/frontend/README.md' title='README.md'>README.md />
+	[171] (753,804)<a class='Link--secondary' href='/genexuslabs/genexus-skills/commit/c793e43a693b63d7ef24388409ca6569d4ab22a6' title='Add frontend skills and README documentation (#2)
+
+* Add frontend skills and README documentation
+
+Add five frontend AI skills (Chameleon Controls Library, Design System Builder, Mercury Design System, UI Creator, WW Builder) for building enterprise web applications, along with a README documenting each skill's purpose and usage.
+
+* Check and apply guidelines
+
+* Reorganize reference docs into references/ directory and refine skill instructions
+
+Move platform-specific and reference documentation (design-tokens-guide, genexus-backend, image-to-component) into a references/ subdirectory. Split angular.md and react.md into references/platform-angular.md and references/platform-react.md with updated content. Add mock-server-template.md as a standalone reference. Update all internal links in SKILL.md, remove trailing periods for consistency, and normalize list indentation to tabs. Simplify capture-screenshot script.
+
+* Remove ww-builder
+
+* Minor indent fix
+
+* Add frontend skills group to README directory tree
+
+Document the new frontend/ directory structure in the root README, covering chameleon-controls-library, design-system-builder, mercury-design-system, and ui-creator skills with their reference directories.
+
+---------
+
+Co-authored-by: ag-silva <alejandro.silva@globant.com>'>Add frontend skills and README documentation ( />
+	#2
+	)
+[172] (376,888)<a class='DirectoryReadmePreview-module__readmeLink__JEGBK prc-Link-Link-9ZwDx' href='#readme'>README.md />
+[173] (963,889)<button class='prc-Button-ButtonBase-9n-Xk TableOfContents-module__IconButton__jrlNM prc-Button-IconButton-fyge7' />
+Frontend Skills
+[174] (343,995)<a aria-label='Permalink: Frontend Skills' class='anchor' href='#frontend-skills' id='user-content-frontend-skills' />
+
+</current_dom>

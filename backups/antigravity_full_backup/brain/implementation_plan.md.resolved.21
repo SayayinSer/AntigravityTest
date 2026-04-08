@@ -1,0 +1,47 @@
+# Plan de Automatización y Reporte Clínico (Fase Final)
+
+Este plan aborda la optimización del flujo de trabajo, la persistencia de datos maestros y la generación de inteligencia de negocio mediante el historial clínico de los vehículos.
+
+## User Review Required
+
+> [!IMPORTANT]
+> - **Automatización de Código:** El Código Interno del Móvil pasará a ser incremental automático. Esto simplifica la carga, pero significa que el sistema asignará el número (1, 2, 3...) por ti.
+> - **Flujo de Cierre Obligatorio:** Al cambiar el estado a "Terminada", el sistema desplegará campos obligatorios para la **Solución**, el **Kilometraje Actual** y la **Fecha de Próxima Visita**. Esto actualizará la ficha del móvil automáticamente.
+> - **Sincronización GitHub:** Procederé a configurar el repositorio remoto y subir los cambios. Necesitaré confirmar si ya tienes una sesión de Git activa en la terminal o si requieres que use un token.
+
+## Proposed Changes
+
+### 1. Refactor de Modelos y Automatización (app/models.py)
+- **[MODIFY] [app/models.py](file:///c:/aaProyectos/Entorno01/app/models.py):**
+    - Cambiar `internal_code` en `Vehicle` a `Integer` con autoincremento.
+    - Añadir campo `next_service_suggestion` (Date) al modelo `Vehicle` o guardarlo en la `WorkOrder`.
+
+### 2. Script de Precarga (app/seed.py) [NEW]
+- **[NEW] [app/seed.py](file:///c:/aaProyectos/Entorno01/app/seed.py):**
+    - Script para insertar marcas básicas, tipos de vehículos y técnicos por defecto. Se podrá ejecutar tras cada limpieza.
+
+### 3. Reporte de Historia Clínica (app/templates/vehicle_history.html) [NEW]
+- **[NEW] [app/templates/vehicle_history.html](file:///c:/aaProyectos/Entorno01/app/templates/vehicle_history.html):**
+    - Vista detallada por vehículo mostrando cronológicamente todas sus OT, tareas y costos.
+
+### 4. Lógica de Cierre Inteligente (app/main.py)
+- **[MODIFY] [app/main.py](file:///c:/aaProyectos/Entorno01/app/main.py):**
+    - Re-implementar y extender `update_status` para capturar datos de cierre.
+    - Lógica de actualización automática de la ficha del `Vehicle` al cerrar la OT.
+    - Nueva ruta `GET /vehicles/{id}/history`.
+
+### 5. Interfaz de Cierre (app/templates/order_detail.html)
+- **[MODIFY] [app/templates/order_detail.html](file:///c:/aaProyectos/Entorno01/app/templates/order_detail.html):**
+    - Añadir campos dinámicos (Solución, KM, Próxima Cita) que aparecen solo cuando se selecciona "Terminada".
+
+## Open Questions
+- ¿Deseas que la "Sugerencia de Próxima Visita" sea fija (ej. 6 meses) o prefieres que el sistema te permita elegirla manualmente al cerrar?
+- Para GitHub: ¿Ya tienes configurada tu firma (user.email y user.name) en esta máquina?
+
+## Verification Plan
+
+### Manual Verification
+1. Crear un móvil y verificar que el código se asigne solo.
+2. Ejecutar el script `seed.py` y ver los datos en las tablas de configuración.
+3. Cerrar una OT cargando la solución y el KM, y verificar que la ficha del móvil se actualizó.
+4. Generar el historial clínico de un móvil con varias órdenes.

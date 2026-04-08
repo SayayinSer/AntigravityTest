@@ -1,0 +1,738 @@
+<current_dom_explanation>
+This is a temporary snapshot of the current page's DOM structure. The DOM will change if you navigate to or interact with another page. Use a tool like browser_get_dom to capture and preserve the DOM in your trajectory if needed for later reference.
+</current_dom_explanation>
+<current_dom>
+[0] (31,45)<button class='prc-Button-ButtonBase-9n-Xk position-relative ExpandFileTreeButton-module__expandButton__hDOcv fgColor-muted prc-Button-IconButton-fyge7' />
+Files
+[1] (135,113)<button aria-label='main branch' class='prc-Button-ButtonBase-9n-Xk react-repos-tree-pane-ref-selector width-full ref-selector-class RefSelectorAnchoredOverlay-module__RefSelectorOverlayBtn__a3WK3' id='ref-picker-repos-header-ref-selector' />
+	[2] (135,113)<span  />
+		[3] (124,113)<span  />
+			[4] (124,113)<div  />
+				[5] (36,113)<div  />
+				[6] (64,113)<div  />
+					[7] (64,112)<span >main />
+[8] (278,113)<button class='prc-Button-ButtonBase-9n-Xk SearchButton-module__IconButton__SBlqu prc-Button-IconButton-fyge7' />
+[9] (154,169)<span  />
+	[10] (32,169)<span  />
+	[11] (162,169)<input aria-label='Go to file' class='prc-components-Input-IwWrt' placeholder='Go to file' role='combobox' />
+[12] (154,604)<div class='ReposFileTreePane-module__Box_5__Zy_o6' scrollable='true' />
+	[13] (147,231)<li class='PRIVATE_TreeView-item prc-TreeView-TreeViewItem-Ter5f' id='frontend-item' role='treeitem' />
+		[14] (147,231)<div  />
+			[15] (23,231)<div  />
+			[16] (155,231)<div  />
+				[17] (46,231)<div  />
+					[18] (46,231)<div  />
+				[19] (166,231)<span  />
+					[20] (88,230)<span >frontend />
+	[21] (147,276)<div  />
+		[22] (23,276)<div  />
+		[23] (155,276)<div  />
+			[24] (46,276)<div  />
+				[25] (46,276)<div  />
+			[26] (166,276)<span  />
+				[27] (76,275)<span >nexa />
+	[28] (147,321)<div  />
+		[29] (19,321)<div  />
+			[30] (19,321)<div  />
+				[31] (19,321)<div  />
+		[32] (31,321)<div  />
+		[33] (159,321)<div  />
+			[34] (54,321)<div  />
+				[35] (54,321)<div  />
+			[36] (170,321)<span  />
+				[37] (100,321)<span >references />
+	[38] (147,367)<li class='PRIVATE_TreeView-item prc-TreeView-TreeViewItem-Ter5f' id='nexa/references/common-agent-invocation.md-item' role='treeitem' />
+		[39] (147,367)<div  />
+			[40] (23,367)<div  />
+				[41] (23,367)<div  />
+					[42] (19,367)<div  />
+					[43] (27,367)<div  />
+			[44] (163,367)<div  />
+				[45] (62,367)<div  />
+				[46] (174,367)<span  />
+					[47] (168,366)<span >common-agent-invocation.md />
+	[48] (147,412)<li class='PRIVATE_TreeView-item prc-TreeView-TreeViewItem-Ter5f' id='nexa/references/common-attribute-types.md-item' role='treeitem' />
+		[49] (147,412)<div  />
+			[50] (23,412)<div  />
+				[51] (23,412)<div  />
+					[52] (19,412)<div  />
+					[53] (27,412)<div  />
+			[54] (163,412)<div  />
+				[55] (62,412)<div  />
+				[56] (174,412)<span  />
+					[57] (162,411)<span >common-attribute-types.md />
+	[58] (147,457)<li class='PRIVATE_TreeView-item prc-TreeView-TreeViewItem-Ter5f' id='nexa/references/common-business-component.md-item' role='treeitem' />
+		[59] (147,457)<div  />
+			[60] (23,457)<div  />
+				[61] (23,457)<div  />
+					[62] (19,457)<div  />
+					[63] (27,457)<div  />
+			[64] (163,457)<div  />
+				[65] (62,457)<div  />
+				[66] (174,457)<span  />
+					[67] (180,457)<span >common-business-component.md />
+	[68] (147,503)<li class='PRIVATE_TreeView-item prc-TreeView-TreeViewItem-Ter5f' id='nexa/references/common-collections.md-item' role='treeitem' />
+		[69] (147,503)<div  />
+			[70] (23,503)<div  />
+				[71] (23,503)<div  />
+					[72] (19,503)<div  />
+					[73] (27,503)<div  />
+			[74] (163,503)<div  />
+				[75] (62,502)<div  />
+				[76] (174,503)<span  />
+					[77] (149,502)<span >common-collections.md />
+	[78] (147,548)<li class='PRIVATE_TreeView-item prc-TreeView-TreeViewItem-Ter5f' id='nexa/references/common-commands-foreach.md-item' role='treeitem' />
+		[79] (147,548)<div  />
+			[80] (23,548)<div  />
+				[81] (23,548)<div  />
+					[82] (19,548)<div  />
+					[83] (27,548)<div  />
+			[84] (163,548)<div  />
+				[85] (62,548)<div  />
+				[86] (174,548)<span  />
+					[87] (176,547)<span >common-commands-foreach.md />
+	[88] (147,593)<li class='PRIVATE_TreeView-item prc-TreeView-TreeViewItem-Ter5f' id='nexa/references/common-commands.md-item' role='treeitem' />
+		[89] (147,593)<div  />
+			[90] (23,593)<div  />
+				[91] (23,593)<div  />
+					[92] (19,593)<div  />
+					[93] (27,593)<div  />
+			[94] (163,593)<div  />
+				[95] (62,593)<div  />
+				[96] (174,593)<span  />
+					[97] (151,592)<span >common-commands.md />
+	[98] (147,638)<li class='PRIVATE_TreeView-item prc-TreeView-TreeViewItem-Ter5f' id='nexa/references/common-data-picture.md-item' role='treeitem' />
+		[99] (147,638)<div  />
+			[100] (23,638)<div  />
+				[101] (23,638)<div  />
+					[102] (19,638)<div  />
+					[103] (27,638)<div  />
+			[104] (163,638)<div  />
+				[105] (62,638)<div  />
+				[106] (174,638)<span  />
+					[107] (154,638)<span >common-data-picture.md />
+	[108] (147,684)<li class='PRIVATE_TreeView-item prc-TreeView-TreeViewItem-Ter5f' id='nexa/references/common-data-types.md-item' role='treeitem' />
+		[109] (147,684)<div  />
+			[110] (23,684)<div  />
+				[111] (23,684)<div  />
+					[112] (19,684)<div  />
+					[113] (27,684)<div  />
+			[114] (163,684)<div  />
+				[115] (62,684)<div  />
+				[116] (174,684)<span  />
+					[117] (149,683)<span >common-data-types.md />
+	[118] (147,729)<li class='PRIVATE_TreeView-item prc-TreeView-TreeViewItem-Ter5f' id='nexa/references/common-data.md-item' role='treeitem' />
+		[119] (147,729)<div  />
+			[120] (23,729)<div  />
+				[121] (23,729)<div  />
+					[122] (19,729)<div  />
+					[123] (27,729)<div  />
+			[124] (163,729)<div  />
+				[125] (62,729)<div  />
+				[126] (174,729)<span  />
+					[127] (131,728)<span >common-data.md />
+	[128] (147,774)<li class='PRIVATE_TreeView-item prc-TreeView-TreeViewItem-Ter5f' id='nexa/references/common-enum-domain.md-item' role='treeitem' />
+		[129] (147,774)<div  />
+			[130] (23,774)<div  />
+				[131] (23,774)<div  />
+					[132] (19,774)<div  />
+					[133] (27,774)<div  />
+			[134] (163,774)<div  />
+				[135] (62,774)<div  />
+				[136] (174,774)<span  />
+					[137] (160,774)<span >common-enum-domain.md />
+	[138] (147,820)<li class='PRIVATE_TreeView-item prc-TreeView-TreeViewItem-Ter5f' id='nexa/references/common-events.md-item' role='treeitem' />
+		[139] (147,820)<div  />
+			[140] (23,820)<div  />
+				[141] (23,820)<div  />
+					[142] (19,820)<div  />
+					[143] (27,820)<div  />
+			[144] (163,820)<div  />
+				[145] (62,819)<div  />
+				[146] (174,820)<span  />
+					[147] (137,819)<span >common-events.md />
+	[148] (147,865)<li class='PRIVATE_TreeView-item prc-TreeView-TreeViewItem-Ter5f' id='nexa/references/common-extended-type-directory.md-item' role='treeitem' />
+		[149] (147,865)<div  />
+			[150] (23,865)<div  />
+				[151] (23,865)<div  />
+					[152] (19,865)<div  />
+					[153] (27,865)<div  />
+			[154] (163,865)<div  />
+				[155] (62,865)<div  />
+				[156] (174,865)<span  />
+					[157] (190,864)<span >common-extended-type-directory.md />
+	[158] (147,910)<li class='PRIVATE_TreeView-item prc-TreeView-TreeViewItem-Ter5f' id='nexa/references/common-extended-type-expression.md-item' role='treeitem' />
+		[159] (147,910)<div  />
+			[160] (23,910)<div  />
+				[161] (23,910)<div  />
+					[162] (19,910)<div  />
+					[163] (27,910)<div  />
+			[164] (163,910)<div  />
+				[165] (62,910)<div  />
+				[166] (174,910)<span  />
+					[167] (196,909)<span >common-extended-type-expression.md />
+	[168] (147,955)<li class='PRIVATE_TreeView-item prc-TreeView-TreeViewItem-Ter5f' id='nexa/references/common-extended-type-file.md-item' role='treeitem' />
+		[169] (147,955)<div  />
+			[170] (23,955)<div  />
+				[171] (23,955)<div  />
+					[172] (19,955)<div  />
+					[173] (27,955)<div  />
+			[174] (163,955)<div  />
+				[175] (62,955)<div  />
+				[176] (174,955)<span  />
+					[177] (173,955)<span >common-extended-type-file.md />
+	common-extended-type-geography.md
+[178] (309,500)<div aria-label='Draggable pane splitter' class='prc-PageLayout-DraggableHandle-9s6B4' role='slider' />
+Breadcrumbs
+[179] (384,30)<a class='Breadcrumb-module__repoLink__O2Nbs prc-Link-Link-9ZwDx' href='/genexuslabs/genexus-skills/tree/main'>genexus-skills />
+/
+[180] (462,30)<a class='Breadcrumb-module__directoryLink__kQy_t prc-Link-Link-9ZwDx' href='/genexuslabs/genexus-skills/tree/main/nexa'>nexa />
+/
+references
+/
+[181] (948,31)<button class='prc-Button-ButtonBase-9n-Xk FileNameStickyHeader-module__Button__LSEU_ FileNameStickyHeader-module__GoToTopButton__nxAFn' />
+	[182] (948,31)<span  />
+		[183] (958,31)<span >Top />
+properties-common-web-information.md
+Add property reference files for nexa skill (
+#1
+)
+[184] (655,71)<tr  />
+	[185] (449,71)<a aria-label='properties-environment.md, (File)' class='Link--primary' href='/genexuslabs/genexus-skills/blob/main/nexa/references/properties-environment.md' title='properties-environment.md'>properties-environment.md />
+	[186] (830,71)<a class='Link--secondary' href='/genexuslabs/genexus-skills/commit/5573e9a3d023ceedac40dd8827af9888c61f91be' title='Prompt database config before build and add KB/Version/Environment objects (#5)
+
+Add workflow logic to check and prompt for database connection settings
+(DatabaseName, ServerName, UserId, UserPassword) before running build
+or database operations. Add reference files for KnowledgeBase, Version,
+and Environment objects, replacing the single properties-model with
+separate properties-version and properties-environment files.'>Prompt database config before build and add KB/Version/Environment ob… />
+[187] (655,128)<tr  />
+	[188] (460,128)<a aria-label='properties-knowledge-base.md, (File)' class='Link--primary' href='/genexuslabs/genexus-skills/blob/main/nexa/references/properties-knowledge-base.md' title='properties-knowledge-base.md'>properties-knowledge-base.md />
+	[189] (731,128)<a class='Link--secondary' href='/genexuslabs/genexus-skills/commit/5673145863ec9c9de933bce1b3a63369f1912b18' title='Add property reference files for nexa skill (#1)
+
+* Add property reference files for GeneXus objects and environments
+
+Include property definitions (id, type, default, values, description) for
+all major object types and environment configuration. Update SKILL.md with
+properties knowledge section and resource selection protocol.
+
+* Refactor properties-*.md for standards compliance
+
+* Update properties reference
+
+* Add reference to properties-*.md by object
+
+* Refine enum options purpose description
+
+* Refine vague descriptions
+
+* Remove Report object properties (unsupported)
+
+* Add missing empty line before a section
+
+* Add attribute properties file reference
+
+* Define attribute properties with PascalCase (not TOML syntax)
+
+---------
+
+Co-authored-by: Damian Salvia <dsalvia@genexus.com>'>Add property reference files for nexa skill ( />
+	#1
+	)
+[190] (655,186)<tr  />
+	[191] (441,186)<a aria-label='properties-object-api.md, (File)' class='Link--primary' href='/genexuslabs/genexus-skills/blob/main/nexa/references/properties-object-api.md' title='properties-object-api.md'>properties-object-api.md />
+	[192] (731,186)<a class='Link--secondary' href='/genexuslabs/genexus-skills/commit/5673145863ec9c9de933bce1b3a63369f1912b18' title='Add property reference files for nexa skill (#1)
+
+* Add property reference files for GeneXus objects and environments
+
+Include property definitions (id, type, default, values, description) for
+all major object types and environment configuration. Update SKILL.md with
+properties knowledge section and resource selection protocol.
+
+* Refactor properties-*.md for standards compliance
+
+* Update properties reference
+
+* Add reference to properties-*.md by object
+
+* Refine enum options purpose description
+
+* Refine vague descriptions
+
+* Remove Report object properties (unsupported)
+
+* Add missing empty line before a section
+
+* Add attribute properties file reference
+
+* Define attribute properties with PascalCase (not TOML syntax)
+
+---------
+
+Co-authored-by: Damian Salvia <dsalvia@genexus.com>'>Add property reference files for nexa skill ( />
+	#1
+	)
+[193] (655,243)<tr  />
+	[194] (458,243)<a aria-label='properties-object-attribute.md, (File)' class='Link--primary' href='/genexuslabs/genexus-skills/blob/main/nexa/references/properties-object-attribute.md' title='properties-object-attribute.md'>properties-object-attribute.md />
+	[195] (731,243)<a class='Link--secondary' href='/genexuslabs/genexus-skills/commit/5673145863ec9c9de933bce1b3a63369f1912b18' title='Add property reference files for nexa skill (#1)
+
+* Add property reference files for GeneXus objects and environments
+
+Include property definitions (id, type, default, values, description) for
+all major object types and environment configuration. Update SKILL.md with
+properties knowledge section and resource selection protocol.
+
+* Refactor properties-*.md for standards compliance
+
+* Update properties reference
+
+* Add reference to properties-*.md by object
+
+* Refine enum options purpose description
+
+* Refine vague descriptions
+
+* Remove Report object properties (unsupported)
+
+* Add missing empty line before a section
+
+* Add attribute properties file reference
+
+* Define attribute properties with PascalCase (not TOML syntax)
+
+---------
+
+Co-authored-by: Damian Salvia <dsalvia@genexus.com>'>Add property reference files for nexa skill ( />
+	#1
+	)
+[196] (655,300)<tr  />
+	[197] (473,300)<a aria-label='properties-object-data-provider.md, (File)' class='Link--primary' href='/genexuslabs/genexus-skills/blob/main/nexa/references/properties-object-data-provider.md' title='properties-object-data-provider.md'>properties-object-data-provider.md />
+	[198] (731,300)<a class='Link--secondary' href='/genexuslabs/genexus-skills/commit/5673145863ec9c9de933bce1b3a63369f1912b18' title='Add property reference files for nexa skill (#1)
+
+* Add property reference files for GeneXus objects and environments
+
+Include property definitions (id, type, default, values, description) for
+all major object types and environment configuration. Update SKILL.md with
+properties knowledge section and resource selection protocol.
+
+* Refactor properties-*.md for standards compliance
+
+* Update properties reference
+
+* Add reference to properties-*.md by object
+
+* Refine enum options purpose description
+
+* Refine vague descriptions
+
+* Remove Report object properties (unsupported)
+
+* Add missing empty line before a section
+
+* Add attribute properties file reference
+
+* Define attribute properties with PascalCase (not TOML syntax)
+
+---------
+
+Co-authored-by: Damian Salvia <dsalvia@genexus.com>'>Add property reference files for nexa skill ( />
+	#1
+	)
+[199] (655,358)<tr  />
+	[200] (471,358)<a aria-label='properties-object-data-selector.md, (File)' class='Link--primary' href='/genexuslabs/genexus-skills/blob/main/nexa/references/properties-object-data-selector.md' title='properties-object-data-selector.md'>properties-object-data-selector.md />
+	[201] (731,358)<a class='Link--secondary' href='/genexuslabs/genexus-skills/commit/5673145863ec9c9de933bce1b3a63369f1912b18' title='Add property reference files for nexa skill (#1)
+
+* Add property reference files for GeneXus objects and environments
+
+Include property definitions (id, type, default, values, description) for
+all major object types and environment configuration. Update SKILL.md with
+properties knowledge section and resource selection protocol.
+
+* Refactor properties-*.md for standards compliance
+
+* Update properties reference
+
+* Add reference to properties-*.md by object
+
+* Refine enum options purpose description
+
+* Refine vague descriptions
+
+* Remove Report object properties (unsupported)
+
+* Add missing empty line before a section
+
+* Add attribute properties file reference
+
+* Define attribute properties with PascalCase (not TOML syntax)
+
+---------
+
+Co-authored-by: Damian Salvia <dsalvia@genexus.com>'>Add property reference files for nexa skill ( />
+	#1
+	)
+[202] (655,415)<tr  />
+	[203] (482,415)<a aria-label='properties-object-deployment-unit.md, (File)' class='Link--primary' href='/genexuslabs/genexus-skills/blob/main/nexa/references/properties-object-deployment-unit.md' title='properties-object-deployment-unit.md'>properties-object-deployment-unit.md />
+	[204] (731,415)<a class='Link--secondary' href='/genexuslabs/genexus-skills/commit/5673145863ec9c9de933bce1b3a63369f1912b18' title='Add property reference files for nexa skill (#1)
+
+* Add property reference files for GeneXus objects and environments
+
+Include property definitions (id, type, default, values, description) for
+all major object types and environment configuration. Update SKILL.md with
+properties knowledge section and resource selection protocol.
+
+* Refactor properties-*.md for standards compliance
+
+* Update properties reference
+
+* Add reference to properties-*.md by object
+
+* Refine enum options purpose description
+
+* Refine vague descriptions
+
+* Remove Report object properties (unsupported)
+
+* Add missing empty line before a section
+
+* Add attribute properties file reference
+
+* Define attribute properties with PascalCase (not TOML syntax)
+
+---------
+
+Co-authored-by: Damian Salvia <dsalvia@genexus.com>'>Add property reference files for nexa skill ( />
+	#1
+	)
+[205] (655,473)<tr  />
+	[206] (475,472)<a aria-label='properties-object-design-system.md, (File)' class='Link--primary' href='/genexuslabs/genexus-skills/blob/main/nexa/references/properties-object-design-system.md' title='properties-object-design-system.md'>properties-object-design-system.md />
+	[207] (731,472)<a class='Link--secondary' href='/genexuslabs/genexus-skills/commit/5673145863ec9c9de933bce1b3a63369f1912b18' title='Add property reference files for nexa skill (#1)
+
+* Add property reference files for GeneXus objects and environments
+
+Include property definitions (id, type, default, values, description) for
+all major object types and environment configuration. Update SKILL.md with
+properties knowledge section and resource selection protocol.
+
+* Refactor properties-*.md for standards compliance
+
+* Update properties reference
+
+* Add reference to properties-*.md by object
+
+* Refine enum options purpose description
+
+* Refine vague descriptions
+
+* Remove Report object properties (unsupported)
+
+* Add missing empty line before a section
+
+* Add attribute properties file reference
+
+* Define attribute properties with PascalCase (not TOML syntax)
+
+---------
+
+Co-authored-by: Damian Salvia <dsalvia@genexus.com>'>Add property reference files for nexa skill ( />
+	#1
+	)
+[208] (655,530)<tr  />
+	[209] (478,530)<a aria-label='properties-object-documentation.md, (File)' class='Link--primary' href='/genexuslabs/genexus-skills/blob/main/nexa/references/properties-object-documentation.md' title='properties-object-documentation.md'>properties-object-documentation.md />
+	[210] (731,530)<a class='Link--secondary' href='/genexuslabs/genexus-skills/commit/5673145863ec9c9de933bce1b3a63369f1912b18' title='Add property reference files for nexa skill (#1)
+
+* Add property reference files for GeneXus objects and environments
+
+Include property definitions (id, type, default, values, description) for
+all major object types and environment configuration. Update SKILL.md with
+properties knowledge section and resource selection protocol.
+
+* Refactor properties-*.md for standards compliance
+
+* Update properties reference
+
+* Add reference to properties-*.md by object
+
+* Refine enum options purpose description
+
+* Refine vague descriptions
+
+* Remove Report object properties (unsupported)
+
+* Add missing empty line before a section
+
+* Add attribute properties file reference
+
+* Define attribute properties with PascalCase (not TOML syntax)
+
+---------
+
+Co-authored-by: Damian Salvia <dsalvia@genexus.com>'>Add property reference files for nexa skill ( />
+	#1
+	)
+[211] (655,587)<tr  />
+	[212] (455,587)<a aria-label='properties-object-domain.md, (File)' class='Link--primary' href='/genexuslabs/genexus-skills/blob/main/nexa/references/properties-object-domain.md' title='properties-object-domain.md'>properties-object-domain.md />
+	[213] (731,587)<a class='Link--secondary' href='/genexuslabs/genexus-skills/commit/5673145863ec9c9de933bce1b3a63369f1912b18' title='Add property reference files for nexa skill (#1)
+
+* Add property reference files for GeneXus objects and environments
+
+Include property definitions (id, type, default, values, description) for
+all major object types and environment configuration. Update SKILL.md with
+properties knowledge section and resource selection protocol.
+
+* Refactor properties-*.md for standards compliance
+
+* Update properties reference
+
+* Add reference to properties-*.md by object
+
+* Refine enum options purpose description
+
+* Refine vague descriptions
+
+* Remove Report object properties (unsupported)
+
+* Add missing empty line before a section
+
+* Add attribute properties file reference
+
+* Define attribute properties with PascalCase (not TOML syntax)
+
+---------
+
+Co-authored-by: Damian Salvia <dsalvia@genexus.com>'>Add property reference files for nexa skill ( />
+	#1
+	)
+[214] (655,645)<tr  />
+	[215] (477,645)<a aria-label='properties-object-external-object.md, (File)' class='Link--primary' href='/genexuslabs/genexus-skills/blob/main/nexa/references/properties-object-external-object.md' title='properties-object-external-object.md'>properties-object-external-object.md />
+	[216] (731,645)<a class='Link--secondary' href='/genexuslabs/genexus-skills/commit/5673145863ec9c9de933bce1b3a63369f1912b18' title='Add property reference files for nexa skill (#1)
+
+* Add property reference files for GeneXus objects and environments
+
+Include property definitions (id, type, default, values, description) for
+all major object types and environment configuration. Update SKILL.md with
+properties knowledge section and resource selection protocol.
+
+* Refactor properties-*.md for standards compliance
+
+* Update properties reference
+
+* Add reference to properties-*.md by object
+
+* Refine enum options purpose description
+
+* Refine vague descriptions
+
+* Remove Report object properties (unsupported)
+
+* Add missing empty line before a section
+
+* Add attribute properties file reference
+
+* Define attribute properties with PascalCase (not TOML syntax)
+
+---------
+
+Co-authored-by: Damian Salvia <dsalvia@genexus.com>'>Add property reference files for nexa skill ( />
+	#1
+	)
+[217] (655,702)<tr  />
+	[218] (441,702)<a aria-label='properties-object-file.md, (File)' class='Link--primary' href='/genexuslabs/genexus-skills/blob/main/nexa/references/properties-object-file.md' title='properties-object-file.md'>properties-object-file.md />
+	[219] (731,702)<a class='Link--secondary' href='/genexuslabs/genexus-skills/commit/5673145863ec9c9de933bce1b3a63369f1912b18' title='Add property reference files for nexa skill (#1)
+
+* Add property reference files for GeneXus objects and environments
+
+Include property definitions (id, type, default, values, description) for
+all major object types and environment configuration. Update SKILL.md with
+properties knowledge section and resource selection protocol.
+
+* Refactor properties-*.md for standards compliance
+
+* Update properties reference
+
+* Add reference to properties-*.md by object
+
+* Refine enum options purpose description
+
+* Refine vague descriptions
+
+* Remove Report object properties (unsupported)
+
+* Add missing empty line before a section
+
+* Add attribute properties file reference
+
+* Define attribute properties with PascalCase (not TOML syntax)
+
+---------
+
+Co-authored-by: Damian Salvia <dsalvia@genexus.com>'>Add property reference files for nexa skill ( />
+	#1
+	)
+[220] (655,759)<tr  />
+	[221] (451,759)<a aria-label='properties-object-image.md, (File)' class='Link--primary' href='/genexuslabs/genexus-skills/blob/main/nexa/references/properties-object-image.md' title='properties-object-image.md'>properties-object-image.md />
+	[222] (731,759)<a class='Link--secondary' href='/genexuslabs/genexus-skills/commit/5673145863ec9c9de933bce1b3a63369f1912b18' title='Add property reference files for nexa skill (#1)
+
+* Add property reference files for GeneXus objects and environments
+
+Include property definitions (id, type, default, values, description) for
+all major object types and environment configuration. Update SKILL.md with
+properties knowledge section and resource selection protocol.
+
+* Refactor properties-*.md for standards compliance
+
+* Update properties reference
+
+* Add reference to properties-*.md by object
+
+* Refine enum options purpose description
+
+* Refine vague descriptions
+
+* Remove Report object properties (unsupported)
+
+* Add missing empty line before a section
+
+* Add attribute properties file reference
+
+* Define attribute properties with PascalCase (not TOML syntax)
+
+---------
+
+Co-authored-by: Damian Salvia <dsalvia@genexus.com>'>Add property reference files for nexa skill ( />
+	#1
+	)
+[223] (655,817)<tr  />
+	[224] (448,817)<a aria-label='properties-object-index.md, (File)' class='Link--primary' href='/genexuslabs/genexus-skills/blob/main/nexa/references/properties-object-index.md' title='properties-object-index.md'>properties-object-index.md />
+	[225] (731,817)<a class='Link--secondary' href='/genexuslabs/genexus-skills/commit/5673145863ec9c9de933bce1b3a63369f1912b18' title='Add property reference files for nexa skill (#1)
+
+* Add property reference files for GeneXus objects and environments
+
+Include property definitions (id, type, default, values, description) for
+all major object types and environment configuration. Update SKILL.md with
+properties knowledge section and resource selection protocol.
+
+* Refactor properties-*.md for standards compliance
+
+* Update properties reference
+
+* Add reference to properties-*.md by object
+
+* Refine enum options purpose description
+
+* Refine vague descriptions
+
+* Remove Report object properties (unsupported)
+
+* Add missing empty line before a section
+
+* Add attribute properties file reference
+
+* Define attribute properties with PascalCase (not TOML syntax)
+
+---------
+
+Co-authored-by: Damian Salvia <dsalvia@genexus.com>'>Add property reference files for nexa skill ( />
+	#1
+	)
+[226] (655,874)<tr  />
+	[227] (455,874)<a aria-label='properties-object-module.md, (File)' class='Link--primary' href='/genexuslabs/genexus-skills/blob/main/nexa/references/properties-object-module.md' title='properties-object-module.md'>properties-object-module.md />
+	[228] (731,874)<a class='Link--secondary' href='/genexuslabs/genexus-skills/commit/5673145863ec9c9de933bce1b3a63369f1912b18' title='Add property reference files for nexa skill (#1)
+
+* Add property reference files for GeneXus objects and environments
+
+Include property definitions (id, type, default, values, description) for
+all major object types and environment configuration. Update SKILL.md with
+properties knowledge section and resource selection protocol.
+
+* Refactor properties-*.md for standards compliance
+
+* Update properties reference
+
+* Add reference to properties-*.md by object
+
+* Refine enum options purpose description
+
+* Refine vague descriptions
+
+* Remove Report object properties (unsupported)
+
+* Add missing empty line before a section
+
+* Add attribute properties file reference
+
+* Define attribute properties with PascalCase (not TOML syntax)
+
+---------
+
+Co-authored-by: Damian Salvia <dsalvia@genexus.com>'>Add property reference files for nexa skill ( />
+	#1
+	)
+[229] (655,932)<tr  />
+	[230] (449,932)<a aria-label='properties-object-panel.md, (File)' class='Link--primary' href='/genexuslabs/genexus-skills/blob/main/nexa/references/properties-object-panel.md' title='properties-object-panel.md'>properties-object-panel.md />
+	[231] (731,932)<a class='Link--secondary' href='/genexuslabs/genexus-skills/commit/5673145863ec9c9de933bce1b3a63369f1912b18' title='Add property reference files for nexa skill (#1)
+
+* Add property reference files for GeneXus objects and environments
+
+Include property definitions (id, type, default, values, description) for
+all major object types and environment configuration. Update SKILL.md with
+properties knowledge section and resource selection protocol.
+
+* Refactor properties-*.md for standards compliance
+
+* Update properties reference
+
+* Add reference to properties-*.md by object
+
+* Refine enum options purpose description
+
+* Refine vague descriptions
+
+* Remove Report object properties (unsupported)
+
+* Add missing empty line before a section
+
+* Add attribute properties file reference
+
+* Define attribute properties with PascalCase (not TOML syntax)
+
+---------
+
+Co-authored-by: Damian Salvia <dsalvia@genexus.com>'>Add property reference files for nexa skill ( />
+	#1
+	)
+[232] (655,989)<tr  />
+	properties-object-procedure.md
+	[233] (731,989)<a class='Link--secondary' href='/genexuslabs/genexus-skills/commit/5673145863ec9c9de933bce1b3a63369f1912b18' title='Add property reference files for nexa skill (#1)
+
+* Add property reference files for GeneXus objects and environments
+
+Include property definitions (id, type, default, values, description) for
+all major object types and environment configuration. Update SKILL.md with
+properties knowledge section and resource selection protocol.
+
+* Refactor properties-*.md for standards compliance
+
+* Update properties reference
+
+* Add reference to properties-*.md by object
+
+* Refine enum options purpose description
+
+* Refine vague descriptions
+
+* Remove Report object properties (unsupported)
+
+* Add missing empty line before a section
+
+* Add attribute properties file reference
+
+* Define attribute properties with PascalCase (not TOML syntax)
+
+---------
+
+Co-authored-by: Damian Salvia <dsalvia@genexus.com>'>Add property reference files for nexa skill ( />
+	#1
+	)
+
+</current_dom>

@@ -1,0 +1,6 @@
+- [ ] Refactorizar `models.py` con restricciones `ondelete="RESTRICT"`
+- [ ] Crear script `initialize_db.py` para reconfigurar el esquema
+- [ ] Ejecutar inicialización de Base de Datos
+- [ ] Implementar manejo de `IntegrityError` en `main.py` para borrados seguros
+- [ ] Verificar integridad relacional en la interfaz (mensajes de error)
+- [ ] Crear Walkthrough final

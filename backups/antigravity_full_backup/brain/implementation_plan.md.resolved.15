@@ -1,0 +1,42 @@
+# Plan de Estabilización y Reportes Pro (Fase Final)
+
+Este plan aborda el error persistente de servidor en Configuración y eleva la calidad del sistema con exportación a PDF y una interfaz 100% responsiva.
+
+## User Review Required
+
+> [!IMPORTANT]
+> - **Error 500 en Configuración:** Investigaré a fondo la causa (posible problema de coincidencia de argumentos o tipos en SQLAlchemy). Refactorizaré con validaciones de tipo `try/except` extremas para capturar el error exacto si persiste.
+> - **Exportación a PDF:** Utilizaré una solución de frontend (**html2pdf.js**) para generar el PDF de los reportes. Es la más rápida, no requiere instalaciones adicionales en tu servidor IIS y preserva el diseño "Premium" que hemos construido.
+
+## Proposed Changes
+
+### 1. Reparación de Módulo Administrativo (Backend)
+- **[MODIFY] [app/main.py](file:///c:/aaProyectos/Entorno01/app/main.py):**
+    - Uniformar el uso de `db.get(Model, id)` para mayor compatibilidad.
+    - Asegurar que los campos `Form(...)` coincidan exactamente con lo enviado por HTMX.
+    - Agregar bloque `try/except` con respuesta de error detallada para evitar el "Internal Server Error" genérico.
+
+### 2. Dashboard y UX Responsivo
+- **[MODIFY] [app/templates/index.html](file:///c:/aaProyectos/Entorno01/app/templates/index.html):**
+    - Re-layout de la tabla del Dashboard para separar las columnas de **Tiempo** y **Total Costo**.
+    - Utilizar clases de espaciado dinámico (`px-4`, `gap-6`) y asegurar que en móviles la tabla sea legible (horizontal scroll o columnas ocultables).
+- **[MODIFY] [app/templates/components/summary_card.html](file:///c:/aaProyectos/Entorno01/app/templates/components/summary_card.html):**
+    - Añadir la sección de **"Productividad Acumulada"** mostrando el tiempo total de trabajo en formato `DD:HH:MM`.
+
+### 3. Motor de Exportación PDF
+- **[MODIFY] [app/templates/reports.html](file:///c:/aaProyectos/Entorno01/app/templates/reports.html):**
+    - Cargar la librería `html2pdf.js`.
+- **[MODIFY] [app/templates/components/report_results.html](file:///c:/aaProyectos/Entorno01/app/templates/components/report_results.html):**
+    - Añadir un botón flotante de **"Descargar Reporte (PDF)"** que capture el área de resultados y genere el documento profesional.
+
+## Open Questions
+
+- ¿Deseas que el PDF incluya un encabezado con el logo del taller o información de la empresa?
+- ¿Confirmas que los botones de "Editar/Borrar" en Configuración deben ser iconos simples para ahorrar espacio en móviles?
+
+## Verification Plan
+
+### Manual Verification
+1. Abrir Administración, editar un nombre y confirmar que refresca sin error.
+2. En el detalle de la OT, verificar que los minutos totales coincidan con la suma de las tareas.
+3. Generar un PDF y verificar que el diseño se mantenga fiel a la visualización web.

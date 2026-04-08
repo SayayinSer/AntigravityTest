@@ -1,0 +1,36 @@
+# Creación de Skill: DevOps Expert (Deployment & Infrastructure)
+
+Este plan detalla la creación de la Skill `devops-expert`, diseñada para gestionar el ciclo de vida de despliegue de aplicaciones desarrolladas con FastAPI, GeneXus y otras tecnologías en entornos de producción.
+
+## User Review Required
+
+> [!IMPORTANT]
+> El despliegue varía significativamente entre tecnologías. ¿Deseas que la skill se centre inicialmente en los escenarios mencionados (**IIS para .NET/C#** y **Tomcat para Java** de GeneXus, o **Uvicorn/Gunicorn** para FastAPI)? ¿Utilizaremos contenedores (**Docker/Kubernetes**) o despliegues directos sobre servidores Windows/Linux?
+
+## Proposed Changes
+
+### Skill DevOps Expert
+
+#### [NEW] [SKILL.md](file:///c:/aaProyectos/Entorno01/.agents/skills/devops-expert/SKILL.md)
+- **Metadatos YAML:** Identificador `devops-expert`.
+- **Estrategias de Despliegue:** CI/CD, Blue/Green, Canary.
+- **Configuración de Servidores:** IIS (Windows), Tomcat (Java), Nginx/Apache (Reverse Proxy).
+- **Gestión de Base de Datos:** Automatización de esquemas PostgreSQL en producción.
+- **Seguridad:** Gestión de certificados SSL y variables de entorno seguras.
+
+#### [NEW] [references/](file:///c:/aaProyectos/Entorno01/.agents/skills/devops-expert/references/)
+- `deploy-fastapi.md`: Guía para desplegar FastAPI tras un proxy inverso.
+- `deploy-genexus-iis.md`: Configuración de IIS para aplicaciones GeneXus C#.
+- `deploy-genexus-tomcat.md`: Despliegue de WARs en Apache Tomcat.
+- `db-postgresql-prod.md`: Tuning y backup de PostgreSQL en producción.
+
+## Open Questions
+
+- ¿Hay algún proveedor de nube específico (Azure, AWS, Google Cloud) que suelas utilizar o trabajamos sobre **On-Premise / Servidores Propios**?
+- ¿Quieres incluir scripts de automatización (Bash, PowerShell, Terraform) como parte de la skill?
+
+## Verification Plan
+
+### Manual Verification
+1. Validar que la skill pueda generar un plan de despliegue coherente para una aplicación FastAPI sobre IIS.
+2. Comprobar la existencia de los documentos de referencia en el workspace.

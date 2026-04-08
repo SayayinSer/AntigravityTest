@@ -1,0 +1,37 @@
+# Walkthrough: Totales Dinámicos y Configuración
+
+He completado la mejora del sistema de Órdenes de Trabajo, añadiendo potentes capacidades de gestión económica y administración de datos.
+
+## Mejoras Implementadas
+
+### 1. Resumen Económico Dinámico
+Ahora, cada Orden de Trabajo cuenta con una **Tarjeta de Resumen** en tiempo real:
+- **Totalización Automática:** Se suma el costo de todos los Materiales/Repuestos y los Trabajos de Terceros.
+- **Actualización sin Recarga:** Gracias a los eventos de HTMX (`HX-Trigger`), el total general se refresca automáticamente cada vez que agregas un nuevo ítem, sin perder el contexto de lo que estás haciendo.
+
+### 2. Gestión de Trabajos de Terceros
+Se ha habilitado la tabla de **Tercerizados** en la interfaz:
+- Puedes registrar el nombre del proveedor, la descripción del trabajo y el costo.
+- Estos montos se integran directamente en el cálculo del Total General de la OT.
+
+### 3. Página de Configuración (Tablas Maestras)
+He creado una nueva sección de [Configuración](file:///c:/aaProyectos/Entorno01/app/templates/admin.html) accesible desde el Dashboard:
+- **Marcas:** Alta de nuevas marcas de vehículos.
+- **Tipos de Móvil:** Gestión de categorías (Auto, Camión, Moto, etc.).
+- **Técnicos:** Administración del personal técnico responsable.
+
+## Verificación
+
+1.  **Backend:** El archivo `app/main.py` ahora procesa cabeceras de HTMX para coordinar la actualización de múltiples componentes al mismo tiempo.
+2.  **Frontend:** Se han añadido micro-animaciones en las transiciones de carga para una experiencia más fluida.
+3.  **Base de Datos:** Se han validado las relaciones para asegurar que los nuevos registros en las tablas maestras estén disponibles de inmediato en los formularios de creación.
+
+## Cómo probarlo
+
+1.  Ve al Dashboard y haz clic en el botón de **"Configuración"** (icono de engranaje).
+2.  Agrega un nuevo técnico o una nueva marca.
+3.  Vuelve al Dashboard, abre una OT y agrega un "Trabajo de Tercero" o un "Material".
+4.  Observa cómo la tarjeta de **Total General** en la barra lateral se actualiza al instante con el nuevo monto.
+
+---
+*Estas mejoras transforman el prototipo inicial en una herramienta de gestión administrativa robusta.*

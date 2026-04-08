@@ -1,0 +1,7 @@
+- [ ] Crear estructura de directorios para Backup total
+- [ ] Copiar módulos de Skills (13 carpetas) al backup
+- [ ] Respaldar historial de conversación (Brain/Logs) y artefactos actuales
+- [ ] Generar Manual de Restauración Global (`RESTAURAR_ENTORNO.md`)
+- [ ] Comprimir respaldo en archivo `.zip`
+- [ ] Sincronizar respaldo con el repositorio de GitHub
+- [ ] Crear Walkthrough final del Backup

@@ -1,0 +1,40 @@
+# Plan de Integridad Relacional y Estabilidad de Datos
+
+El objetivo es asegurar que no se puedan borrar registros maestros (como Técnicos, Marcas o Tipos de Vehículo) si están siendo utilizados en órdenes de trabajo o vehículos, garantizando la consistencia total del sistema.
+
+## User Review Required
+
+> [!CAUTION]
+> - **Re-creación de Base de Datos:** Para asegurar que los controles de integridad (Foreign Keys) se apliquen correctamente en el motor MySQL/MariaDB, se recomienda ejecutar un script de inicialización que limpie y cree las tablas con las nuevas restricciones. **Esto borrará los datos de prueba actuales.**
+> - **Control de Errores:** Implementaré una capa de captura de errores que informará al usuario exactamente por qué no se puede borrar un registro (ej: "No se puede borrar el técnico porque tiene tareas asignadas").
+
+## Proposed Changes
+
+### 1. Modelo de Datos Blindado (app/models.py)
+- **[MODIFY] [app/models.py](file:///c:/aaProyectos/Entorno01/app/models.py):**
+    - Especificar `ondelete="RESTRICT"` en todas las claves foráneas relevantes (Technician, Brand, VehicleType).
+    - Asegurar que la integridad se declare a nivel de base de datos.
+
+### 2. Script de Inicialización (app/initialize_db.py) [NEW]
+- **[NEW] [app/initialize_db.py](file:///c:/aaProyectos/Entorno01/app/initialize_db.py):**
+    - Script independiente para crear las tablas forzando el motor **InnoDB**, el cual es el único que garantiza integridad relacional en MySQL.
+
+### 3. Manejo de Errores en Backend (app/main.py)
+- **[MODIFY] [app/main.py](file:///c:/aaProyectos/Entorno01/app/main.py):**
+    - Envolviendo operaciones de `delete` en bloques `try...except IntegrityError`.
+    - Devolver mensajes claros a la interfaz mediante HTMX.
+
+## Open Questions
+
+- ¿Prefieres que ejecute el script de limpieza ahora para empezar con la base de datos "limpia y blindada", o intentamos aplicar los cambios sobre los datos actuales? (Lo segundo es más arriesgado si ya hay inconsistencias).
+- ¿Hay algún caso donde prefieras un borrado en cascada (que al borrar algo se borre todo lo relacionado)? Por defecto usaré `RESTRICT` para máxima seguridad.
+
+## Verification Plan
+
+### Automated Verification
+- Ejecutar un script de prueba que intente borrar un técnico con una tarea asignada y verificar que el sistema lo impida.
+
+### Manual Verification
+1. Entrar a Tablas -> Expertos.
+2. Intentar borrar un experto que tenga una OT.
+3. Verificar que aparezca un aviso rojo indicando que la operación no está permitida.

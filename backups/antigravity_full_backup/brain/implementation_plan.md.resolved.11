@@ -1,0 +1,43 @@
+# Corrección de Errores y Ampliación de Gestión
+
+Este plan aborda los fallos detectados en el cambio de estados y reportes, y añade el control total (CRUD) sobre tablas maestras y detalles de la orden.
+
+## User Review Required
+
+> [!IMPORTANT]
+> - **Error en Estados:** He identificado que el modal no está enviando el parámetro `status` correctamente al backend (esperaba un formulario, pero se enviaba en la URL). Corregiré esto usando `hx-vals`.
+> - **Validación de Cierre:** El sistema impedirá pasar a `Terminada` si la lista de tareas está vacía. Mostraré un mensaje de error tipo "Toast" en pantalla.
+> - **CRUD de Detalles:** Implementaré el borrado de tareas, repuestos y servicios siempre que la OT no esté en estado `Terminada` o `Anulada`.
+
+## Proposed Changes
+
+### 1. Corrección de Bugs (Backend y Frontend)
+- **[MODIFY] [app/main.py](file:///c:/aaProyectos/Entorno01/app/main.py):**
+    - Corregir `update_status` para aceptar el estado tanto por Formulario como por Query para mayor flexibilidad con el modal.
+    - Implementar validación: `if status == 'Terminada' and not order.tasks: raise HTTPException(...)`.
+- **[MODIFY] [app/templates/components/confirm_modal.html](file:///c:/aaProyectos/Entorno01/app/templates/components/confirm_modal.html):**
+    - Corregir el envío de parámetros en `htmx.ajax` para asegurar que el backend reciba los datos.
+- **[MODIFY] [app/templates/reports.html](file:///c:/aaProyectos/Entorno01/app/templates/reports.html):**
+    - Establecer las fechas `Desde` y `Hasta` con el valor de `today` por defecto.
+
+### 2. Gestión Completa de Datos (CRUD)
+- **[MODIFY] [app/main.py](file:///c:/aaProyectos/Entorno01/app/main.py):**
+    - Añadir endpoints `DELETE` para Marcas, Tipos, Técnicos, Tareas, Repuestos y Servicios.
+- **[MODIFY] [admin.html / order_detail.html](file:///c:/aaProyectos/Entorno01/app/templates/admin.html):**
+    - Añadir botones de eliminación en las listas, protegidos por el modal de confirmación.
+
+### 3. Sincronización de Grillas
+- **[MODIFY] [app/templates/order_detail.html](file:///c:/aaProyectos/Entorno01/app/templates/order_detail.html):**
+    - Asegurar que los formularios de carga de tareas/repuestos limpien los campos después de guardar y disparen el refresco de los subtotales.
+
+## Open Questions
+
+- ¿Deseas que permitamos **Editar** (Update) los nombres de las marcas/técnicos directamente en la grilla, o con el borrado y nueva inserción es suficiente por ahora?
+- ¿Para la validación de cierre, basta con que haya 1 tarea o debe haber al menos un repuesto también?
+
+## Verification Plan
+
+### Manual Verification
+1. Intentar cerrar una OT sin tareas y verificar que se bloquee la acción.
+2. Eliminar una marca de la configuración y verificar que desaparece de los selectores.
+3. Generar un reporte y verificar que la fecha inicial coincida con el día actual.

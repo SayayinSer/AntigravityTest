@@ -1,0 +1,31 @@
+# Walkthrough: Gestión Avanzada y Reportes
+
+He finalizado la implementación de las capacidades operativas y analíticas solicitadas para el sistema de Órdenes de Trabajo.
+
+## Mejoras Operativas
+
+### 1. Borrado Físico y Seguridad
+- **Borrado de Órdenes:** Ahora es posible eliminar físicamente una orden directamente desde el panel de control, siempre que su estado sea **Pendiente**. Esto limpiará automáticamente todos los registros asociados (tareas, materiales, servicios).
+- **Confirmaciones Automáticas:** Se ha implementado un **Modal Personalizado Premium** (diseñado con Tailwind y Alpine.js) que solicita confirmación antes de cualquier borrado o cambio de estado.
+
+### 2. Control de Tiempos y Cierres
+- **Fecha de Fin:** Al cambiar el estado de una orden a **Terminada** o **Anulada**, el sistema registra automáticamente la fecha y hora de finalización.
+- **Formato de Productividad:** Todos los tiempos se calculan y muestran bajo el estándar solicitado: **DD:HH:MM** (Días:Horas:Minutos).
+
+## Módulo de Reportes de Gestión
+
+Se ha añadido la nueva sección de [Reportes](file:///c:/aaProyectos/Entorno01/app/templates/reports.html) que permite:
+
+- **Filtros Flexibles:** Consultas por rango de fechas, estados específicos o reporte consolidado.
+- **Reporte de Gestión:** Desglose por OT con cálculo de duración total (Ingreso/Egreso) y minutos de mano de obra.
+- **Productividad por Técnico:** Resumen total de minutos trabajados por cada profesional en el rango seleccionado.
+- **Consumo de Insumos y Servicios:** Estadísticas totales de repuestos usados y trabajos tercerizados realizados.
+
+## Verificación Realizada
+
+1.  **Integridad de Datos:** Se validó que el borrado físico solo se permita en órdenes pendientes.
+2.  **Cálculos de Tiempo:** Se probó la lógica de `DD:HH:MM` con diferentes duraciones de tareas.
+3.  **UI/UX:** El modal de confirmación se integra visualmente con la estética de la aplicación y bloquea las acciones accidentales.
+
+---
+*El sistema ahora permite no solo operar, sino también analizar la productividad y los costos de todo el taller.*

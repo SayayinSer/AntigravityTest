@@ -1,0 +1,42 @@
+# Fase de Estabilización y Mejoras de UX
+
+Este plan se enfoca en resolver los fallos de funcionamiento en Configuración y Reportes, y en mejorar la eficiencia operativa mediante una interfaz más flexible y un Dashboard informativo.
+
+## User Review Required
+
+> [!WARNING]
+> - **Fallo en Ajax:** Sospecho que las llamadas `htmx.ajax` personalizadas están fallando por el formato de envío de parámetros. Cambiaré a un enfoque de formularios estándar de HTMX (`hx-put`, `hx-delete`) que es más robusto y fácil de depurar.
+> - **Dashboard:** Añadiré columnas de **Costo Total** y **Tiempo Acumulado** en la lista principal de órdenes para referencia inmediata.
+
+## Proposed Changes
+
+### 1. Reparación de Módulos (Backend y Frontend)
+- **[MODIFY] [app/main.py](file:///c:/aaProyectos/Entorno01/app/main.py):**
+    - Asegurar que los endpoints de Reportes y Administración devuelvan componentes válidos o comandos de recarga.
+    - Revisar la serialización de datos para el reporte de gestión.
+- **[MODIFY] [app/templates/admin.html](file:///c:/aaProyectos/Entorno01/app/templates/admin.html):**
+    - Simplificar la lógica de edición usando elementos `contenteditable` o formularios ocultos para evitar fallos de Javascript en `htmx.ajax`.
+- **[MODIFY] [app/templates/reports.html](file:///c:/aaProyectos/Entorno01/app/templates/reports.html):**
+    - Corregir el disparador del reporte para asegurar que los filtros se envíen correctamente.
+
+### 2. Mejoras de Interfaz Operativa (UX)
+- **[MODIFY] [app/templates/order_detail.html](file:///c:/aaProyectos/Entorno01/app/templates/order_detail.html):**
+    - Implementar secciones colapsables en la barra lateral (Vehículo, Totales, Estado) usando Alpine.js (`x-show` con transiciones).
+- **[MODIFY] [app/templates/index.html](file:///c:/aaProyectos/Entorno01/app/templates/index.html):**
+    - Actualizar la tabla del Dashboard para incluir el **Tiempo Total (min)** y el **Costo General ($)** calculado dinámicamente.
+
+### 3. Lógica de Dashboard (Backend)
+- **[MODIFY] [app/main.py](file:///c:/aaProyectos/Entorno01/app/main.py):**
+    - Modificar el endpoint de la página de inicio para calcular los acumulados de cada orden antes de enviarlos a la plantilla.
+
+## Open Questions
+
+- ¿Prefieres que las secciones laterales se inicien **Abiertas** o **Cerradas** por defecto al entrar a una OT?
+- En el Dashboard, ¿el tiempo lo mostramos en minutos puros o también con el formato `DD:HH:MM`?
+
+## Verification Plan
+
+### Manual Verification
+1. Abrir la página de Configuración y editar el nombre de un técnico; verificar que se guarde y refresque.
+2. Generar un reporte y validar que los resultados se desplieguen en el área designada.
+3. Verificar que al contraer un panel lateral, el espacio se aproveche correctamente en la interfaz.

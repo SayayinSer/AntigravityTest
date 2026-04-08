@@ -1,0 +1,35 @@
+# Creación de Skill: Fullstack Python App Factory
+
+Este plan detalla la creación de la Skill `fullstack-python-app`, diseñada para generar aplicaciones web completas ("Fullstack") integrando un backend robusto en Python con frontends modernos, gratuitos y de alta productividad.
+
+## User Review Required
+
+> [!IMPORTANT]
+> Para el Frontend, he identificado dos opciones que encajan perfectamente con "potente, sencillo y gratis". ¿Cuál prefieres que sea el estándar de la skill?
+> 1. **Opción HTMX (Máxima Simplicidad):** Permite crear interfaces dinámicas usando solo HTML y atributos sencillos, manteniendo toda la lógica en Python (FastAPI). Es ideal para quienes buscan productividad extrema sin aprender frameworks complejos de Javascript.
+> 2. **Opción React + Vite (Estándar de la Industria):** El lenguaje es JavaScript/TypeScript. Muy potente y con el ecosistema más grande del mundo, pero requiere manejar un proyecto separado para el frontend.
+
+## Proposed Changes
+
+### Skill Fullstack Python App
+
+#### [NEW] [SKILL.md](file:///c:/aaProyectos/Entorno01/.agents/skills/fullstack-python-app/SKILL.md)
+- **Metadatos YAML:** Identificador `fullstack-python-app`.
+- **Arquitectura Unificada:** Cómo estructurar el proyecto para que el Backend (Python) y el Frontend convivan armoniosamente.
+- **Integración API:** Patrones para la comunicación mediante JSON (React) o Fragmentos de HTML (HTMX).
+- **Estética:** Uso de **TailwindCSS** o **Vanilla CSS Premium** para un acabado profesional automático.
+
+#### [NEW] [resources/](file:///c:/aaProyectos/Entorno01/.agents/skills/fullstack-python-app/resources/)
+- `boilerplate-fastapi-react.md`: Estructura inicial para proyectos desacoplados.
+- `boilerplate-fastapi-htmx.md`: Estructura para proyectos integrados (Jinaj2 + HTMX).
+
+## Open Questions
+
+- ¿Deseas que la skill incluya guías para el despliegue de estos proyectos fullstack en los entornos On-Premise definidos en `devops-expert`?
+- ¿Tienes preferencia por algún motor de plantillas en Python (como **Jinja2**) para el caso de HTMX?
+
+## Verification Plan
+
+### Manual Verification
+1. Validar que la skill pueda generar una estructura de carpetas funcional para una App Fullstack.
+2. Confirmar que los ejemplos de conexión entre Python y el Frontend sean claros y ejecutables.

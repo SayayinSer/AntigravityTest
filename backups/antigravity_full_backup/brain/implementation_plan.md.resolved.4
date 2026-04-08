@@ -1,0 +1,34 @@
+# Creación de Skill: SQL Expert (Database Administration)
+
+Este plan detalla la creación de la Skill `sql-expert`, diseñada para actuar como un administrador de bases de datos (DBA) senior. Se centrará en el diseño eficiente de esquemas, optimización de consultas y mantenimiento preventivo mediante scripts SQL.
+
+## User Review Required
+
+> [!IMPORTANT]
+> Aunque el foco principal ha sido **PostgreSQL**, ¿deseas que esta skill incluya también estándares para otros motores relacionales como **SQL Server** u **Oracle**, o nos mantenemos especializados en la suite de PostgreSQL?
+
+## Proposed Changes
+
+### Skill SQL Expert
+
+#### [NEW] [SKILL.md](file:///c:/aaProyectos/Entorno01/.agents/skills/sql-expert/SKILL.md)
+- **Metadatos YAML:** Identificador `sql-expert`.
+- **Estándares de SQL:** Guía de estilo para DDL (Definición), DML (Manipulación) y DCL (Control).
+- **Diseño de Índices:** Tipos de índices (B-Tree, GIN, GiST) y cuándo usarlos.
+- **Transacciones y Concurrencia:** Niveles de aislamiento y manejo de bloqueos (locks).
+
+#### [NEW] [references/](file:///c:/aaProyectos/Entorno01/.agents/skills/sql-expert/references/)
+- `schema-design.md`: Normalización, tipos de datos óptimos y constraints.
+- `performance-tuning.md`: Análisis de `EXPLAIN ANALYZE` y optimización de JOINS.
+- `maintenance-scripts.md`: Plantillas para limpieza de datos, reindexación y monitoreo.
+
+## Open Questions
+
+- ¿Prefieres que los scripts de administración sean puramente **SQL** o que incluya también scripts envolventes en **Python/Bash/PowerShell**?
+- ¿Te gustaría incluir una sección específica sobre **Migración de Datos** (ETL simple mediante SQL)?
+
+## Verification Plan
+
+### Manual Verification
+1. Validar que la skill pueda proponer un esquema de base de datos optimizado para una alta carga de lecturas.
+2. Confirmar que las plantillas de scripts de mantenimiento sean sintácticamente correctas para PostgreSQL.

@@ -1,0 +1,7 @@
+- [ ] Extender modelo `Vehicle` en `models.py` (Kilometraje, Propietario, Último Service)
+- [ ] Re-inicializar base de Datos para aplicar nuevo esquema
+- [ ] Implementar endpoints CRUD para vehículos en `main.py`
+- [ ] Diseñar interfaz moderna `vehicles.html`
+- [ ] Integrar acceso a "Móviles" en la barra de navegación global
+- [ ] Verificar funcionamiento y persistencia de datos
+- [ ] Crear Walkthrough final

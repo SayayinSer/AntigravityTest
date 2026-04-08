@@ -1,0 +1,42 @@
+# Plan de Implementación: Gestión de Móviles (CRUD)
+
+Añadiremos un módulo completo para la administración de los vehículos (Móviles) atendidos, integrando nuevos atributos de seguimiento técnico y una interfaz de usuario pulida.
+
+## User Review Required
+
+> [!IMPORTANT]
+> - **Atributos Nuevos:** Se añadirán los campos `Kilometraje Actual`, `Último Propietario` y `Fecha Último Service` al modelo de datos.
+> - **Acceso Rápido:** Añadiré una nueva sección "Móviles" en la barra de navegación principal para un acceso global.
+> - **Sincronización:** Al igual que con el módulo de Tablas, usaremos HTMX para que la gestión sea fluida y sin recargas de página innecesarias.
+
+## Proposed Changes
+
+### 1. Extensión del Modelo (app/models.py)
+- **[MODIFY] [app/models.py](file:///c:/aaProyectos/Entorno01/app/models.py):**
+    - Adición de `current_mileage` (Integer), `last_owner` (String) y `last_service_date` (Date) a la clase `Vehicle`.
+
+### 2. Backend Operativo (app/main.py)
+- **[MODIFY] [app/main.py](file:///c:/aaProyectos/Entorno01/app/main.py):**
+    - Nuevos endpoints: `GET /vehicles`, `POST /vehicles/save`, `POST /vehicles/{id}/delete`, `POST /vehicles/{id}/update`.
+    - Lógica de captura de `IntegrityError` para evitar borrar vehículos con órdenes ligadas.
+
+### 3. Interfaz Moderna (app/templates/vehicles.html) [NEW]
+- **[NEW] [app/templates/vehicles.html](file:///c:/aaProyectos/Entorno01/app/templates/vehicles.html):**
+    - Diseño basado en tarjetas o tabla responsiva con un formulario de carga rápida integrado.
+    - Uso de Alpine.js para modales o edición en línea.
+
+### 4. Navegación (Templates Globales)
+- **[MODIFY] [index.html](file:///c:/aaProyectos/Entorno01/app/templates/index.html) & [admin.html](file:///c:/aaProyectos/Entorno01/app/templates/admin.html):**
+    - Incluir el enlace a "Móviles" en el menú superior.
+
+## Open Questions
+- ¿Deseas que los vehículos aparezcan agrupados por marca o en una lista única con filtros de búsqueda?
+- ¿El "Kilometraje Actual" debe ser obligatorio al cargar un vehículo nuevo o puede ser opcional?
+
+## Verification Plan
+
+### Manual Verification
+1. Navegar a la sección "Móviles".
+2. Registrar un vehículo nuevo con todos los campos (incluyendo el kilometraje y último service).
+3. Intentar editar un vehículo existente.
+4. Verificar que al crear una "Nueva Orden", el vehículo aparezca correctamente en el selector.

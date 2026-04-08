@@ -1,0 +1,33 @@
+# Creación de Skill: FastAPI Expert
+
+Este plan detalla la creación de una nueva Skill para Antigravity denominada `fastapi-expert`. Esta skill servirá como referencia técnica de alto nivel para el desarrollo de APIs robustas, escalables y profesionales utilizando FastAPI.
+
+## User Review Required
+
+> [!IMPORTANT]
+> La skill se ubicará en el workspace actual (`.agents/skills/fastapi-expert/`). ¿Desea que incluya ejemplos específicos de integración con bases de datos SQL (SQLAlchemy/SQLModel) o prefieres mantenerlo agnóstico a la persistencia? He notado que ya existe una skill `postgresql-crud` que cubre parte de esto.
+
+## Proposed Changes
+
+### Skill FastAPI Expert
+
+#### [NEW] [SKILL.md](file:///c:/aaProyectos/Entorno01/.agents/skills/fastapi-expert/SKILL.md)
+Se creará un archivo markdown con la siguiente estructura:
+- **Metadatos YAML:** Nombre y descripción clara.
+- **Estructura de Proyecto Recomendada:** Modular (apps, core, api, schemas, models, services).
+- **Inyección de Dependencias:** Patrones avanzados y `Annotated`.
+- **Validación y Esquemas:** Mejores prácticas con Pydantic v2.
+- **Manejo de Errores:** Middleware y Exception Handlers globales.
+- **Seguridad:** Implementación de OAuth2 con JWT.
+- **Testing:** Estrategias con Pytest y `httpx.AsyncClient`.
+
+## Open Questions
+
+- ¿Hay alguna librería específica (como `SQLModel`, `Beanie`, `Tortoise`) que suela utilizar y quiera que se incluya como estándar en la skill?
+- ¿Prefiere el uso de `Annotated` para dependencias (estilo FastAPI moderno) o el estilo tradicional `Depends()` de forma directa?
+
+## Verification Plan
+
+### Manual Verification
+1. Verificar que el archivo `SKILL.md` sea legible por el agente.
+2. Confirmar que el contenido sigue las reglas de "Creador de Skills".

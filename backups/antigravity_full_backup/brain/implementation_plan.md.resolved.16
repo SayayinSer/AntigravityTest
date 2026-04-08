@@ -1,0 +1,42 @@
+# Plan de Rescate: Módulo de Administración
+
+El error 500 persistente en Configuración sugiere una falla durante la ejecución de los métodos POST (Crear/Editar/Borrar). Implementaré un sistema de diagnóstico intrínseco para identificar la causa exacta y estabilizar el módulo.
+
+## User Review Required
+
+> [!IMPORTANT]
+> - **Diagnóstico Activo:** Activaré un bloque de captura de errores en el backend que enviará el mensaje de error real a la interfaz para que podamos verlo (ej. falla de conexión, error de base de datos, o campo faltante).
+> - **Estabilización de Rutas:** Cambiaré la forma de interactuar con la base de datos a `db.get(Model, id)`, que es el estándar más seguro en las versiones actuales de SQLAlchemy que usas.
+> - **Sincronización:** Aseguraré que el objeto `Technician` (Técnicos) no tenga colisiones de nombres con el objeto de la plantilla.
+
+## Proposed Changes
+
+### 1. Robustez en el Backend (app/main.py)
+- **[MODIFY] [app/main.py](file:///c:/aaProyectos/Entorno01/app/main.py):**
+    - Importar `traceback` para capturar el error exacto.
+    - Simplificar las rutas de administración para usar `db.get()`.
+    - Asegurar que el método `POST` de creación tenga valores por defecto para evitar errores de validación si el cliente no envía el campo correctamente.
+
+### 2. Pulido de la Plantilla (app/templates/admin.html)
+- **[MODIFY] [app/templates/admin.html](file:///c:/aaProyectos/Entorno01/app/templates/admin.html):**
+    - Verificar que los nombres de los campos coincidan al 100% con el backend (`name`).
+    - Añadir un área de depuración dedicada que solo se vea si ocurre un error.
+
+### 3. Verificación de Integridad
+- Ejecutar un script de prueba de escritura en la base de datos para confirmar permisos del usuario `root`.
+
+## Open Questions
+
+- ¿El error ocurre inmediatamente al entrar a la página o solo al hacer clic en "Guardar" o "Borrar"?
+- ¿Ves algún mensaje rojo en la pantalla antes de que desaparezca o solo recibes el error genérico del navegador?
+
+## Verification Plan
+
+### Automated Verification
+- Ejecutar `python -c "..."` para probar un `UPDATE` real en una tabla de prueba (ej. crear una marca ficticia y luego editarla).
+
+### Manual Verification
+1. Entrar a Configuración.
+2. Crear un dato de prueba.
+3. Editar el dato creado.
+4. Borrar el dato creado.

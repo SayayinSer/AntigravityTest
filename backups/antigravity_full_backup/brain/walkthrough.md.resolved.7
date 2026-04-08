@@ -1,0 +1,45 @@
+# Entrega Final: Sistema de Gestión de Órdenes de Trabajo (OT)
+
+He completado la prueba integral básica, construyendo un sistema completo y funcional para la gestión de mantenimiento y reparaciones de vehículos.
+
+## Resumen del Sistema
+
+### 1. Base de Datos (MariaDB)
+Se ha configurado la base de datos `antigravity_test` con el siguiente modelado relacional:
+- **Vehículos:** Gestión de móviles con patente (20 chars), marca, tipo, modelo y año.
+- **Órdenes de Trabajo:** Cabecera con estados (Pendiente, En Ejecución, Terminada, Anulada).
+- **Detalle Multitabla:** Registro de Tareas (con tiempos y técnicos), Repuestos (insumos y precios) y Trabajos de Terceros.
+
+**Pre-carga Realizada:** He cargado automáticamente 8 marcas, 5 tipos de móviles, 3 técnicos y 4 vehículos de prueba para que puedas empezar a operar de inmediato.
+
+### 2. Backend (FastAPI + SQLAlchemy)
+- **APIs CRUD:** Implementadas para todas las tablas físicas.
+- **Lógica de Negocio:** Manejo automático de fechas de ingreso/salida y validación de estados.
+- **Conectividad:** Configurado para MariaDB usando el usuario `root`.
+
+### 3. Frontend Moderno (HTMX + Tailwind CSS)
+He diseñado una interfaz limpia, dinámica y profesional:
+- **Dashboard:** Panel principal para visualizar el estado de las órdenes.
+- **Gestión Dinámica:** Gracias a HTMX y Alpine.js, puedes agregar tareas y repuestos a una orden sin recargar la página, logrando una experiencia fluida de "Single Page Application".
+- **Estética:** Uso de gradientes, efectos de cristal (glassmorphism) y componentes responsivos.
+
+### 4. Infraestructura y Despliegue (IIS)
+- **Archivo [web.config](file:///c:/aaProyectos/Entorno01/web.config):** Configurado para ejecutar el backend de Python en **IIS** mediante `HttpPlatformHandler`.
+- Se ha seleccionado **IIS** como el servidor más adecuado para la integración nativa en entornos Windows On-Premise.
+
+## Cómo Probar el Sistema
+
+1.  **Ejecución Local:** Puedes iniciar el sistema en tu terminal para una prueba rápida:
+    ```bash
+    uvicorn app.main:app --reload
+    ```
+2.  **Acceso:** Abre tu navegador en `http://localhost:8000`.
+3.  **Flujo Sugerido:** 
+    - Haz clic en "+ Nueva Orden".
+    - Selecciona uno de los móviles precargados (ej: Toyota Corolla).
+    - Ingresa a "Gestionar" la orden creada.
+    - Agrega tareas (ej: "Cambio de aceite") y repuestos (ej: "Filtro Aceite").
+    - Cambia el estado de la orden a "Terminada".
+
+---
+*Este sistema demuestra la potencia de combinar un backend robusto en Python con la simplicidad y agilidad de HTMX.*

@@ -1,0 +1,159 @@
+Skip to content
+Navigation Menu
+[0] (46,51)<a aria-label='Homepage' class='tmp-mr-lg-3 color-fg-inherit flex-order-2 js-prevent-focus-on-mobile-nav' href='/' />
+[1] (124,51)<button class='NavDropdown-module__button__PEHWX js-details-target'>Platform />
+[2] (219,51)<button class='NavDropdown-module__button__PEHWX js-details-target'>Solutions />
+[3] (319,51)<button class='NavDropdown-module__button__PEHWX js-details-target'>Resources />
+[4] (432,51)<button class='NavDropdown-module__button__PEHWX js-details-target'>Open Source />
+[5] (545,51)<button class='NavDropdown-module__button__PEHWX js-details-target'>Enterprise />
+[6] (628,51)<a class='NavLink-module__link__EG3d4 MarketingNavigation-module__navLink__hUomM' href='https://github.com/pricing' />
+	[7] (628,51)<span >Pricing />
+[8] (754,51)<button aria-label='Search or jump to…' class='header-search-button placeholder input-button form-control d-flex flex-1 flex-self-stretch flex-items-center no-wrap width-full py-0 pl-2 pr-0 text-left border-0 box-shadow-none' placeholder='Search or jump to...' />
+	[9] (754,51)<div  />
+[10] (813,51)<a class='HeaderMenu-link HeaderMenu-link--sign-in HeaderMenu-button flex-shrink-0 no-underline d-none d-lg-inline-flex border border-lg-0 rounded px-2 py-1' href='/login?return_to=https%3A%2F%2Fgithub.com%2Fgenexuslabs%2Fgenexus-skills'>Sign in />
+[11] (892,51)<a class='HeaderMenu-link HeaderMenu-link--sign-up HeaderMenu-button flex-shrink-0 d-flex d-lg-inline-flex no-underline border color-border-default rounded px-2 py-1' href='/signup?ref_cta=Sign+up&ref_loc=header+logged+out&ref_page=%2F%3Cuser-name%3E%2F%3Crepo-name%3E&source=header-repo&source_repo=genexuslabs%2Fgenexus-skills'>Sign up />
+[12] (954,51)<button class='Button Button--iconOnly Button--invisible Button--medium AppHeader-button HeaderMenu-link border' id='icon-button-1badf661-0de1-4e0f-8229-cb16846768f1' />
+[13] (106,145)<a class='url fn' href='/genexuslabs'>genexuslabs />
+/
+[14] (235,145)<a href='/genexuslabs/genexus-skills'>genexus-skills />
+Public
+[15] (704,143)<a aria-label='You must be signed in to change notification settings' class='btn-sm btn' href='/login?return_to=%2Fgenexuslabs%2Fgenexus-skills' id='repository-details-watch-button'>Notifications />
+[16] (817,143)<a class='btn-sm btn' href='/login?return_to=%2Fgenexuslabs%2Fgenexus-skills' id='fork-button'>Fork />
+	[17] (843,143)<span >5 />
+[18] (921,143)<a aria-label='You must be signed in to star a repository' class='tooltipped tooltipped-sw btn-sm btn' href='/login?return_to=%2Fgenexuslabs%2Fgenexus-skills' />
+	[19] (922,143)<span >Star />
+	[20] (947,143)<span >6 />
+[21] (66,222)<a class='UnderlineNav-item no-wrap js-responsive-underlinenav-item js-selected-navigation-item selected' href='/genexuslabs/genexus-skills' id='code-tab' />
+	[22] (78,222)<span >Code />
+[23] (147,222)<a class='UnderlineNav-item no-wrap js-responsive-underlinenav-item js-selected-navigation-item' href='/genexuslabs/genexus-skills/issues' id='issues-tab' />
+	[24] (158,222)<span >Issues />
+[25] (264,222)<a class='UnderlineNav-item no-wrap js-responsive-underlinenav-item js-selected-navigation-item' href='/genexuslabs/genexus-skills/pulls' id='pull-requests-tab' />
+	[26] (262,222)<span >Pull requests />
+	[27] (318,222)<span >1 />
+[28] (398,222)<a class='UnderlineNav-item no-wrap js-responsive-underlinenav-item js-selected-navigation-item' href='/genexuslabs/genexus-skills/discussions' id='discussions-tab' />
+	[29] (410,222)<span >Discussions />
+[30] (502,222)<a class='UnderlineNav-item no-wrap js-responsive-underlinenav-item js-selected-navigation-item' href='/genexuslabs/genexus-skills/actions' id='actions-tab' />
+	[31] (514,222)<span >Actions />
+[32] (632,222)<a class='UnderlineNav-item no-wrap js-responsive-underlinenav-item js-selected-navigation-item' href='/genexuslabs/genexus-skills/security' id='security-and-quality-tab' />
+	[33] (644,222)<span >Security and quality />
+[34] (763,222)<a class='UnderlineNav-item no-wrap js-responsive-underlinenav-item js-selected-navigation-item' href='/genexuslabs/genexus-skills/pulse' id='insights-tab' />
+	[35] (775,222)<span >Insights />
+genexuslabs/genexus-skills
+[36] (82,312)<button aria-label='main branch' class='prc-Button-ButtonBase-9n-Xk overview-ref-selector width-full RefSelectorAnchoredOverlay-module__RefSelectorOverlayBtn__a3WK3' id='ref-picker-repos-header-ref-selector' />
+	[37] (82,312)<span  />
+		[38] (70,312)<span  />
+			[39] (70,312)<div  />
+				[40] (51,312)<div  />
+				[41] (80,312)<div  />
+					[42] (80,312)<span >main />
+[43] (160,312)<a aria-label='Go to Branches page' class='prc-Button-ButtonBase-9n-Xk OverviewContent-module__Button_1__vmS6D' href='/genexuslabs/genexus-skills/branches' />
+[44] (200,312)<a aria-label='Go to Tags page' class='prc-Button-ButtonBase-9n-Xk OverviewContent-module__Button_1__vmS6D' href='/genexuslabs/genexus-skills/tags' />
+[45] (457,312)<span  />
+	[46] (373,312)<span  />
+	[47] (465,312)<input aria-label='Go to file' class='prc-components-Input-IwWrt' placeholder='Go to file' role='combobox' />
+[48] (617,312)<button class='prc-Button-ButtonBase-9n-Xk' id='_r_a_' />
+	[49] (617,312)<span  />
+		[50] (617,312)<span >Code />
+Folders and files
+Latest commit
+[51] (57,395)<a class='Link__StyledLink-sc-1syctfj-0 prc-Link-Link-9ZwDx' href='/iroqueta' />
+	[52] (54,396)<img  />
+[53] (97,395)<a aria-label='commits by iroqueta' class='Link__StyledLink-sc-1syctfj-0 iIGVMW AuthorAvatar-module__authorHoverableLink__MHTT8 prc-Link-Link-9ZwDx' href='/genexuslabs/genexus-skills/commits?author=iroqueta'>iroqueta />
+[54] (353,394)<a class='Link--secondary' href='/genexuslabs/genexus-skills/commit/6cea24ac3ce8c1546c6746ff9d12f72eb325fc96'>Add workflow for environment creation and switching current environme… />
+[55] (430,395)<button class='prc-Button-ButtonBase-9n-Xk LatestCommit-module__IconButton__mkJr_ prc-Button-IconButton-fyge7' />
+[56] (472,395)<a aria-label='Commit 6cea24a' class='Link--secondary prc-Link-Link-9ZwDx' href='/genexuslabs/genexus-skills/commit/6cea24ac3ce8c1546c6746ff9d12f72eb325fc96'>6cea24a />
+·
+History
+[57] (606,395)<a class='prc-Button-ButtonBase-9n-Xk d-none d-lg-flex LinkButton-module__linkButton__nFnov flex-items-center fgColor-default' href='/genexuslabs/genexus-skills/commits/main/' />
+	[58] (606,395)<span  />
+		[59] (616,395)<span  />
+			[60] (616,395)<span >37 Commits />
+[61] (349,460)<tr  />
+	[62] (98,460)<a aria-label='frontend, (Directory)' class='Link--primary' href='/genexuslabs/genexus-skills/tree/main/frontend' title='frontend'>frontend />
+	[63] (449,460)<a class='Link--secondary' href='/genexuslabs/genexus-skills/commit/c793e43a693b63d7ef24388409ca6569d4ab22a6' title='Add frontend skills and README documentation (#2)
+
+* Add frontend skills and README documentation
+
+Add five frontend AI skills (Chameleon Controls Library, Design System Builder, Mercury Design System, UI Creator, WW Builder) for building enterprise web applications, along with a README documenting each skill's purpose and usage.
+
+* Check and apply guidelines
+
+* Reorganize reference docs into references/ directory and refine skill instructions
+
+Move platform-specific and reference documentation (design-tokens-guide, genexus-backend, image-to-component) into a references/ subdirectory. Split angular.md and react.md into references/platform-angular.md and references/platform-react.md with updated content. Add mock-server-template.md as a standalone reference. Update all internal links in SKILL.md, remove trailing periods for consistency, and normalize list indentation to tabs. Simplify capture-screenshot script.
+
+* Remove ww-builder
+
+* Minor indent fix
+
+* Add frontend skills group to README directory tree
+
+Document the new frontend/ directory structure in the root README, covering chameleon-controls-library, design-system-builder, mercury-design-system, and ui-creator skills with their reference directories.
+
+---------
+
+Co-authored-by: ag-silva <alejandro.silva@globant.com>'>Add frontend skills and README documentation ( />
+	#2
+	)
+[64] (349,518)<tr  />
+	[65] (86,517)<a aria-label='nexa, (Directory)' class='Link--primary' href='/genexuslabs/genexus-skills/tree/main/nexa' title='nexa'>nexa />
+	[66] (523,517)<a class='Link--secondary' href='/genexuslabs/genexus-skills/commit/6cea24ac3ce8c1546c6746ff9d12f72eb325fc96' title='Add workflow for environment creation and switching current environment (#12)
+
+Add instructions for creating new environments (.main.gx and .local.gx),
+registering them in Design.version.main.gx, and switching the active
+environment via Design.version.local.gx instead of set_kb_property.'>Add workflow for environment creation and switching current environme… />
+[67] (349,575)<tr  />
+	[68] (101,575)<a aria-label='.gitignore, (File)' class='Link--primary' href='/genexuslabs/genexus-skills/blob/main/.gitignore' title='.gitignore'>.gitignore />
+	[69] (437,575)<a class='Link--secondary' href='/genexuslabs/genexus-skills/commit/3d8b180eb2b993054d4079fd1731c9bf0600f3dc' title='Ignore every file or directory starting with dot'>Ignore every file or directory starting with dot />
+[70] (349,632)<tr  />
+	[71] (131,632)<a aria-label='CONTRIBUTING.md, (File)' class='Link--primary' href='/genexuslabs/genexus-skills/blob/main/CONTRIBUTING.md' title='CONTRIBUTING.md'>CONTRIBUTING.md />
+	[72] (384,632)<a class='Link--secondary' href='/genexuslabs/genexus-skills/commit/29e4c966bc15a1a3ffb4e2d3c22382f8bf21a650' title='Add file naming convention'>Add file naming convention />
+[73] (349,690)<tr  />
+	[74] (97,690)<a aria-label='LICENSE, (File)' class='Link--primary' href='/genexuslabs/genexus-skills/blob/main/LICENSE' title='LICENSE'>LICENSE />
+	[75] (342,690)<a class='Link--secondary' href='/genexuslabs/genexus-skills/commit/c920d75deff46bf1bc402190fb09a323af0dbbd1' title='Initial commit'>Initial commit />
+[76] (349,747)<tr  />
+	[77] (110,747)<a aria-label='README.md, (File)' class='Link--primary' href='/genexuslabs/genexus-skills/blob/main/README.md' title='README.md'>README.md />
+	[78] (431,747)<a class='Link--secondary' href='/genexuslabs/genexus-skills/commit/9b9b95bc9bb83c91ce57110c1000286d42fe080e' title='Fix Windows mklink command in README (#6)
+
+Correct the symbolic link command for Windows to include 'nexa' in the target path.'>Fix Windows mklink command in README ( />
+	#6
+	)
+Repository files navigation
+[79] (86,834)<a class='prc-components-UnderlineItem-7fP-n' href='#' />
+	[80] (55,834)<span  />
+	[81] (97,834)<span >README />
+[82] (198,834)<a class='prc-components-UnderlineItem-7fP-n' href='#' />
+	[83] (155,834)<span  />
+	[84] (210,834)<span >Contributing />
+[85] (341,834)<a class='prc-components-UnderlineItem-7fP-n' href='#' />
+	[86] (280,834)<span  />
+	[87] (352,834)<span >Apache-2.0 license />
+[88] (643,834)<button aria-label='Outline' class='prc-Button-ButtonBase-9n-Xk OverviewRepoFiles-module__ActionMenu_Button__OKDYV' id='_r_o_' />
+genexus-skills
+[89] (49,941)<a aria-label='Permalink: genexus-skills' class='anchor' href='#genexus-skills' id='user-content-genexus-skills' />
+About
+Reusable AI skills and references for GeneXus development workflows.
+Resources
+[90] (744,450)<a class='Link--muted' href='#readme-ov-file'>Readme />
+License
+[91] (776,491)<a class='Link--muted' href='#Apache-2.0-1-ov-file'>Apache-2.0 license />
+Contributing
+[92] (758,532)<a class='Link--muted' href='#contributing-ov-file'>Contributing />
+[93] (742,572)<a class='Link Link--muted' href='/genexuslabs/genexus-skills/activity' />
+	[94] (755,572)<span >Activity />
+[95] (775,613)<a class='Link Link--muted' href='/genexuslabs/genexus-skills/custom-properties' />
+	[96] (789,613)<span >Custom properties />
+Stars
+[97] (739,654)<a class='Link Link--muted' href='/genexuslabs/genexus-skills/stargazers'>stars />
+	[98] (737,654)<strong >6 />
+Watchers
+[99] (753,695)<a class='Link Link--muted' href='/genexuslabs/genexus-skills/watchers'>watching />
+	[100] (737,695)<strong >3 />
+Forks
+[101] (740,736)<a class='Link Link--muted' href='/genexuslabs/genexus-skills/forks'>forks />
+	[102] (737,736)<strong >5 />
+[103] (759,776)<a class='Link--muted' href='/contact/report-content?content_url=https%3A%2F%2Fgithub.com%2Fgenexuslabs%2Fgenexus-skills&report=genexuslabs+%28user%29'>Report repository />
+[104] (736,854)<a class='Link--primary no-underline Link' href='/genexuslabs/genexus-skills/releases'>Releases />
+No releases published
+[105] (838,983)<a class='Link--primary no-underline Link d-flex flex-items-center' href='/genexuslabs/genexus-skills/graphs/contributors'>Contributors />
+	[106] (809,983)<span >5 />

@@ -1,5 +1,5 @@
 from app.database import SessionLocal
-from app import models
+from app import models, auth
 
 def seed_data():
     db = SessionLocal()
@@ -21,11 +21,48 @@ def seed_data():
         for tech_name in techs:
             if not db.query(models.Technician).filter_by(name=tech_name).first():
                 db.add(models.Technician(name=tech_name))
+
+        # 4. ROLES DE SEGURIDAD
+        roles = {
+            "OficialSeguridad": "Acceso total a gestión de usuarios y sistema",
+            "Gerente": "Acceso a reportes y supervisión",
+            "Operador": "Carga de datos y gestión de órdenes",
+            "Invitado": "Solo lectura"
+        }
+        db_roles = {}
+        for r_name, r_desc in roles.items():
+            role = db.query(models.Role).filter_by(name=r_name).first()
+            if not role:
+                role = models.Role(name=r_name, description=r_desc)
+                db.add(role)
+            db_roles[r_name] = role
+        db.flush()
+
+        # 5. USUARIOS INICIALES (Password: 123456 para todos)
+        hashed_pass = auth.get_password_hash("123456")
+        
+        users_to_create = [
+            {"user": "SU", "name": "Super Usuario", "role": "OficialSeguridad"},
+            {"user": "operador", "name": "Operador Base", "role": "Operador"},
+            {"user": "gerente", "name": "Gerente de Taller", "role": "Gerente"},
+            {"user": "visitante", "name": "Invitado", "role": "Invitado"},
+        ]
+
+        for u_data in users_to_create:
+            user = db.query(models.User).filter_by(username=u_data["user"]).first()
+            if not user:
+                user = models.User(
+                    username=u_data["user"],
+                    full_name=u_data["name"],
+                    hashed_password=hashed_pass
+                )
+                user.roles.append(db_roles[u_data["role"]])
+                db.add(user)
         
         db.commit()
-        print("¡Datos maestros precargados con éxito!")
+        print("¡Módulo de Seguridad y Datos Maestros inicializados!")
     except Exception as e:
-        print(f"Error al precargar datos: {e}")
+        print(f"Error en seeding: {e}")
         db.rollback()
     finally:
         db.close()

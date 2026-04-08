@@ -1,0 +1,26 @@
+# Walkthrough: Skill FastAPI Expert
+
+He completado la adición de la Skill **FastAPI Expert** al entorno de trabajo. Esta herramienta proporcionará guías y estándares de alta calidad para cualquier tarea de desarrollo backend que realicemos.
+
+## Cambios Realizados
+
+Se ha creado una nueva estructura de skill en el workspace de acuerdo a las reglas oficiales.
+
+### [NEW] [SKILL.md](file:///c:/aaProyectos/Entorno01/.agents/skills/fastapi-expert/SKILL.md)
+
+Este archivo contiene:
+- **Arquitectura Modular:** Recomendaciones para separar rutas, modelos y esquemas.
+- **Inyección de Dependencias:** Uso de `Annotated`, `Depends` y tipado estricto.
+- **Validación con Pydantic v2:** Patrones para modelos de entrada y salida (DTOs).
+- **Seguridad (JWT):** Estructura básica para autenticación OAuth2.
+- **Testing Profesional:** Configuración para pruebas asíncronas con `pytest` e `httpx`.
+
+## Verificación
+
+1. **Estructura del Archivo:** El archivo `SKILL.md` incluye el frontmatter YAML requerido para ser detectado automáticamente por el agente.
+2. **Contenido Técnico:** Se han incluido bloques de código funcionales y modernos (async/await, Pydantic v2).
+3. **Ubicación:** Ubicado en `.agents/skills/fastapi-expert/`, accesible en todo el workspace.
+
+## Próximos Pasos
+
+A partir de ahora, cada vez que solicites crear un backend, una ruta o un servicio de FastAPI, utilizaré estos estándares para asegurar un código de nivel producción.

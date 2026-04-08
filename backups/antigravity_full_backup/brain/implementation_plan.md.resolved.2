@@ -1,0 +1,35 @@
+# Integración de GeneXus Skills (Nexa Methodology)
+
+Este plan detalla la incorporación de los estándares de desarrollo de GeneXus Labs en una nueva Skill denominada `genexus-expert`. Esta skill permitirá al agente modelar y documentar sistemas GeneXus utilizando el lenguaje estructurado (Nexa DSL) y las mejores prácticas de la industria.
+
+## User Review Required
+
+> [!IMPORTANT]
+> El repositorio de GeneXus Skills es extenso en referencias. Inicialmente, integraré las especificaciones para los objetos principales (**Transaction, Procedure, Data Provider, API, Panel**). ¿Deseas que incluya también las guías de **Mercury Design System** para el frontend o nos centramos primero en el Modelado de la Base de Conocimientos (KB)?
+
+## Proposed Changes
+
+### Skill GeneXus Expert
+
+#### [NEW] [SKILL.md](file:///c:/aaProyectos/Entorno01/.agents/skills/genexus-expert/SKILL.md)
+- **Metadatos YAML:** Identificador `genexus-expert`.
+- **Nexa DSL:** Definición del lenguaje estructurado de marcado para objetos GeneXus.
+- **Workflow de Nexa:** Proceso de Pensamiento (Analizar intención -> Buscar en KB -> Planear -> Ejecutar).
+
+#### [NEW] [references/](file:///c:/aaProyectos/Entorno01/.agents/skills/genexus-expert/references/)
+Directorio que contendrá las especificaciones técnicas extraídas del repositorio oficial:
+- `object-transaction.md`: Reglas y sintaxis de transacciones.
+- `object-procedure.md`: Estructura de procedimientos y comandos.
+- `object-api.md`: Definición de objetos API (REST/gRPC).
+- `common-datatypes.md`: Tipos de datos soportados y dominios.
+
+## Open Questions
+
+- ¿Existe alguna versión específica de GeneXus (e.g., GeneXus 18) sobre la que debamos priorizar las referencias?
+- ¿Quieres que la skill genere archivos `.yaml` compatibles con el importador de GeneXus o nos mantenemos en el formato `.md` estructurado de Nexa para documentación y análisis?
+
+## Verification Plan
+
+### Manual Verification
+1. Comprobar que el agente pueda generar una especificación de "Transacción" válida siguiendo el Nexa DSL.
+2. Validar que la estructura de directorios de la skill sea correcta (`SKILL.md` + carpeta `references/`).

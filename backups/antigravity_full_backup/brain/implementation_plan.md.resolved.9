@@ -1,0 +1,48 @@
+# Ampliación de Sistema: Gestión Operativa y Reportes
+
+Este plan detalla las mejoras para el control de estados, borrado físico y generación de reportes avanzados de gestión y productividad.
+
+## User Review Required
+
+> [!IMPORTANT]
+> - **Borrado Físico:** Se implementará la eliminación permanente de la Orden y sus detalles asociados (`Tareas`, `Materiales`, `Terceros`) únicamente cuando el estado actual sea **Pendiente**.
+> - **Confirmaciones:** Se utilizarán diálogos nativos del navegador (`hx-confirm`) para validar cada cambio de estado, asegurando que el usuario no realice transiciones accidentales.
+> - **Cálculo de Tiempos:** Para el reporte de gestión, ¿deseas que el tiempo de trabajo se muestre en **Horas/Minutos** (formato `HH:mm`) o puramente en **Minutos totales**?
+
+## Proposed Changes
+
+### 1. Gestión de Estados y Borrado (Backend)
+- **[MODIFY] [app/main.py](file:///c:/aaProyectos/Entorno01/app/main.py):**
+    - Añadir endpoint `DELETE /order/{order_id}` que verifique el estado `Pendiente` antes de ejecutar el borrado (Cascade Delete).
+    - Actualizar lógica de `update_status` para que asigne automáticamente la `exit_date` al pasar a `Terminada` o `Anulada`.
+
+### 2. Módulo de Reportes (Backend)
+- **[NEW] [app/reports.py](file:///c:/aaProyectos/Entorno01/app/reports.py):** Nuevo módulo para centralizar consultas de agregación (SQLAlchemy).
+- **[MODIFY] [app/main.py](file:///c:/aaProyectos/Entorno01/app/main.py):**
+    - Añadir ruta `/reports` para la vista principal de filtros.
+    - Añadir endpoints HTMX para generar los resultados de:
+        - Gestión General (Totales, Cantidades, Tiempos).
+        - Productividad por Técnico (Minutos totales).
+        - Consumo de Materiales y Terceros (Cantidades y Montos).
+
+### 3. Interfaz de Usuario (Frontend)
+- **[NEW] [app/templates/reports.html](file:///c:/aaProyectos/Entorno01/app/templates/reports.html):** Vista de reportes con filtros de fecha y estado.
+- **[MODIFY] [app/templates/index.html](file:///c:/aaProyectos/Entorno01/app/templates/index.html):** Añadir botón de **"Reportes"** en el encabezado.
+- **[MODIFY] [app/templates/order_detail.html](file:///c:/aaProyectos/Entorno01/app/templates/order_detail.html):** 
+    - Integrar `hx-confirm` en el selector de estados.
+    - Añadir botón de "Eliminar Orden" (visible solo si es `Pendiente`).
+
+## Open Questions
+
+- ¿El reporte de técnicos debe consolidar a todos los técnicos o quieres poder filtrar por uno específico?
+- ¿Para la diferencia de tiempo entre Ingreso y Egreso, incluimos solo días hábiles o tiempo calendario total?
+
+## Verification Plan
+
+### Automated Tests
+- Validar que una orden `En Ejecución` o `Terminada` rechace la petición de borrado físico.
+- Verificar que el cambio a `Anulada` registre correctamente la fecha de fin.
+
+### Manual Verification
+1. Generar reportes con diferentes rangos de fecha y validar que los totales coincidan con las órdenes registradas.
+2. Intentar borrar una orden pendiente y confirmar que desaparece de la base de datos junto con sus tareas.

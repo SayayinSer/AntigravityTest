@@ -1,0 +1,13 @@
+- [ ] **Desarrollo Backend (FastAPI)**
+    - [ ] Añadir endpoints CRUD para Tablas Maestras (Marcas, Tipos, Técnicos).
+    - [ ] Implementar endpoint para registro de Trabajos de Terceros.
+    - [ ] Crear lógica para refrescar el "Resumen de Costos" vía HTMX.
+- [ ] **Desarrollo de Interfaz (Jinja2 + HTMX)**
+    - [ ] Crear la página `app/templates/admin.html` (Configuración).
+    - [ ] Crear componente para el Resumen de Totales (`components/summary_card.html`).
+    - [ ] Crear componente para lista de Trabajos de Terceros (`components/third_party_list.html`).
+    - [ ] Actualizar `order_detail.html` para incluir Tercerizados y Resumen Dinámico.
+    - [ ] Actualizar `index.html` con link a Configuración.
+- [ ] **Verificación**
+    - [ ] Validar carga de terceros y actualización de totales.
+    - [ ] Validar mantenimiento de tablas maestras.

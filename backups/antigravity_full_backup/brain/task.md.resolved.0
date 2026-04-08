@@ -1,0 +1,4 @@
+- [ ] Crear el directorio para la skill: `.agents/skills/fastapi-expert/`
+- [ ] Generar el archivo `SKILL.md` con el contenido técnico experto.
+- [ ] Verificar que la skill sea reconocida por el entorno.
+- [ ] Actualizar el walkthrough final.

@@ -1,0 +1,8 @@
+- [ ] Refactorizar `models.py` (Código autoincremental y campos de service)
+- [ ] Re-inicializar base de datos con el nuevo esquema
+- [ ] Crear y ejecutar script `seed.py` con datos maestros
+- [ ] Implementar vista de Historia Clínica (`vehicle_history.html`)
+- [ ] Refactorizar flujo de cierre de OT en `main.py` (Validación y actualización de ficha)
+- [ ] Actualizar interfaz de detalle de orden con campos de cierre inteligente
+- [ ] Sincronizar el proyecto completo con GitHub (`SayayinSer/AntigravityTest`)
+- [ ] Crear Walkthrough final

@@ -1,0 +1,19 @@
+- [ ] **Configuración de Base de Datos (MariaDB)**
+    - [ ] Crear base de datos `antigravity_test`.
+    - [ ] Generar tablas (Brands, VehicleTypes, Vehicles, WorkOrders, Tasks, Parts, ThirdParties).
+    - [ ] Cargar datos semilla (pre-carga).
+- [ ] **Desarrollo Backend (FastAPI)**
+    - [ ] Configurar modelos de SQLAlchemy para MariaDB.
+    - [ ] Implementar esquemas de Pydantic v2.
+    - [ ] Crear routers de API para CRUD de móviles y órdenes.
+    - [ ] Implementar lógica de cambio de estados y cálculos.
+- [ ] **Desarrollo Frontend (HTMX + Tailwind)**
+    - [ ] Configurar layout base con Tailwind CSS (CDN para prueba rápida).
+    - [ ] Crear dashboard de gestión de Órdenes.
+    - [ ] Implementar formularios dinámicos para edición de OT (Inyectar tareas/repuestos).
+    - [ ] Integrar micro-animaciones con Alpine.js.
+- [ ] **Preparación para Despliegue (IIS)**
+    - [ ] Crear archivo `web.config` para HttpPlatformHandler.
+- [ ] **Verificación y Walkthrough**
+    - [ ] Realizar pruebas integrales.
+    - [ ] Documentar el resultado final.

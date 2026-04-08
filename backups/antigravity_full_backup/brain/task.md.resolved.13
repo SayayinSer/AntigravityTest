@@ -1,0 +1,14 @@
+- [ ] **Desarrollo Backend (Lógica Operativa)**
+    - [ ] Endpoint `DELETE /order/{id}` (Solo Pendientes + Cascade Delete).
+    - [ ] Lógica de `exit_date` en cambio de estado (Pendiente -> [Anulada/Terminada]).
+- [ ] **Módulo de Reportes (Backend)**
+    - [ ] Función de utilidad para formato `DD:HH:MM`.
+    - [ ] Endpoints de gestión: Totales, Tiempos y Cantidades entre fechas.
+    - [ ] Endpoints de técnicos: Productividad individual/consolidada.
+- [ ] **Interfaz y Componentes (Frontend)**
+    - [ ] Diseñar el Modal Personalizado de Confirmación (Tailwind + Alpine).
+    - [ ] Crear la página de Reportes (`reports.html`) con selectores de fecha.
+    - [ ] Actualizar el Dashboard con botón de borrado y link a reportes.
+- [ ] **Verificación e Informe Final**
+    - [ ] Pruebas cruzadas de cálculos de tiempo.
+    - [ ] Walkthrough con capturas/detalles.

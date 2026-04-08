@@ -1,0 +1,53 @@
+# Plan Integral: Sistema de Gestión de Órdenes de Trabajo (OT)
+
+Este plan detalla la construcción de una aplicación funcional para registrar y gestionar órdenes de trabajo para vehículos, integrando todas las skills desarrolladas previamente.
+
+## User Review Required
+
+> [!IMPORTANT]
+> - **Tecnología:** Utilizaré **FastAPI** (Python) para el backend y **HTMX + Alpine.js + Tailwind CSS** para el frontend, siguiendo la recomendación de "potente y sencillo".
+> - **Servidor:** Instalaré la solución optimizada para **IIS** (usando HttpPlatformHandler), ya que es el estándar más común en entornos Windows On-Premise con MariaDB.
+> - **Base de Datos:** Crearé el esquema en **MariaDB** bajo la base `antigravity_test`. ¿Deseas que incluya algunos datos semilla (seed data) para marcas y tipos de móviles para la prueba?
+
+## Proposed Changes
+
+### 1. Modelado de Base de Datos (SQL Expert / Systems Analyst)
+Se creará un esquema relacional con las siguientes tablas:
+- `brands`: Catálogo de marcas.
+- `vehicle_types`: Catálogo de tipos (Auto, Camión, etc).
+- `vehicles`: Registro de móviles con su patente y datos técnicos.
+- `technicians`: Maestro de mecánicos/técnicos.
+- `work_orders`: Cabecera de la orden (Diagnóstico, Estado, Fechas).
+- `wo_tasks`: Detalle de tareas realizadas y tiempos.
+- `wo_parts`: Registro de repuestos e insumos utilizados.
+- `wo_third_parties`: Registro de trabajos tercerizados.
+
+### 2. Backend API (FastAPI Expert)
+- Implementación de CRUDs completos para todas las entidades.
+- Lógica de estados para las órdenes (Pendiente -> En Ejecución -> Terminada).
+- Validación de datos con Pydantic v2.
+
+### 3. Frontend Moderno (Fullstack Python App / Frontend Design)
+- **Dashboard:** Vista de órdenes pendientes y en curso.
+- **Formulario Dinámico:** Edición de OT con agregado de tareas y repuestos "on-the-fly" usando HTMX.
+- **Estética:** Diseño premium con Tailwind CSS (Dark mode support y micro-animaciones).
+
+### 4. Despliegue (DevOps Expert)
+- Configuración de `web.config` y scripts de publicación para IIS.
+
+## Open Questions
+
+- ¿Existe alguna validación de negocio crítica (ej: no permitir cerrar una orden sin tareas registradas)?
+- ¿La patente debe seguir algún formato específico o solo validamos los 20 caracteres?
+
+## Verification Plan
+
+### Automated Tests
+- Scripts de validación de conexión a MariaDB.
+- Pruebas de endpoints CRUD con `pytest`.
+
+### Manual Verification
+1. Crear un móvil nuevo.
+2. Abrir una Orden de Trabajo.
+3. Cargar tareas y repuestos.
+4. Cambiar el estado a "Terminada" y verificar los totales.

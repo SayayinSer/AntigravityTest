@@ -1,0 +1,31 @@
+# Walkthrough: Sistema de Gestión OT (Versión 3.0)
+
+He finalizado la estabilización total del sistema, resolviendo los bugs críticos e integrando las nuevas reglas de negocio solicitadas.
+
+## Mejoras y Correcciones Clave
+
+### 1. Automatización y Validaciones
+- **Flujo Automático:** Al registrar la primera tarea en una OT `Pendiente`, el estado cambia **automáticamente a `En Ejecución`** y se refleja en la interfaz sin recargar la página.
+- **Validación de Cierre:** El sistema ahora bloquea el paso a `Terminada` si no hay tareas registradas, mostrando una notificación emergente de error.
+- **Campos Obligatorios:** Se implementaron validaciones (tanto en frontend como en backend) para impedir el guardado de descripciones vacías o tiempos en cero.
+
+### 2. Control Maestro (Full CRUD)
+- **Administración Total:** En la sección de [Configuración](file:///c:/aaProyectos/Entorno01/app/templates/admin.html) ahora puedes **Editar** nombres existentes (haciendo clic en el icono de lápiz) y **Eliminar** aquellos que no estén en uso.
+- **Gestión de Ítems:** Cada tarea, repuesto o servicio de tercero en la OT tiene ahora su propio botón de eliminación, activo solo durante la ejecución de la orden.
+
+### 3. Notificaciones y UI
+- **Mensajes Emergentes (Toasts):** Se integró un sistema de notificaciones modernas en la esquina superior derecha para confirmar errores de validación con animaciones suaves.
+- **Refresco Dinámico:** Al añadir o quitar tareas, no solo se actualizan los totales, sino también el estado visual de la orden de forma instantánea.
+
+### 4. Reportes Reparados
+- **Motor de Consultas:** Se corrigió el fallo que impedía mostrar resultados.
+- **Filtros por Defecto:** Al abrir la sección de [Reportes](file:///c:/aaProyectos/Entorno01/app/templates/reports.html), el rango de fechas se inicializa automáticamente con el día de **hoy**.
+
+## Verificación
+
+1.  **Estados:** Se comprobó que una OT pase a `En Ejecución` tras la primera tarea.
+2.  **Seguridad:** Se validó que no se puedan borrar marcas que ya tienen vehículos asignados.
+3.  **Reportes:** Se ejecutaron consultas por técnico y rango de fechas, confirmando la exactitud de los minutos totales (DD:HH:MM).
+
+---
+*El sistema está ahora en un estado de madurez profesional, listo para su uso operativo completo.*

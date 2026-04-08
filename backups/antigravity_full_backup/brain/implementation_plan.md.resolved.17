@@ -1,0 +1,36 @@
+# Plan de Emergencia: Recuperación de Módulo "Tablas"
+
+He detectado que el sistema se bloquea al intentar acceder a la base de datos para cargar las Tablas. Implementaré una estrategia de "Modo Seguro" y diagnóstico visual para saltar este bloqueo.
+
+## User Review Required
+
+> [!IMPORTANT]
+> - **Captura de Errores Visual:** Implementaré un manejador global que, en lugar de mostrar el "Internal Server Error" genérico, mostrará en pantalla la **traza exacta del error de Python**. Esto nos dirá si es una falla de conexión, un timeout o un error de lógica.
+> - **Optimización de Consultas:** Cambiaré la forma en que se cargan los datos en la página de administración para que sea más ligera y menos propensa a bloqueos por transacciones abiertas.
+
+## Proposed Changes
+
+### 1. Diagnóstico Maestro (app/main.py)
+- **[MODIFY] [app/main.py](file:///c:/aaProyectos/Entorno01/app/main.py):**
+    - Añadir un manejador global de excepciones (`@app.exception_handler(Exception)`).
+    - Refactorizar `admin_page` para que sea asíncrona pero con protección de sesión explícita.
+    - Asegurar que todas las consultas de administración usen un tiempo de espera o manejo de errores individual.
+
+### 2. Estabilización de Base de Datos (app/database.py)
+- **[MODIFY] [app/database.py](file:///c:/aaProyectos/Entorno01/app/database.py):**
+    - Ajustar los parámetros del `engine` para incluir un `pool_recycle` y `pool_pre_ping=True`. Esto ayuda a detectar conexiones "muertas" que causan el error 500 en Windows/IIS.
+
+### 3. Verificación de Rutas
+- Validar que el nombre de la ruta sea `/admin` y que coincida con lo que el usuario intenta ejecutar.
+
+## Open Questions
+
+- ¿Al intentar entrar a "Tablas", la página se queda cargando mucho tiempo o el error 500 es instantáneo?
+- ¿Has notado si el Dashboard (inicio) también se ha vuelto más lento?
+
+## Verification Plan
+
+### Manual Verification
+1. Intentar acceder a `/admin`.
+2. Si falla, leer el error que aparecerá ahora en la pantalla (traceback).
+3. Si carga, probar la creación de un registro simple.

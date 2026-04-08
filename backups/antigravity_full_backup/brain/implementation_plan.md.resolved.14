@@ -1,0 +1,41 @@
+# Plan de Estabilización Definitiva
+
+He identificado los puntos de fricción que impiden el funcionamiento de los módulos y las correcciones necesarias para la interfaz.
+
+## User Review Required
+
+> [!IMPORTANT]
+> - **Error en Ajax/Admin:** Cambiaré todos los métodos `PUT`/`DELETE` de administración a `POST` con rutas específicas para garantizar compatibilidad total con el servidor y evitar bloqueos de métodos.
+> - **Inversión Colapsable:** Moveré la función de contraer/expandir a las grillas de Tareas, Materiales y Terceros, dejando fija la información del vehículo.
+> - **Botón Borrar:** Sincronizaré el botón de eliminación para que desaparezca inmediatamente al cambiar el estado de la orden (sin recargar toda la página).
+
+## Proposed Changes
+
+### 1. Robustez en Administración y Reportes
+- **[MODIFY] [app/main.py](file:///c:/aaProyectos/Entorno01/app/main.py):**
+    - Migrar endpoints de administración de `PUT/DELETE` a `POST` (ej: `/admin/tech/{id}/delete`, `/admin/tech/{id}/update`).
+    - Añadir logs de depuración internos (simulados) y asegurar que el reporte devuelva contenido incluso si hay errores leves de formato.
+- **[MODIFY] [app/templates/admin.html](file:///c:/aaProyectos/Entorno01/app/templates/admin.html):**
+    - Actualizar disparadores para usar las nuevas rutas `POST`.
+
+### 2. Rediseño de Interfaz OT (UX)
+- **[MODIFY] [app/templates/order_detail.html](file:///c:/aaProyectos/Entorno01/app/templates/order_detail.html):**
+    - **Invertir Colapsables:** Las tablas de la derecha (Tareas, Repuestos, Terceros) ahora serán las colapsables (cerradas por defecto).
+    - **Barra Lateral Fija:** La información del vehículo y totales volverá a ser siempre visible.
+    - **Visibilidad Dinámica:** Envolver el botón de elminación en el `nav` dentro de un fragmento administrado por HTMX que se refresque al cambiar el estado de la OT.
+
+### 3. Garantía de Reportes
+- **[MODIFY] [app/templates/reports.html](file:///c:/aaProyectos/Entorno01/app/templates/reports.html):**
+    - Verificar la inclusión de todas las dependencias y el selector del target.
+
+## Open Questions
+
+- ¿Deseas que las 3 tablas auxiliares se abran/cierren de forma independiente o que haya un botón de "Cerrar Todas"?
+- ¿Confirmas que el botón de Borrado debe desaparecer para **cualquier** estado que no sea `Pendiente`? (Incluyendo `Anulada`).
+
+## Verification Plan
+
+### Manual Verification
+1. Probar cada botón de la tabla de configuración; verificar recarga exitosa.
+2. Emitir reporte con fechas vacías y completas; verificar visualización de la tabla.
+3. Cambiar estado de OT; verificar desaparición instantánea del botón de borrado en la cabecera.

@@ -1,0 +1,26 @@
+# Plan de Reparación de Emergencia: Error de Colación (1273)
+
+El error `Unknown collation: 'utf8mb4_0900_ai_ci'` confirma que el servidor MySQL/MariaDB es de una versión anterior a la 8.0 y no reconoce el estándar moderno que intenta usar el conector.
+
+## User Review Required
+
+> [!IMPORTANT]
+> - **Cambio de Compatibilidad:** Ajustaré la configuración para usar `utf8mb4_general_ci`, que es compatible con prácticamente todas las versiones de MySQL/MariaDB. Esto restaurará el acceso de inmediato tanto al Dashboard como al módulo de Tablas.
+
+## Proposed Changes
+
+### 1. Ajuste de Motor de Base de Datos (app/database.py)
+- **[MODIFY] [app/database.py](file:///c:/aaProyectos/Entorno01/app/database.py):**
+    - Cambiar la URL de conexión para omitir la colación automática del conector.
+    - O forzar el uso de una colación compatible mediante `connect_args`.
+
+### 2. Verificación
+- Cargar el Dashboard para ver si los datos aparecen.
+- Entrar al módulo de Tablas.
+
+## Open Questions
+- Ninguna. El error está identificado con precisión quirúrgica gracias al log que proporcionaste.
+
+## Verification Plan
+1. Intentar cargar la raíz del sitio (`/`).
+2. Si carga, el problema está resuelto.

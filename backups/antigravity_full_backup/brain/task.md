@@ -1,0 +1,9 @@
+- [ ] Instalar dependencias de seguridad (`passlib`, `jose`)
+- [ ] Refactorizar `models.py` con entidades de Usuarios y Roles
+- [ ] Re-inicializar Base de Datos para el nuevo esquema de seguridad
+- [ ] Crear módulo `auth.py` para encriptación y tokens
+- [ ] Actualizar y ejecutar `seed.py` con usuarios y roles (SU, Operador, etc.)
+- [ ] Desarrollar rutas de Login, Logout e interfaz de acceso (`login.html`)
+- [ ] Crear panel de Administración de Seguridad (`security.html`) restringido a OficialSeguridad
+- [ ] Verificar controles de acceso y encriptación de claves
+- [ ] Crear Walkthrough final

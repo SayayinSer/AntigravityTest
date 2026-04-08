@@ -1,0 +1,34 @@
+# Plan de Creación: Skill de Seguridad y Auditoría (Estilo GAM)
+
+Este plan define la construcción de una nueva "Habilidad" de Antigravity especializada en el blindaje de aplicaciones, gestión de identidades y trazabilidad de operaciones críticas.
+
+## User Review Required
+
+> [!IMPORTANT]
+> - **Inspiración GAM:** La skill imitará la lógica de Roles, Permisos y Auditoría del GAM de GeneXus, pero optimizada para Python/FastAPI.
+> - **Arquitectura de Auditoría:** Implementaremos patrones de "Shadow Tables" o "Audit Logs" automáticos.
+> - **Ubicación:** La skill se instalará en `.agents/skills/security-expert` para este proyecto y podrá ser exportada globalmente.
+
+## Proposed Changes
+
+### 1. Definición de la Skill (SKILL.md)
+- **[NEW] [.agents/skills/security-expert/SKILL.md](file:///c:/aaProyectos/Entorno01/.agents/skills/security-expert/SKILL.md):**
+    - **Metadatos:** Nombre `security-expert`.
+    - **Instrucciones:** Reglas para implementar JWT, jerarquía de roles, protección de endpoints mediante decoradores y esquemas de auditoría (CreatedBy, UpdatedBy).
+
+### 2. Recursos y Scripts de Referencia
+- **[NEW] [.agents/skills/security-expert/resources/audit_schema.sql](file:///c:/aaProyectos/Entorno01/.agents/skills/security-expert/resources/audit_schema.sql):**
+    - Plantilla SQL para tablas de auditoría global.
+- **[NEW] [.agents/skills/security-expert/scripts/security_utils.py](file:///c:/aaProyectos/Entorno01/.agents/skills/security-expert/scripts/security_utils.py):**
+    - Ejemplo de implementación de lógica de roles y chequeo de permisos.
+
+## Open Questions
+- ¿Deseas que la auditoría sea "Superficial" (solo quién creó/editó) o "Profunda" (qué valor cambió específicamente campo por campo)?
+- ¿Los roles serán fijos en el código o dinámicos en la base de datos (con interfaz de gestión)?
+
+## Verification Plan
+
+### Manual Verification
+1. Generar la carpeta de la Skill.
+2. Validar que el bloque YAML frontmatter sea correcto para el reconocimiento de Antigravity.
+3. Verificar que los scripts de ejemplo sigan las mejores prácticas de FastAPI/SQLAlchemy.

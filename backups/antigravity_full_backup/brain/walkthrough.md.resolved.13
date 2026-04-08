@@ -1,0 +1,35 @@
+# Módulo de Gestión de Móviles: Implementación Exitosa
+
+He desplegado el nuevo módulo de **Móviles** (Vehículos), elevando el control técnico del sistema con el seguimiento de kilometraje, historial de propietarios y servicios.
+
+## Características Implementadas
+
+### 1. Perfil Técnico del Vehículo
+Ahora cada móvil cuenta con atributos dedicados para la gestión preventiva:
+- **Kilometraje Actual:** Seguimiento del uso del vehículo.
+- **Último Propietario:** Historial de contacto.
+- **Fecha Último Service:** Programación de mantenimiento.
+
+### 2. Interfaz Moderna y Fluida
+He diseñado la vista `vehicles.html` con un enfoque visual limpio:
+- **Tarjetas de Estado:** Cada vehículo se presenta en una tarjeta con sus datos clave estilizados.
+- **Formulario Inteligente:** Permite dar de alta móviles rápidamente con validación de Patente y Código Interno únicos.
+- **Navegación Global:** Se ha integrado el acceso a "Móviles" en todas las barras de navegación superiores.
+
+### 3. Sincronización en Tiempo Real
+Gracias a **HTMX**, las operaciones de guardado y eliminación se reflejan al instante, manteniendo una experiencia de usuario ágil y profesional.
+
+## Verificación de Integridad
+
+| Acción | Resultado |
+| :--- | :--- |
+| Crear Móvil | Registro exitoso y visualización en tarjetas |
+| Patente Duplicada | El sistema bloquea y muestra aviso de error |
+| Borrar con Orden | El motor RESTRICT impide el borrado si hay historial |
+| Accesibilidad | Enlace funcional desde Dashboard, Admin y Reportes |
+
+> [!TIP]
+> Al crear una **Nueva Orden** desde el Dashboard, notarás que los vehículos registrados aparecerán automáticamente en el selector para su asignación.
+
+---
+**El módulo de Móviles está listo para ser utilizado como el corazón de tu gestión de flota.**

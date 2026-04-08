@@ -1,0 +1,29 @@
+# Walkthrough: Estabilización y Mejoras UX
+
+He completado las correcciones críticas y la optimización de la interfaz solicitada. El sistema ahora es más robusto, visualmente limpio y ofrece información clave de un vistazo.
+
+## Mejoras Realizadas
+
+### 1. Dashboard Operativo Enriquecido
+- **Métricas a la vista:** Ahora el listado principal de órdenes incluye dos nuevas columnas críticas:
+    - **Tiempo Insumido:** Calculado en formato profesional **DD:HH:MM**.
+    - **Costo Total:** La suma dinámica de todos los materiales y servicios de terceros.
+- Esto permite al operador tener una referencia inmediata de la carga de trabajo y el costo acumulado de cada OT sin entrar al detalle.
+
+### 2. Interfaz de Detalle Optimizada
+- **Paneles Colapsables:** Para evitar la fatiga visual, los paneles laterales (Vehículo, Costos, Estado) ahora están **cerrados por defecto**.
+- El usuario puede expandirlos o contraerlos según necesite, optimizando el espacio de trabajo central donde se cargan las tareas e insumos.
+
+### 3. Reparación de Módulos Críticos
+- **Configuración (CRUD):** Se rediseñó la lógica de administración. Ahora la edición se realiza "in-place" y el borrado utiliza disparadores HTMX directos para asegurar que la base de datos se actualice correctamente.
+- **Reportes:** Se corrigió el motor de ejecución de consultas. Los filtros de fecha ahora funcionan de forma estable y el área de resultados muestra mensajes claros si no se encuentran datos, confirmando que la ejecución fue exitosa.
+
+## Cómo probar los cambios
+
+1.  **Dashboard:** Entra a la página inicial y verás las columnas de **Tiempo Trabajo** y **Total ($)** con datos reales de tus órdenes.
+2.  **Paneles:** Abre cualquier OT y notarás que la barra lateral está contraída. Haz clic en los encabezados para desplegar la información.
+3.  **Configuración:** Ve a [Configuración](file:///c:/aaProyectos/Entorno01/app/templates/admin.html), intenta editar el nombre de una marca o borrar un técnico sin tareas; verás que la página se sincroniza al instante.
+4.  **Reportes:** Ve a [Reportes](file:///c:/aaProyectos/Entorno01/app/templates/reports.html) y presiona "Consultar". Verás los resultados o el aviso de "No se encontraron datos" para el día de hoy.
+
+---
+*Con esta actualización, el sistema alcanza un nivel de estabilidad y confort operativo superior.*

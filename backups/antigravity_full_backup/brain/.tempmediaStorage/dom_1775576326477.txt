@@ -1,0 +1,225 @@
+<current_dom_explanation>
+This is a temporary snapshot of the current page's DOM structure. The DOM will change if you navigate to or interact with another page. Use a tool like browser_get_dom to capture and preserve the DOM in your trajectory if needed for later reference.
+</current_dom_explanation>
+<current_dom>
+Skip to content
+Navigation Menu
+[0] (46,51)<a aria-label='Homepage' class='tmp-mr-lg-3 color-fg-inherit flex-order-2 js-prevent-focus-on-mobile-nav' href='/' />
+[1] (124,51)<button class='NavDropdown-module__button__PEHWX js-details-target'>Platform />
+[2] (219,51)<button class='NavDropdown-module__button__PEHWX js-details-target'>Solutions />
+[3] (319,51)<button class='NavDropdown-module__button__PEHWX js-details-target'>Resources />
+[4] (432,51)<button class='NavDropdown-module__button__PEHWX js-details-target'>Open Source />
+[5] (545,51)<button class='NavDropdown-module__button__PEHWX js-details-target'>Enterprise />
+[6] (628,51)<a class='NavLink-module__link__EG3d4 MarketingNavigation-module__navLink__hUomM' href='https://github.com/pricing' />
+	[7] (628,51)<span >Pricing />
+[8] (754,51)<button aria-label='Search or jump to…' class='header-search-button placeholder input-button form-control d-flex flex-1 flex-self-stretch flex-items-center no-wrap width-full py-0 pl-2 pr-0 text-left border-0 box-shadow-none' placeholder='Search or jump to...' />
+	[9] (754,51)<div  />
+[10] (813,51)<a class='HeaderMenu-link HeaderMenu-link--sign-in HeaderMenu-button flex-shrink-0 no-underline d-none d-lg-inline-flex border border-lg-0 rounded px-2 py-1' href='/login?return_to=https%3A%2F%2Fgithub.com%2Fgenexuslabs%2Fgenexus-skills%2Fblob%2Fmain%2Ffrontend%2Fui-creator%2FSKILL.md'>Sign in />
+[11] (892,51)<a class='HeaderMenu-link HeaderMenu-link--sign-up HeaderMenu-button flex-shrink-0 d-flex d-lg-inline-flex no-underline border color-border-default rounded px-2 py-1' href='/signup?ref_cta=Sign+up&ref_loc=header+logged+out&ref_page=%2F%3Cuser-name%3E%2F%3Crepo-name%3E%2Fblob%2Fshow&source=header-repo&source_repo=genexuslabs%2Fgenexus-skills'>Sign up />
+[12] (954,51)<button class='Button Button--iconOnly Button--invisible Button--medium AppHeader-button HeaderMenu-link border' id='icon-button-02aa10f5-4782-4d82-ba20-2605f3a7c40f' />
+[13] (106,145)<a class='url fn' href='/genexuslabs'>genexuslabs />
+/
+[14] (235,145)<a href='/genexuslabs/genexus-skills'>genexus-skills />
+Public
+[15] (704,143)<a aria-label='You must be signed in to change notification settings' class='btn-sm btn' href='/login?return_to=%2Fgenexuslabs%2Fgenexus-skills' id='repository-details-watch-button'>Notifications />
+[16] (817,143)<a class='btn-sm btn' href='/login?return_to=%2Fgenexuslabs%2Fgenexus-skills' id='fork-button'>Fork />
+	[17] (843,143)<span >5 />
+[18] (921,143)<a aria-label='You must be signed in to star a repository' class='tooltipped tooltipped-sw btn-sm btn' href='/login?return_to=%2Fgenexuslabs%2Fgenexus-skills' />
+	[19] (922,143)<span >Star />
+	[20] (947,143)<span >6 />
+[21] (66,222)<a class='UnderlineNav-item no-wrap js-responsive-underlinenav-item js-selected-navigation-item selected' href='/genexuslabs/genexus-skills' id='code-tab' />
+	[22] (78,222)<span >Code />
+[23] (147,222)<a class='UnderlineNav-item no-wrap js-responsive-underlinenav-item js-selected-navigation-item' href='/genexuslabs/genexus-skills/issues' id='issues-tab' />
+	[24] (158,222)<span >Issues />
+[25] (264,222)<a class='UnderlineNav-item no-wrap js-responsive-underlinenav-item js-selected-navigation-item' href='/genexuslabs/genexus-skills/pulls' id='pull-requests-tab' />
+	[26] (262,222)<span >Pull requests />
+	[27] (318,222)<span >1 />
+[28] (398,222)<a class='UnderlineNav-item no-wrap js-responsive-underlinenav-item js-selected-navigation-item' href='/genexuslabs/genexus-skills/discussions' id='discussions-tab' />
+	[29] (410,222)<span >Discussions />
+[30] (502,222)<a class='UnderlineNav-item no-wrap js-responsive-underlinenav-item js-selected-navigation-item' href='/genexuslabs/genexus-skills/actions' id='actions-tab' />
+	[31] (514,222)<span >Actions />
+[32] (632,222)<a class='UnderlineNav-item no-wrap js-responsive-underlinenav-item js-selected-navigation-item' href='/genexuslabs/genexus-skills/security' id='security-and-quality-tab' />
+	[33] (644,222)<span >Security and quality />
+[34] (763,222)<a class='UnderlineNav-item no-wrap js-responsive-underlinenav-item js-selected-navigation-item' href='/genexuslabs/genexus-skills/pulse' id='insights-tab' />
+	[35] (775,222)<span >Insights />
+[36] (31,301)<button class='prc-Button-ButtonBase-9n-Xk position-relative ExpandFileTreeButton-module__expandButton__hDOcv fgColor-muted prc-Button-IconButton-fyge7' />
+Files
+[37] (135,368)<button aria-label='main branch' class='prc-Button-ButtonBase-9n-Xk react-repos-tree-pane-ref-selector width-full ref-selector-class RefSelectorAnchoredOverlay-module__RefSelectorOverlayBtn__a3WK3' id='ref-picker-repos-header-ref-selector' />
+	[38] (135,368)<span  />
+		[39] (124,368)<span  />
+			[40] (124,368)<div  />
+				[41] (36,368)<div  />
+				[42] (64,368)<div  />
+					[43] (64,368)<span >main />
+[44] (278,368)<button class='prc-Button-ButtonBase-9n-Xk SearchButton-module__IconButton__SBlqu prc-Button-IconButton-fyge7' />
+[45] (154,425)<span  />
+	[46] (32,425)<span  />
+	[47] (162,425)<input aria-label='Go to file' class='prc-components-Input-IwWrt' placeholder='Go to file' role='combobox' />
+[48] (147,787)<div  />
+	[49] (147,668)<li class='PRIVATE_TreeView-item prc-TreeView-TreeViewItem-Ter5f' id='frontend-item' role='treeitem' />
+		[50] (147,487)<div  />
+			[51] (23,487)<div  />
+			[52] (155,487)<div  />
+				[53] (46,487)<div  />
+					[54] (46,487)<div  />
+				[55] (166,487)<span  />
+					[56] (88,486)<span >frontend />
+		[57] (147,532)<li class='PRIVATE_TreeView-item prc-TreeView-TreeViewItem-Ter5f' id='frontend/chameleon-controls-library-item' role='treeitem' />
+			[58] (147,532)<div  />
+				[59] (19,532)<div  />
+					[60] (19,532)<div  />
+						[61] (19,532)<div  />
+				[62] (31,532)<div  />
+				[63] (159,532)<div  />
+					[64] (54,532)<div  />
+						[65] (54,532)<div  />
+					[66] (170,532)<span  />
+						[67] (150,531)<span >chameleon-controls-library />
+		[68] (147,577)<li class='PRIVATE_TreeView-item prc-TreeView-TreeViewItem-Ter5f' id='frontend/design-system-builder-item' role='treeitem' />
+			[69] (147,577)<div  />
+				[70] (19,577)<div  />
+					[71] (19,577)<div  />
+						[72] (19,577)<div  />
+				[73] (31,577)<div  />
+				[74] (159,577)<div  />
+					[75] (54,577)<div  />
+						[76] (54,577)<div  />
+					[77] (170,577)<span  />
+						[78] (136,577)<span >design-system-builder />
+		[79] (147,623)<li class='PRIVATE_TreeView-item prc-TreeView-TreeViewItem-Ter5f' id='frontend/mercury-design-system-item' role='treeitem' />
+			[80] (147,623)<div  />
+				[81] (19,623)<div  />
+					[82] (19,623)<div  />
+						[83] (19,623)<div  />
+				[84] (31,623)<div  />
+				[85] (159,623)<div  />
+					[86] (54,623)<div  />
+						[87] (54,623)<div  />
+					[88] (170,623)<span  />
+						[89] (140,622)<span >mercury-design-system />
+		[90] (147,736)<li class='PRIVATE_TreeView-item prc-TreeView-TreeViewItem-Ter5f' id='frontend/ui-creator-item' role='treeitem' />
+			[91] (147,668)<div  />
+				[92] (19,668)<div  />
+					[93] (19,668)<div  />
+						[94] (19,668)<div  />
+				[95] (31,668)<div  />
+				[96] (159,668)<div  />
+					[97] (54,668)<div  />
+						[98] (54,668)<div  />
+					[99] (170,668)<span  />
+						[100] (99,667)<span >ui-creator />
+			[101] (147,713)<li class='PRIVATE_TreeView-item prc-TreeView-TreeViewItem-Ter5f' id='frontend/ui-creator/references-item' role='treeitem' />
+				[102] (147,713)<div  />
+					[103] (23,713)<div  />
+						[104] (23,713)<div  />
+							[105] (19,713)<div  />
+							[106] (27,713)<div  />
+					[107] (39,713)<div  />
+					[108] (163,713)<div  />
+						[109] (62,713)<div  />
+							[110] (62,713)<div  />
+						[111] (174,713)<span  />
+							[112] (108,713)<span >references />
+			[113] (147,759)<li class='PRIVATE_TreeView-item prc-TreeView-TreeViewItem-Ter5f' id='frontend/ui-creator/scripts-item' role='treeitem' />
+				[114] (147,759)<div  />
+					[115] (23,759)<div  />
+						[116] (23,759)<div  />
+							[117] (19,759)<div  />
+							[118] (27,759)<div  />
+					[119] (39,759)<div  />
+					[120] (163,759)<div  />
+						[121] (62,758)<div  />
+							[122] (62,758)<div  />
+						[123] (174,759)<span  />
+							[124] (96,758)<span >scripts />
+			[125] (147,804)<li class='PRIVATE_TreeView-item prc-TreeView-TreeViewItem-Ter5f' id='frontend/ui-creator/SKILL.md-item' role='treeitem' />
+				[126] (147,804)<div  />
+					[127] (23,804)<div  />
+						[128] (23,804)<div  />
+							[129] (19,804)<div  />
+							[130] (27,804)<div  />
+					[131] (163,804)<div  />
+						[132] (62,804)<div  />
+						[133] (174,804)<span  />
+							[134] (104,803)<span >SKILL.md />
+		[135] (147,849)<li class='PRIVATE_TreeView-item prc-TreeView-TreeViewItem-Ter5f' id='frontend/README.md-item' role='treeitem' />
+			[136] (147,849)<div  />
+				[137] (19,849)<div  />
+					[138] (19,849)<div  />
+						[139] (19,849)<div  />
+				[140] (159,849)<div  />
+					[141] (54,849)<div  />
+					[142] (170,849)<span  />
+						[143] (107,848)<span >README.md />
+	[144] (147,894)<li class='PRIVATE_TreeView-item prc-TreeView-TreeViewItem-Ter5f' id='nexa-item' role='treeitem' />
+		[145] (147,894)<div  />
+			[146] (23,894)<div  />
+			[147] (155,894)<div  />
+				[148] (46,894)<div  />
+					[149] (46,894)<div  />
+				[150] (166,894)<span  />
+					[151] (76,894)<span >nexa />
+	[152] (147,940)<li class='PRIVATE_TreeView-item prc-TreeView-TreeViewItem-Ter5f' id='.gitignore-item' role='treeitem' />
+		[153] (147,940)<div  />
+			[154] (155,940)<div  />
+				[155] (46,940)<div  />
+				[156] (166,940)<span  />
+					[157] (90,939)<span >.gitignore />
+	[158] (147,985)<li class='PRIVATE_TreeView-item prc-TreeView-TreeViewItem-Ter5f' id='CONTRIBUTING.md-item' role='treeitem' />
+		[159] (147,985)<div  />
+			[160] (155,985)<div  />
+				[161] (46,985)<div  />
+				[162] (166,985)<span  />
+					[163] (120,984)<span >CONTRIBUTING.md />
+[164] (309,756)<div aria-label='Draggable pane splitter' class='prc-PageLayout-DraggableHandle-9s6B4' role='slider' />
+Breadcrumbs
+[165] (374,300)<a class='Breadcrumb-module__repoLink__O2Nbs prc-Link-Link-9ZwDx' href='/genexuslabs/genexus-skills/tree/main'>genexus-skills />
+/
+[166] (474,300)<a class='Breadcrumb-module__directoryLink__kQy_t prc-Link-Link-9ZwDx' href='/genexuslabs/genexus-skills/tree/main/frontend'>frontend />
+/
+[167] (559,300)<a class='Breadcrumb-module__directoryLink__kQy_t prc-Link-Link-9ZwDx' href='/genexuslabs/genexus-skills/tree/main/frontend/ui-creator'>ui-creator />
+/
+SKILL.md
+[168] (699,301)<button class='prc-Button-ButtonBase-9n-Xk ml-2 prc-Button-IconButton-fyge7' />
+[169] (969,301)<button class='prc-Button-ButtonBase-9n-Xk js-blob-dropdown-click NavigationMenu-module__IconButton__HpX3G prc-Button-IconButton-fyge7' id='_R_97dajal1d_' />
+Latest commit
+[170] (396,378)<a aria-label='commits by ag-silva' class='Link__StyledLink-sc-1syctfj-0 iIGVMW AuthorLink-module__authorNameLink__ClG6W prc-Link-Link-9ZwDx' href='/genexuslabs/genexus-skills/commits?author=ag-silva'>ag-silva />
+and
+ag-silva
+[171] (653,377)<a class='Link--secondary' href='/genexuslabs/genexus-skills/commit/c793e43a693b63d7ef24388409ca6569d4ab22a6'>Add frontend skills and README documentation ( />
+#2
+)
+[172] (758,378)<button class='prc-Button-ButtonBase-9n-Xk LatestCommit-module__IconButton__mkJr_ prc-Button-IconButton-fyge7' />
+[173] (800,378)<a aria-label='Commit c793e43' class='Link--secondary prc-Link-Link-9ZwDx' href='/genexuslabs/genexus-skills/commit/c793e43a693b63d7ef24388409ca6569d4ab22a6'>c793e43 />
+·
+History
+[174] (939,378)<a class='prc-Button-ButtonBase-9n-Xk d-none d-lg-flex LinkButton-module__linkButton__nFnov flex-items-center fgColor-default' href='/genexuslabs/genexus-skills/commits/main/frontend/ui-creator/SKILL.md' />
+	[175] (939,378)<span  />
+		[176] (948,378)<span  />
+			[177] (948,378)<span >History />
+File metadata and controls
+[178] (370,465)<button class='prc-SegmentedControl-Button-E48xz' />
+	[179] (370,465)<span  />
+		[180] (370,465)<div >Preview />
+[181] (435,465)<button class='prc-SegmentedControl-Button-E48xz' />
+	[182] (435,465)<span  />
+		[183] (435,465)<div >Code />
+[184] (496,465)<button class='prc-SegmentedControl-Button-E48xz' />
+	[185] (496,465)<span  />
+		[186] (496,465)<div >Blame />
+[187] (803,465)<a class='prc-Button-ButtonBase-9n-Xk LinkButton-module__linkButton__nFnov BlobViewHeader-module__LinkButton__X9kx2' href='https://github.com/genexuslabs/genexus-skills/raw/refs/heads/main/frontend/ui-creator/SKILL.md' />
+	[188] (803,465)<span  />
+		[189] (803,465)<span >Raw />
+[190] (835,465)<button class='prc-Button-ButtonBase-9n-Xk prc-Button-IconButton-fyge7' />
+[191] (861,465)<button class='prc-Button-ButtonBase-9n-Xk BlobViewHeader-module__downloadButton__ef459 prc-Button-IconButton-fyge7' />
+[192] (921,465)<button class='prc-Button-ButtonBase-9n-Xk prc-Button-IconButton-fyge7' id='_r_2b_' />
+[193] (955,465)<button class='prc-Button-ButtonBase-9n-Xk tmp-mr-2 TableOfContents-module__IconButton__jrlNM prc-Button-IconButton-fyge7' />
+name
+ui-creator
+description
+Converts UI images and/or OpenAPI specs into web application components with routing and service integration. Supports Angular and React (Vite). When UI images are provided, generates visual components using an integrated image-to-component procedure with screenshot validation. When only an OpenAPI spec is provided (no images), generates all pages directly using neutral default tokens. Supports any combination of images and OpenAPI spec.
+metadata
+version
+0.1.0
+
+</current_dom>

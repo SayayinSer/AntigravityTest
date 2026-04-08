@@ -1,0 +1,7 @@
+{
+  "artifactType":  "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
+  "summary":  "Plan integral para la implementación del módulo de Seguridad (RBAC) con diseño moderno, autenticación JWT y auditoría de accesos.",
+  "updatedAt":  "2026-04-08T21:56:29.098885600Z",
+  "version":  "24",
+  "requestFeedback":  true
+}

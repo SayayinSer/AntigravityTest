@@ -1,0 +1,37 @@
+# Actualización de Sistema: Totales y Mantenimiento de Tablas
+
+Este plan detalla las mejoras para totalizar los costos en las Órdenes de Trabajo y añadir una sección de administración para las tablas auxiliares del sistema.
+
+## User Review Required
+
+> [!IMPORTANT]
+> - **Cálculo de Totales:** La totalización se realizará sumando el costo de Repuestos (`cantidad * precio`) y el costo de Trabajos de Terceros. Se mostrará en una nueva sección de "Resumen Económico" en el detalle de la OT.
+> - **Sección de Mantenimiento:** Añadiré una nueva página centralizada accesible desde el Dashboard para gestionar Marcas, Tipos de Móvil y Técnicos. ¿Deseas que esta sección sea una página independiente o prefieres que los accesos estén disgregados en el menú?
+
+## Proposed Changes
+
+### 1. Mejoras en Modelos y Lógica (Backend)
+- **[MODIFY] [models.py](file:///c:/aaProyectos/Entorno01/app/models.py):** Añadir una propiedad `total_cost` al modelo `WorkOrder` para facilitar el cálculo.
+- **[MODIFY] [main.py](file:///c:/aaProyectos/Entorno01/app/main.py):**
+    - Añadir endpoints `GET/POST/DELETE` para `brands`, `vehicle_types` y `technicians` enfocados en el frontend.
+    - Actualizar el endpoint de detalle de OT para enviar los totales calculados.
+
+### 2. Mejoras en Interfaz (Frontend)
+- **[MODIFY] [order_detail.html](file:///c:/aaProyectos/Entorno01/app/templates/order_detail.html):** 
+    - Añadir una tarjeta de "Resumen de Costos" que se actualice dinámicamente cuando se agregan repuestos o trabajos de terceros.
+- **[NEW] [admin.html](file:///c:/aaProyectos/Entorno01/app/templates/admin.html):** Nueva vista para el mantenimiento de tablas maestras.
+- **[MODIFY] [index.html](file:///c:/aaProyectos/Entorno01/app/templates/index.html):** Añadir botón de "Configuración/Tablas" en la barra de navegación.
+
+### 3. Nuevos Componentes HTMX
+- **[NEW] [master_table_list.html](file:///c:/aaProyectos/Entorno01/app/templates/components/master_table_list.html):** Componente genérico para listar y eliminar registros de tablas maestras.
+
+## Open Questions
+
+- ¿Deseas que los Trabajos de Terceros también se listen dinámicamente con HTMX igual que las tareas y repuestos? (Aún no he implementado esa tabla en el frontend).
+- ¿Quieres un desglose de IVA o impuestos en los totales o prefieres montos finales netos?
+
+## Verification Plan
+
+### Manual Verification
+1. Cargar repuestos y servicios en una OT y verificar que el "Total General" se actualice.
+2. Acceder a la sección de Mantenimiento, crear una nueva Marca y verificar que aparezca disponible al crear un vehículo nuevo.

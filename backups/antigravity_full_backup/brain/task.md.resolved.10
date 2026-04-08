@@ -1,0 +1,5 @@
+- [x] Verificar la existencia del directorio global: `C:\Users\Sergio\.gemini\antigravity\skills\`
+- [x] Copiar recursivamente todas las carpetas de skills desde `.agents/skills/` hacia el directorio global.
+- [x] Validar que los archivos `SKILL.md` y sus referencias han sido migrados correctamente.
+- [x] Confirmar que las versiones locales en `Entorno01` permanecen intactas.
+- [x] Actualizar el walkthrough final.

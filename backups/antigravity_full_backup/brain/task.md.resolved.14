@@ -1,0 +1,12 @@
+- [ ] **Corrección de Críticos (Hotfixes)**
+    - [ ] Corregir el Modal de Confirmación para el cambio de estado.
+    - [ ] Reparar el motor de Reportes y establecer fechas por defecto.
+- [ ] **Desarrollo Backend (Lógica)**
+    - [ ] Implementar paso automático a `En Ejecución` al añadir tarea.
+    - [ ] Añadir validación de cierre (Terminada requiere tareas).
+    - [ ] endpoints CRUD (Update/Delete) para Marcas, Tipos, Técnicos.
+    - [ ] endpoints CRUD (Delete) para Tareas, Repuestos, Terceros.
+- [ ] **Interfaz (Frontend)**
+    - [ ] Actualizar `admin.html` con controles de edición/borrado.
+    - [ ] Actualizar `order_detail.html` con acciones sobre ítems y limpieza de formularios.
+- [ ] **Verificación y Reporte Final**

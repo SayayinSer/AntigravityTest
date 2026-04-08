@@ -1,0 +1,37 @@
+# Sistema de Gestión Inteligente: Historia Clínica y Automatización
+
+He completado la fase final de desarrollo, transformando el sistema en una plataforma autónoma con inteligencia de negocio y trazabilidad total de la flota.
+
+## Funcionalidades de Impacto Implementadas
+
+### 1. Historia Clínica de Vehículos
+Cada unidad tiene ahora su propio "Expediente Técnico".
+- **Reporte Cronológico:** Listado de todas las OT pasadas, diagnósticos, soluciones y costos.
+- **Acceso Rápido:** Disponible desde la vista de Móviles mediante el botón "Ver Historia Clínica".
+
+### 2. Cierre de Orden Inteligente y Obligatorio
+El proceso de cierre ha sido blindado para garantizar la calidad de los datos:
+- **Campos Obligatorios:** No se puede cerrar una orden sin cargar la **Solución** técnica y el **Kilometraje Actual**.
+- **Actualización Automática:** Al cerrar la OT, se actualiza automáticamente el kilometraje y la fecha del último service en la ficha del móvil.
+- **Sugerencia de Visita:** El sistema propone automáticamente una fecha de próxima visita (6 meses por defecto), permitiendo ajuste manual.
+
+### 3. Automatización de Códigos (Autonumeric)
+Se ha simplificado la carga de unidades:
+- El **Código Interno** se genera automáticamente de forma incremental (1, 2, 3...).
+- Se ha eliminado la necesidad de tipear códigos manualmente para evitar errores de duplicidad.
+
+### 4. Precarga de Datos (Seed)
+He creado el script `app/seed.py` que permite inyectar marcas, tipos y técnicos base con un solo comando después de cualquier limpieza de tablas.
+
+## Estado del Proyecto y GitHub
+
+He preparado el repositorio local con todos los cambios y un archivo `.gitignore` profesional. 
+
+> [!CAUTION]
+> **Sincronización GitHub:** He inicializado el entorno Git y realizado el commit local. Para completar el envío a `SayayinSer/AntigravityTest`, por favor ejecuta el siguiente comando en tu terminal para que el sistema te solicite las credenciales de forma segura:
+> ```powershell
+> git push -u origin main
+> ```
+
+---
+**El sistema está ahora en un estado 100% operativo, estable y profesional.**

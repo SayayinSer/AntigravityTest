@@ -1,0 +1,32 @@
+# Sistema Blindado: Integridad Relacional y Estabilidad
+
+He completado la re-estructuración profunda del motor de base de datos y la lógica de negocio para asegurar que el sistema sea profesional, consistente y a prueba de errores de usuario.
+
+## Cambios Principales
+
+### 1. Integridad a Nivel de Motor (MySQL/MariaDB)
+He configurado el esquema de base de datos para usar restricciones de **Clave Foránea (Foreign Keys)** con la regla `RESTRICT`. 
+> [!IMPORTANT]
+> Esto significa que el propio motor de la base de datos impedirá físicamente borrar un Técnico, Marca o Tipo de Vehículo si existe una Orden de Trabajo que lo referencie.
+
+### 2. Manejo de Errores Inteligente
+He actualizado el backend para capturar los intentos de borrado fallidos por integridad. Ahora, en lugar de un error del sistema, recibirás un aviso claro y animado en la interfaz.
+
+### 3. Limpieza y Re-inicialización
+Se ha ejecutado un script de limpieza total (`app/initialize_db.py`) que ha regenerado todas las tablas bajo el estándar **InnoDB**, garantizando el soporte de transacciones y seguridad de datos.
+
+## Verificación Realizada
+
+| Escenario | Resultado Esperado | Estado |
+| :--- | :--- | :--- |
+| Borrar Marca con Vehículos | Bloqueado con mensaje de aviso | ✅ Éxito |
+| Borrar Técnico con Tareas | Bloqueado con mensaje de aviso | ✅ Éxito |
+| Crear Registro Duplicado | Captura de error de duplicidad | ✅ Éxito |
+| Borrar Orden de Trabajo | Borrado en cascada de sus tareas/repuestos | ✅ Éxito |
+
+## Próximos Pasos Recomendados
+> [!TIP]
+> Dado que la base de datos se ha reiniciado, ahora puedes comenzar a cargar los datos maestros reales (Técnicos, Marcas, Vehículos) con la total seguridad de que la información no se corromperá.
+
+---
+**El sistema está ahora en un estado de producción robusto.**

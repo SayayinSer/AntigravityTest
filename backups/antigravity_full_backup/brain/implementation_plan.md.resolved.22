@@ -1,0 +1,33 @@
+# Plan de Respaldo de Inteligencia (Skills)
+
+Este plan asegura que toda la configuración avanzada, lógica de desarrollo y "experticia" de Antigravity (Skills) sea portable a otros puestos de trabajo o recuperable ante incidentes.
+
+## User Review Required
+
+> [!IMPORTANT]
+> - **Contenido del Backup:** Se incluirán los 13 módulos de Skills actuales (FastAPI, SQL, Genexus, Frontend, etc.).
+> - **Método de Respaldo:** Crearé un archivo comprimido `.zip` en la raíz de tu proyecto para que sea fácil de mover entre máquinas.
+
+## Proposed Changes
+
+### 1. Preparación del Respaldo
+- **[NEW] [backups/skills](file:///c:/aaProyectos/Entorno01/backups/skills) [DIRECTORY]:**
+    - Creación de una carpeta organizada con todos los recursos.
+
+### 2. Manual de Restauración
+- **[NEW] [backups/RESTAURAR_SKILLS.md](file:///c:/aaProyectos/Entorno01/backups/RESTAURAR_SKILLS.md):**
+    - Instrucciones paso a paso para "inyectar" estas habilidades en una nueva instalación de Antigravity en otro PC.
+
+### 3. Empaquetado Final
+- Ejecución de comando de compresión: `antigravity_skills_full_backup.zip`.
+
+## Open Questions
+- ¿Deseas que incluya también los logs de la conversación actual (el "cerebro" histórico) o solo las herramientas técnicas (Skills)?
+- ¿Prefieres que el ZIP se suba también a tu GitHub o que se mantenga solo como un archivo local para transferencia manual?
+
+## Verification Plan
+
+### Manual Verification
+1. Generar el archivo ZIP.
+2. Verificar que dentro del ZIP existan las carpetas de las 13 skills identificadas.
+3. Comprobar que el archivo `RESTAURAR_SKILLS.md` sea legible y claro.

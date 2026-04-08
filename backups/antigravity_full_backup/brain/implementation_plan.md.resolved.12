@@ -1,0 +1,46 @@
+# Fase 3: Robustez Operativa y Control de Gestión
+
+Este plan consolida las correcciones de flujo detectadas y expande la capacidad de administración total del sistema de Órdenes de Trabajo.
+
+## User Review Required
+
+> [!IMPORTANT]
+> - **Automatización de Estados:** Al cargar la **primera tarea**, el sistema cambiará automáticamente la OT de `Pendiente` a `En Ejecución`. Esto se reflejará dinámicamente en la UI.
+> - **Validaciones Estrictas:** No se permitirán descripciones vacías o tiempos en cero. Además, el cierre de la OT (`Terminada`) estará bloqueado si no hay tareas registradas.
+> - **CRUD Total:** Se habilitará la edición (Update) y borrado (Delete) de tablas maestras y detalles de la orden, limitado a los estados `Pendiente` y `En Ejecución`.
+> - **Corrección de Reportes:** Resolveré el fallo de ejecución y fijaré el rango por defecto al día actual (`today`).
+
+## Proposed Changes
+
+### 1. Backend: Lógica y Validaciones (app/main.py)
+- **[MODIFY] [app/main.py](file:///c:/aaProyectos/Entorno01/app/main.py):**
+    - **Validación de Cierre:** Lanzar error 400 si se intenta terminar una OT sin tareas.
+    - **Auto-Estado:** En `add_task`, si el estado es `Pendiente`, cambiar a `En Ejecución`.
+    - **CRUD Auxiliar:** Implementar `PUT` (Edición) y `DELETE` para Marcas, Tipos y Técnicos.
+    - **CRUD Detalles:** Implementar `DELETE` para Tareas, Repuestos y Terceros.
+    - **Reportes:** Optimizar las consultas SQL y asegurar el retorno de datos al componente de resultados.
+
+### 2. Frontend: Interfaz y UX
+- **[MODIFY] [app/templates/components/confirm_modal.html](file:///c:/aaProyectos/Entorno01/app/templates/components/confirm_modal.html):**
+    - Corregir el paso de parámetros en `htmx.ajax` para que el cambio de estado funcione correctamente.
+- **[MODIFY] [app/templates/order_detail.html](file:///c:/aaProyectos/Entorno01/app/templates/order_detail.html):**
+    - Añadir botones de "Editar" y "Borrar" en cada fila de tarea/repuesto.
+    - Añadir script para limpiar formularios y disparar eventos de refresco de totales.
+- **[MODIFY] [app/templates/reports.html](file:///c:/aaProyectos/Entorno01/app/templates/reports.html):**
+    - Inicializar inputs de fecha con el valor `today`. 
+
+### 3. Componentes Nuevos/Actualizados
+- **[MODIFY] [app/templates/admin.html](file:///c:/aaProyectos/Entorno01/app/templates/admin.html):** 
+    - Transformar listas estáticas en grillas editables (usando inputs en línea o modals simples).
+
+## Open Questions
+
+- ¿Deseas que al **Editar** una tarea también se pueda re-asignar el técnico responsable?
+- ¿Para la validación de campos vacíos, prefieres que el navegador lo bloquee (`required`) o que el servidor devuelva un mensaje de error específico? (Implementaré ambos para mayor seguridad).
+
+## Verification Plan
+
+### Manual Verification
+1. Crear una OT, agregar una tarea y verificar el cambio automático a "En Ejecución".
+2. Intentar guardar una Marca con nombre vacío y verificar el bloqueo.
+3. Abrir Reportes y confirmar que la fecha por defecto es la del día de hoy.
