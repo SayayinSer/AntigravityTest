@@ -316,8 +316,8 @@ async function launchApp() {
   const res = await api('launch_app', cfg);
   if (res.ok) {
     log(`✓ ${res.msg}`, 'ok');
-    log(`🌐 Abriendo http://${cfg.app_host}:${cfg.app_port} ...`, 'info');
-    setTimeout(() => { window.open(`http://${cfg.app_host}:${cfg.app_port}`, '_blank'); }, 1500);
+    log(`🌐 Abriendo http://${cfg.app_host}:${cfg.app_port}/login ...`, 'info');
+    setTimeout(() => { window.open(`http://${cfg.app_host}:${cfg.app_port}/login`, '_blank'); }, 1500);
     $('btnLaunch').innerHTML = '<span>🟢</span> Ejecutándose';
   } else {
     log(`✗ ${res.msg}`, 'err');
