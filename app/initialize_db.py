@@ -7,8 +7,8 @@ def init_db():
     print("Eliminando tablas existentes (Limpieza total)...")
     Base.metadata.drop_all(bind=engine)
     
-    # Crear tablas con InnoDB y restricciones reales
-    print("Creando nuevas tablas con integridad relacional (RESTRICT)...")
+    # Crear tablas con restricciones reales en PostgreSQL
+    print("Creando nuevas tablas con integridad relacional (PostgreSQL)...")
     Base.metadata.create_all(bind=engine)
     print("¡Base de datos inicializada con éxito!")
 

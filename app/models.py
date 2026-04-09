@@ -18,7 +18,7 @@ class User(Base):
     hashed_password = Column(String(255), nullable=False)
     full_name = Column(String(150))
     email = Column(String(150), unique=True, index=True)
-    status = Column(Enum('Activo', 'Suspendido'), default='Activo')
+    status = Column(Enum('Activo', 'Suspendido', name='user_status_enum', native_enum=False), default='Activo')
     failed_attempts = Column(Integer, default=0)
     is_active = Column(Integer, default=1) # 1=Active, 0=Inactive
     
@@ -78,7 +78,7 @@ class WorkOrder(Base):
     __tablename__ = "work_orders"
     id = Column(Integer, primary_key=True, index=True)
     vehicle_id = Column(Integer, ForeignKey("vehicles.id", ondelete="RESTRICT"))
-    status = Column(Enum('Pendiente', 'En Ejecución', 'Terminada', 'Anulada'), default='Pendiente')
+    status = Column(Enum('Pendiente', 'En Ejecución', 'Terminada', 'Anulada', name='order_status_enum', native_enum=False), default='Pendiente')
     diagnosis = Column(Text)
     solution = Column(Text)
     recommendation = Column(Text)

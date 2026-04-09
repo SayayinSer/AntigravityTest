@@ -1,0 +1,154 @@
+{
+    "users": [
+        {
+            "id": 1,
+            "username": "SU",
+            "hashed_password": "$2b$12$zbZEpEUcXKyUo/Tt3Vur4e81XvKJt5RftgO4Gsex1K1pLIEwRRKsC",
+            "full_name": "Super Usuario",
+            "email": null,
+            "status": "Activo",
+            "failed_attempts": 0,
+            "is_active": 1
+        },
+        {
+            "id": 2,
+            "username": "operador",
+            "hashed_password": "$2b$12$zbZEpEUcXKyUo/Tt3Vur4e81XvKJt5RftgO4Gsex1K1pLIEwRRKsC",
+            "full_name": "Operador Base",
+            "email": null,
+            "status": "Activo",
+            "failed_attempts": 0,
+            "is_active": 1
+        },
+        {
+            "id": 3,
+            "username": "gerente",
+            "hashed_password": "$2b$12$zbZEpEUcXKyUo/Tt3Vur4e81XvKJt5RftgO4Gsex1K1pLIEwRRKsC",
+            "full_name": "Gerente de Taller",
+            "email": null,
+            "status": "Activo",
+            "failed_attempts": 0,
+            "is_active": 1
+        },
+        {
+            "id": 4,
+            "username": "visitante",
+            "hashed_password": "$2b$12$zbZEpEUcXKyUo/Tt3Vur4e81XvKJt5RftgO4Gsex1K1pLIEwRRKsC",
+            "full_name": "Invitado",
+            "email": null,
+            "status": "Activo",
+            "failed_attempts": 0,
+            "is_active": 1
+        }
+    ],
+    "roles": [
+        {
+            "id": 1,
+            "name": "OficialSeguridad",
+            "description": "Acceso total a gesti\u00f3n de usuarios y sistema"
+        },
+        {
+            "id": 2,
+            "name": "Gerente",
+            "description": "Acceso a reportes y supervisi\u00f3n"
+        },
+        {
+            "id": 3,
+            "name": "Operador",
+            "description": "Carga de datos y gesti\u00f3n de \u00f3rdenes"
+        },
+        {
+            "id": 4,
+            "name": "Invitado",
+            "description": "Solo lectura"
+        }
+    ],
+    "brands": [
+        {
+            "id": 1,
+            "name": "Toyota"
+        },
+        {
+            "id": 2,
+            "name": "Ford"
+        },
+        {
+            "id": 3,
+            "name": "Volkswagen"
+        },
+        {
+            "id": 4,
+            "name": "Fiat"
+        },
+        {
+            "id": 5,
+            "name": "Chevrolet"
+        },
+        {
+            "id": 6,
+            "name": "Renault"
+        },
+        {
+            "id": 7,
+            "name": "Peugeot"
+        },
+        {
+            "id": 8,
+            "name": "Honda"
+        }
+    ],
+    "vehicle_types": [
+        {
+            "id": 1,
+            "name": "Sed\u00e1n"
+        },
+        {
+            "id": 2,
+            "name": "Hatchback"
+        },
+        {
+            "id": 3,
+            "name": "SUV"
+        },
+        {
+            "id": 4,
+            "name": "Pickup"
+        },
+        {
+            "id": 5,
+            "name": "Utilitario"
+        },
+        {
+            "id": 6,
+            "name": "Motocicleta"
+        },
+        {
+            "id": 7,
+            "name": "Cami\u00f3n"
+        }
+    ],
+    "vehicles": [],
+    "work_orders": [],
+    "audit_logs": [],
+    "technicians": [
+        {
+            "id": 1,
+            "name": "Juan Mec\u00e1nico"
+        },
+        {
+            "id": 2,
+            "name": "Pedro Electricista"
+        },
+        {
+            "id": 3,
+            "name": "Carlos Chapista"
+        },
+        {
+            "id": 4,
+            "name": "Soporte General"
+        }
+    ],
+    "wo_tasks": [],
+    "wo_parts": [],
+    "wo_third_parties": []
+}

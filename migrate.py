@@ -13,7 +13,7 @@ def migrate():
             conn.execute(text("ALTER TABLE users ADD COLUMN email VARCHAR(150) UNIQUE"))
         if 'status' not in columns:
             print("Adding status...")
-            conn.execute(text("ALTER TABLE users ADD COLUMN status ENUM('Activo', 'Suspendido') DEFAULT 'Activo'"))
+            conn.execute(text("ALTER TABLE users ADD COLUMN status VARCHAR(20) DEFAULT 'Activo'"))
         if 'failed_attempts' not in columns:
             print("Adding failed_attempts...")
             conn.execute(text("ALTER TABLE users ADD COLUMN failed_attempts INT DEFAULT 0"))

@@ -1,96 +1,108 @@
-import mysql.connector
+import psycopg2
+from psycopg2 import sql
 
 def setup_database():
     try:
-        # Conectar a MariaDB (sin especificar DB para crearla primero)
-        db = mysql.connector.connect(
+        # Conectar a PostgreSQL (a la BD por defecto 'postgres' para crear la nueva)
+        db = psycopg2.connect(
             host="localhost",
-            user="root",
+            user="postgres",
             password="123456",
-            collation='utf8mb4_general_ci'
+            dbname="postgres"
         )
+        db.autocommit = True
         cursor = db.cursor()
 
-        # Crear base de datos
-        cursor.execute("CREATE DATABASE IF NOT EXISTS antigravity_test CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci")
-        cursor.execute("USE antigravity_test")
+        # Crear base de datos si no existe
+        cursor.execute("SELECT 1 FROM pg_database WHERE datname = 'antigravity_test'")
+        if not cursor.fetchone():
+            cursor.execute("CREATE DATABASE antigravity_test ENCODING 'UTF8'")
+            print("Base de datos 'antigravity_test' creada.")
+        else:
+            print("Base de datos 'antigravity_test' ya existe.")
+
+        cursor.close()
+        db.close()
+
+        # Conectar a la nueva base de datos
+        db = psycopg2.connect(
+            host="localhost",
+            user="postgres",
+            password="123456",
+            dbname="antigravity_test"
+        )
+        db.autocommit = True
+        cursor = db.cursor()
 
         # Crear Tablas
         tables = [
             """
             CREATE TABLE IF NOT EXISTS brands (
-                id INT AUTO_INCREMENT PRIMARY KEY,
+                id SERIAL PRIMARY KEY,
                 name VARCHAR(100) NOT NULL UNIQUE
             )
             """,
             """
             CREATE TABLE IF NOT EXISTS vehicle_types (
-                id INT AUTO_INCREMENT PRIMARY KEY,
+                id SERIAL PRIMARY KEY,
                 name VARCHAR(100) NOT NULL UNIQUE
             )
             """,
             """
             CREATE TABLE IF NOT EXISTS vehicles (
-                id INT AUTO_INCREMENT PRIMARY KEY,
+                id SERIAL PRIMARY KEY,
                 internal_code VARCHAR(50) NOT NULL UNIQUE,
                 plate VARCHAR(20) NOT NULL UNIQUE,
-                brand_id INT,
-                type_id INT,
+                brand_id INT REFERENCES brands(id),
+                type_id INT REFERENCES vehicle_types(id),
                 model VARCHAR(100),
-                year INT,
-                FOREIGN KEY (brand_id) REFERENCES brands(id),
-                FOREIGN KEY (type_id) REFERENCES vehicle_types(id)
+                year INT
             )
             """,
             """
             CREATE TABLE IF NOT EXISTS technicians (
-                id INT AUTO_INCREMENT PRIMARY KEY,
+                id SERIAL PRIMARY KEY,
                 name VARCHAR(100) NOT NULL
             )
             """,
             """
             CREATE TABLE IF NOT EXISTS work_orders (
-                id INT AUTO_INCREMENT PRIMARY KEY,
-                vehicle_id INT,
-                status ENUM('Pendiente', 'En Ejecución', 'Terminada', 'Anulada') DEFAULT 'Pendiente',
+                id SERIAL PRIMARY KEY,
+                vehicle_id INT REFERENCES vehicles(id),
+                status VARCHAR(20) DEFAULT 'Pendiente' CHECK (status IN ('Pendiente', 'En Ejecución', 'Terminada', 'Anulada')),
                 diagnosis TEXT,
                 solution TEXT,
                 recommendation TEXT,
-                entry_date DATETIME DEFAULT CURRENT_TIMESTAMP,
-                exit_date DATETIME,
-                FOREIGN KEY (vehicle_id) REFERENCES vehicles(id)
+                entry_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                exit_date TIMESTAMP
             )
             """,
             """
             CREATE TABLE IF NOT EXISTS wo_tasks (
-                id INT AUTO_INCREMENT PRIMARY KEY,
-                work_order_id INT,
+                id SERIAL PRIMARY KEY,
+                work_order_id INT REFERENCES work_orders(id),
                 description TEXT,
                 duration_minutes INT,
-                technician_id INT,
-                FOREIGN KEY (work_order_id) REFERENCES work_orders(id),
-                FOREIGN KEY (technician_id) REFERENCES technicians(id)
+                technician_id INT REFERENCES technicians(id)
             )
             """,
             """
             CREATE TABLE IF NOT EXISTS wo_parts (
-                id INT AUTO_INCREMENT PRIMARY KEY,
-                work_order_id INT,
+                id SERIAL PRIMARY KEY,
+                work_order_id INT REFERENCES work_orders(id),
                 description VARCHAR(255),
-                quantity DECIMAL(10,2),
-                unit_price DECIMAL(12,2),
-                uom VARCHAR(20),
-                FOREIGN KEY (work_order_id) REFERENCES work_orders(id)
+                quantity NUMERIC(10,2),
+                unit_price NUMERIC(12,2),
+                uom VARCHAR(20)
             )
             """,
             """
             CREATE TABLE IF NOT EXISTS wo_third_parties (
-                id INT AUTO_INCREMENT PRIMARY KEY,
-                work_order_id INT,
+                id SERIAL PRIMARY KEY,
+                work_order_id INT REFERENCES work_orders(id),
                 provider_name VARCHAR(255),
                 description TEXT,
-                price DECIMAL(12,2),
-                FOREIGN KEY (work_order_id) REFERENCES work_orders(id)
+                price NUMERIC(12,2)
             )
             """
         ]
@@ -98,32 +110,38 @@ def setup_database():
         for table_sql in tables:
             cursor.execute(table_sql)
 
-        # Cargar Datos Semilla (Pre-carga)
-        brands = [('Toyota',), ('Ford',), ('Chevrolet',), ('Volkswagen',), ('Mercedes-Benz',), ('Scania',), ('Honda',), ('Yamaha',)]
-        cursor.executemany("INSERT IGNORE INTO brands (name) VALUES (%s)", brands)
+        # Cargar Datos Semilla (Pre-carga) con INSERT ... ON CONFLICT DO NOTHING
+        brands = ['Toyota', 'Ford', 'Chevrolet', 'Volkswagen', 'Mercedes-Benz', 'Scania', 'Honda', 'Yamaha']
+        for brand in brands:
+            cursor.execute("INSERT INTO brands (name) VALUES (%s) ON CONFLICT DO NOTHING", (brand,))
 
-        types = [('Auto',), ('Camión',), ('Moto',), ('Utilitario',), ('Maquinaria',)]
-        cursor.executemany("INSERT IGNORE INTO vehicle_types (name) VALUES (%s)", types)
+        types = ['Auto', 'Camión', 'Moto', 'Utilitario', 'Maquinaria']
+        for vtype in types:
+            cursor.execute("INSERT INTO vehicle_types (name) VALUES (%s) ON CONFLICT DO NOTHING", (vtype,))
 
-        techs = [('Juan Pérez',), ('Carlos Gómez',), ('Luis Rodríguez',)]
-        cursor.executemany("INSERT IGNORE INTO technicians (name) VALUES (%s)", techs)
+        techs = ['Juan Pérez', 'Carlos Gómez', 'Luis Rodríguez']
+        for tech in techs:
+            cursor.execute("INSERT INTO technicians (name) VALUES (%s) ON CONFLICT DO NOTHING", (tech,))
 
-        # Pre-carga de Vehículos (Moviles)
+        # Pre-carga de Vehículos (Móviles)
         vehicles = [
             ('M001', 'ABC-123', 1, 1, 'Corolla', 2022),
             ('M002', 'XYZ-789', 2, 2, 'F-150', 2021),
             ('M003', 'MOT-456', 7, 3, 'CB500', 2023),
             ('M004', 'UTI-111', 4, 4, 'Amarok', 2020)
         ]
-        cursor.executemany("INSERT IGNORE INTO vehicles (internal_code, plate, brand_id, type_id, model, year) VALUES (%s, %s, %s, %s, %s, %s)", vehicles)
+        for v in vehicles:
+            cursor.execute(
+                "INSERT INTO vehicles (internal_code, plate, brand_id, type_id, model, year) VALUES (%s, %s, %s, %s, %s, %s) ON CONFLICT DO NOTHING",
+                v
+            )
 
-        db.commit()
-        print("Base de datos 'antigravity_test' configurada exitosamente.")
+        print("Base de datos 'antigravity_test' configurada exitosamente con PostgreSQL.")
 
-    except mysql.connector.Error as err:
+    except psycopg2.Error as err:
         print(f"Error: {err}")
     finally:
-        if 'db' in locals() and db.is_connected():
+        if 'db' in locals() and not db.closed:
             cursor.close()
             db.close()
 

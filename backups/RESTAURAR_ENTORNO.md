@@ -25,5 +25,5 @@ En la nueva máquina, crea una carpeta para el proyecto y abre Antigravity en el
 - El backup también se encuentra dentro del repositorio en la carpeta `backups`.
 
 ---
-**Respaldo generado el:** 08/04/2026
+**Respaldo generado el:** 09/04/2026 (Versión Beta)
 **Proyecto:** Antigravity Workflow Engine
