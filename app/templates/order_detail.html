@@ -48,8 +48,8 @@
                 </div>
                 
                 {% if not is_closed %}
-                <div class="space-y-4" x-data="{ selectedStatus: '{{ order.status }}' }">
-                    <select x-model="selectedStatus" class="w-full p-2.5 border rounded-xl focus:ring-2 focus:ring-sky-500 outline-none bg-gray-50 font-bold text-sm">
+                <div class="space-y-4" x-data="{ currentStatus: '{{ order.status }}' }">
+                    <select x-model="currentStatus" name="status" class="w-full p-2.5 border rounded-xl focus:ring-2 focus:ring-sky-500 outline-none bg-gray-50 font-bold text-sm">
                         <option value="Pendiente">Pendiente</option>
                         <option value="En Ejecución">En Ejecución</option>
                         <option value="Terminada">Terminada (Cerrar)</option>
@@ -57,38 +57,39 @@
                     </select>
 
                     <!-- Campos de Cierre (Solo si es Terminada) -->
-                    <div x-show="selectedStatus == 'Terminada'" x-transition class="p-4 bg-sky-50 rounded-2xl border border-sky-100 space-y-4">
+                    <div x-show="currentStatus == 'Terminada'" x-transition class="p-4 bg-sky-50 rounded-2xl border border-sky-100 space-y-4">
                         <p class="text-[10px] font-black text-sky-700 uppercase tracking-widest">Datos Obligatorios de Cierre</p>
                         <div>
                             <label class="block text-[9px] font-bold text-slate-400 uppercase mb-1">Solución Realizada</label>
-                            <textarea id="solution-input" placeholder="Detalle técnico de la reparación..." class="w-full p-2 text-sm border rounded-lg h-20 outline-none focus:ring-2 focus:ring-sky-500"></textarea>
+                            <textarea id="sol_input" placeholder="Detalle técnico..." class="w-full p-2 text-sm border rounded-lg h-20 outline-none"></textarea>
                         </div>
                         <div class="grid grid-cols-2 gap-3">
                             <div>
-                                <label class="block text-[9px] font-bold text-slate-400 uppercase mb-1">Kilometraje Actual</label>
-                                <input type="number" id="mileage-input" value="{{ order.vehicle.current_mileage }}" class="w-full p-2 text-sm border rounded-lg outline-none">
+                                <label class="block text-[9px] font-bold text-slate-400 uppercase mb-1">KM Actual</label>
+                                <input type="number" id="mil_input" value="{{ order.vehicle.current_mileage }}" class="w-full p-2 text-sm border rounded-lg outline-none">
                             </div>
                             <div>
                                 <label class="block text-[9px] font-bold text-slate-400 uppercase mb-1">Próxima Visita</label>
-                                <input type="date" id="next-visit-input" class="w-full p-2 text-sm border rounded-lg outline-none">
+                                <input type="date" id="vis_input" class="w-full p-2 text-sm border rounded-lg outline-none">
                             </div>
                         </div>
                     </div>
 
                     <button type="button" 
                             @click="
-                                const vals = { status: selectedStatus };
-                                if(selectedStatus === 'Terminada') {
-                                    vals.solution = document.getElementById('solution-input').value;
-                                    vals.mileage = document.getElementById('mileage-input').value;
-                                    vals.next_visit = document.getElementById('next-visit-input').value;
+                                let v = { status: currentStatus };
+                                if(currentStatus === 'Terminada') {
+                                    v.solution = document.getElementById('sol_input').value;
+                                    v.mileage = document.getElementById('mil_input').value;
+                                    v.next_visit = document.getElementById('vis_input').value;
                                 }
-                                htmx.ajax('POST', '/order/{{ order.id }}/status', { values: vals })
-                            }"
-                            class="w-full bg-slate-900 text-white py-3 rounded-xl hover:bg-black font-black shadow-xl transition-all active:scale-95 uppercase text-xs tracking-widest">
+                                htmx.ajax('POST', '/order/{{ order.id }}/status', { values: v })
+                            "
+                            class="w-full bg-slate-900 text-white py-3 rounded-xl hover:bg-black font-black shadow-xl transition-all uppercase text-xs tracking-widest">
                         Actualizar Estado
                     </button>
                 </div>
+ </div>
                 {% endif %}
             </div>
         </div>

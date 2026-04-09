@@ -17,6 +17,9 @@ class User(Base):
     username = Column(String(100), unique=True, index=True, nullable=False)
     hashed_password = Column(String(255), nullable=False)
     full_name = Column(String(150))
+    email = Column(String(150), unique=True, index=True)
+    status = Column(Enum('Activo', 'Suspendido'), default='Activo')
+    failed_attempts = Column(Integer, default=0)
     is_active = Column(Integer, default=1) # 1=Active, 0=Inactive
     
     roles = relationship("Role", secondary=user_roles, back_populates="users")
@@ -124,3 +127,15 @@ class WOThirdParty(Base):
     price = Column(Numeric(12, 2))
 
     work_order = relationship("WorkOrder", back_populates="third_parties")
+
+class AuditLog(Base):
+    __tablename__ = "audit_logs"
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="SET NULL"))
+    action = Column(String(50)) # CREAR, MODIFICAR, BORRAR
+    entity_name = Column(String(50)) # Vehículo, Orden
+    entity_id = Column(Integer)
+    timestamp = Column(DateTime, server_default=func.now())
+    details = Column(Text) # JSON o descripción de cambios
+
+    user = relationship("User")

@@ -1,0 +1,47 @@
+<div id="modal-container" class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-300">
+    <div class="bg-white w-full max-w-lg rounded-[2.5rem] shadow-2xl overflow-hidden border border-slate-100 animate-in zoom-in-95 duration-300">
+        <div class="p-8 pb-4 flex justify-between items-center bg-slate-50">
+            <h2 class="text-xl font-black text-slate-800 uppercase tracking-tighter">Nueva Orden de Trabajo</h2>
+            <button onclick="document.getElementById('modal-container').remove()" class="text-slate-400 hover:text-slate-600 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+        </div>
+
+        <form hx-post="/order/save" @htmx:after-request="if($event.detail.successful) window.location.reload()" class="p-8 space-y-6">
+            <div>
+                <label class="block text-[10px] font-black text-slate-400 uppercase mb-2 tracking-widest pl-2">Seleccionar Vehículo</label>
+                <select name="vehicle_id" required class="w-full p-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:ring-4 focus:ring-sky-500/10 transition-all font-bold text-slate-700">
+                    <option value="" disabled selected>Elegir unidad...</option>
+                    {% for v in vehicles %}
+                    <option value="{{ v.id }}">{{ v.plate }} - {{ v.brand.name }} {{ v.model }} (Cód: {{ v.internal_code }})</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div>
+                <label class="block text-[10px] font-black text-slate-400 uppercase mb-2 tracking-widest pl-2">Diagnóstico Inicial / Motivo</label>
+                <textarea name="diagnosis" required 
+                          class="w-full p-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:ring-4 focus:ring-sky-500/10 transition-all font-medium text-slate-600 h-32"
+                          placeholder="Describe el problema que reporta el cliente..."></textarea>
+            </div>
+
+            <div class="pt-4 flex gap-4">
+                <button type="button" onclick="document.getElementById('modal-container').remove()" 
+                        class="flex-1 px-6 py-4 rounded-2xl border border-slate-100 font-bold text-slate-400 hover:bg-slate-50 transition-all text-xs uppercase">
+                    Cancelar
+                </button>
+                <button type="submit" 
+                        class="flex-[2] bg-sky-600 text-white px-6 py-4 rounded-2xl font-black text-xs uppercase tracking-widest shadow-xl shadow-sky-200 hover:bg-sky-700 hover:-translate-y-0.5 transition-all outline-none">
+                    Generar Orden No. ---
+                </button>
+            </div>
+        </form>
+        
+        <div class="px-8 py-4 bg-amber-50 border-t border-amber-100">
+            <p class="text-[10px] text-amber-700 font-bold leading-tight">
+                <span class="inline-block w-2 h-2 bg-amber-400 rounded-full mr-1"></span>
+                Auditoría Activa: Tu sesión ({{ user.username }}) será registrada como creadora de esta orden.
+            </p>
+        </div>
+    </div>
+</div>

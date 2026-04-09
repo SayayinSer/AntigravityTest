@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte de Auditoría - Antigravity</title>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body class="bg-slate-50 min-h-screen font-sans" style="font-family: 'Outfit', sans-serif;">
+    
+    <nav class="bg-slate-900 text-white p-6 shadow-2xl flex justify-between items-center">
+        <h1 class="text-xl font-black tracking-tighter uppercase"><span class="text-sky-400">Audit</span> Log</h1>
+        <div class="flex gap-4">
+            <a href="/admin/security" class="text-[10px] font-black uppercase hover:text-sky-400">Seguridad</a>
+            <a href="/" class="text-[10px] font-black uppercase hover:text-sky-400">Dashboard</a>
+        </div>
+    </nav>
+
+    <main class="container mx-auto py-12 px-4 max-w-6xl">
+        <div class="bg-white rounded-[2.5rem] shadow-2xl border border-slate-100 overflow-hidden">
+            <!-- Filtros -->
+            <div class="p-8 border-b border-slate-50 bg-slate-50/50">
+                <form hx-get="/admin/audit/filter" hx-target="#audit-results" class="flex flex-wrap items-end gap-6">
+                    <div>
+                        <label class="block text-[10px] font-black text-slate-400 uppercase mb-2">Desde</label>
+                        <input type="date" name="start_date" value="{{ today }}" class="p-3 bg-white border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-sky-500 text-sm font-bold">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-black text-slate-400 uppercase mb-2">Hasta</label>
+                        <input type="date" name="end_date" value="{{ today }}" class="p-3 bg-white border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-sky-500 text-sm font-bold">
+                    </div>
+                    <button type="submit" class="bg-slate-900 text-white px-8 py-3.5 rounded-xl font-black text-xs uppercase hover:bg-black transition-all shadow-lg">
+                        FILTRAR LOGS
+                    </button>
+                </form>
+            </div>
+
+            <!-- Tabla de Resultados -->
+            <div id="audit-results" class="p-4">
+                <table class="w-full text-left">
+                    <thead class="text-[10px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-50">
+                        <tr>
+                            <th class="p-6">Fecha / Hora</th>
+                            <th class="p-6">Usuario</th>
+                            <th class="p-6">Acción</th>
+                            <th class="p-6">Objeto (ID)</th>
+                            <th class="p-6">Detalles</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-50">
+                        {% for log in logs %}
+                        <tr class="hover:bg-sky-50/30 transition-colors">
+                            <td class="p-6">
+                                <span class="text-xs font-bold text-slate-400">{{ log.timestamp.strftime('%d/%m/%Y %H:%M') }}</span>
+                            </td>
+                            <td class="p-6">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-7 h-7 bg-slate-100 rounded-full flex items-center justify-center text-[10px] font-black">{{ log.user.username[:2].upper() if log.user else '?' }}</div>
+                                    <span class="text-sm font-black text-slate-700">{{ log.user.username if log.user else 'Sistema' }}</span>
+                                </div>
+                            </td>
+                            <td class="p-6">
+                                <span class="px-2 py-0.5 rounded text-[9px] font-black uppercase shadow-sm border
+                                    {% if log.action == 'CREAR' %}bg-green-100 text-green-700 border-green-200
+                                    {% elif log.action == 'MODIFICAR' or log.action == 'ESTADO' %}bg-blue-100 text-blue-700 border-blue-200
+                                    {% elif log.action == 'BORRAR' %}bg-red-100 text-red-700 border-red-200
+                                    {% else %}bg-slate-100 text-slate-600 border-slate-200{% endif %}">
+                                    {{ log.action }}
+                                </span>
+                            </td>
+                            <td class="p-6">
+                                <div class="text-xs font-bold text-slate-600">{{ log.entity_name }}</div>
+                                <div class="text-[9px] text-slate-400 italic">ID: {{ log.entity_id }}</div>
+                            </td>
+                            <td class="p-6 text-xs text-slate-500 italic max-w-xs truncate">
+                                {{ log.details or '-' }}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

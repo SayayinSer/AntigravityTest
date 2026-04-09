@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Optional
 from jose import JWTError, jwt
 from passlib.context import CryptContext
@@ -19,12 +19,28 @@ def verify_password(plain_password, hashed_password):
 def get_password_hash(password):
     return pwd_context.hash(password)
 
+def validate_password_strength(password: str):
+    # Política Flexible corregida: Min 6 caracteres (Beta)
+    if len(password) < 6:
+        raise ValueError("La clave debe tener al menos 6 caracteres")
+    return True
+
+def handle_failed_login(db: Session, user: models.User):
+    user.failed_attempts += 1
+    if user.failed_attempts >= 3:
+        user.status = 'Suspendido'
+    db.commit()
+
+def reset_failed_login(db: Session, user: models.User):
+    user.failed_attempts = 0
+    db.commit()
+
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     to_encode = data.copy()
     if expires_delta:
-        expire = datetime.utcnow() + expires_delta
+        expire = datetime.now(timezone.utc) + expires_delta
     else:
-        expire = datetime.utcnow() + timedelta(minutes=15)
+        expire = datetime.now(timezone.utc) + timedelta(minutes=15)
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
