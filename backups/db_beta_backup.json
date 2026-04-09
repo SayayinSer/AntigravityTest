@@ -3,7 +3,7 @@
         {
             "id": 1,
             "username": "SU",
-            "hashed_password": "$2b$12$zbZEpEUcXKyUo/Tt3Vur4e81XvKJt5RftgO4Gsex1K1pLIEwRRKsC",
+            "hashed_password": "$2b$12$sy.noqO2q2K0tdlmH8djJe/DVjLZVeagUE5mcJ/qr2a5Uenm4D3J.",
             "full_name": "Super Usuario",
             "email": null,
             "status": "Activo",
@@ -13,7 +13,7 @@
         {
             "id": 2,
             "username": "operador",
-            "hashed_password": "$2b$12$zbZEpEUcXKyUo/Tt3Vur4e81XvKJt5RftgO4Gsex1K1pLIEwRRKsC",
+            "hashed_password": "$2b$12$sy.noqO2q2K0tdlmH8djJe/DVjLZVeagUE5mcJ/qr2a5Uenm4D3J.",
             "full_name": "Operador Base",
             "email": null,
             "status": "Activo",
@@ -23,7 +23,7 @@
         {
             "id": 3,
             "username": "gerente",
-            "hashed_password": "$2b$12$zbZEpEUcXKyUo/Tt3Vur4e81XvKJt5RftgO4Gsex1K1pLIEwRRKsC",
+            "hashed_password": "$2b$12$sy.noqO2q2K0tdlmH8djJe/DVjLZVeagUE5mcJ/qr2a5Uenm4D3J.",
             "full_name": "Gerente de Taller",
             "email": null,
             "status": "Activo",
@@ -33,7 +33,7 @@
         {
             "id": 4,
             "username": "visitante",
-            "hashed_password": "$2b$12$zbZEpEUcXKyUo/Tt3Vur4e81XvKJt5RftgO4Gsex1K1pLIEwRRKsC",
+            "hashed_password": "$2b$12$sy.noqO2q2K0tdlmH8djJe/DVjLZVeagUE5mcJ/qr2a5Uenm4D3J.",
             "full_name": "Invitado",
             "email": null,
             "status": "Activo",
