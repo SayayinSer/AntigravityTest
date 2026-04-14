@@ -19,7 +19,7 @@
                 <td class="py-4 text-right">${{ part.unit_price }}</td>
                 <td class="py-4 text-right font-bold text-slate-700">${{ part.quantity * part.unit_price }}</td>
                 <td class="py-4 px-4 text-right">
-                    <button hx-delete="/part/{{ part.id }}" 
+                    <button hx-delete="{{ base }}/part/{{ part.id }}" 
                             hx-confirm="¿Eliminar este material?"
                             hx-target="closest tr" 
                             hx-swap="outerHTML"

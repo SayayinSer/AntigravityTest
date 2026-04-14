@@ -21,21 +21,21 @@
                 <div class="flex items-center gap-3 bg-white/10 px-4 py-1.5 rounded-full border border-white/20 mr-2">
                     <div class="w-6 h-6 bg-sky-300 text-sky-900 rounded-full flex items-center justify-center text-[10px] font-black">{{ user.username[0] }}</div>
                     <span class="text-[10px] font-bold uppercase tracking-wider">{{ user.username }}</span>
-                    <a href="/logout" class="text-[10px] text-sky-200 hover:text-white ml-2 underline">Salir</a>
+                    <a href="{{ base }}/logout" class="text-[10px] text-sky-200 hover:text-white ml-2 underline">Salir</a>
                 </div>
                 {% endif %}
 
-                <a href="/vehicles" class="bg-white/10 hover:bg-white/20 px-4 py-2 rounded-xl transition-all border border-white/20 text-xs font-bold flex items-center gap-2">Móviles</a>
-                <a href="/reports" class="bg-white/10 hover:bg-white/20 px-4 py-2 rounded-xl transition-all border border-white/20 text-xs font-bold flex items-center gap-2">Reportes</a>
-                <a href="/admin" class="bg-white/10 hover:bg-white/20 px-4 py-2 rounded-xl transition-all border border-white/20 text-xs font-bold flex items-center gap-2">Tablas</a>
+                <a href="{{ base }}/vehicles" class="bg-white/10 hover:bg-white/20 px-4 py-2 rounded-xl transition-all border border-white/20 text-xs font-bold flex items-center gap-2">Móviles</a>
+                <a href="{{ base }}/reports" class="bg-white/10 hover:bg-white/20 px-4 py-2 rounded-xl transition-all border border-white/20 text-xs font-bold flex items-center gap-2">Reportes</a>
+                <a href="{{ base }}/admin" class="bg-white/10 hover:bg-white/20 px-4 py-2 rounded-xl transition-all border border-white/20 text-xs font-bold flex items-center gap-2">Tablas</a>
                 
                 {% if user and 'OficialSeguridad' in user.roles|map(attribute='name') %}
-                <a href="/admin/security" class="bg-amber-400 hover:bg-amber-500 text-amber-950 px-4 py-2 rounded-xl transition-all shadow-lg text-xs font-black flex items-center gap-2">
+                <a href="{{ base }}/admin/security" class="bg-amber-400 hover:bg-amber-500 text-amber-950 px-4 py-2 rounded-xl transition-all shadow-lg text-xs font-black flex items-center gap-2">
                     🔒 SEGURIDAD
                 </a>
                 {% endif %}
 
-                <button hx-get="/order/new" hx-target="#main-panel" class="bg-white text-sky-600 hover:bg-sky-50 px-6 py-2 rounded-xl transition-all shadow-lg font-black text-xs flex items-center gap-2">
+                <button hx-get="{{ base }}/order/new" hx-target="#main-panel" class="bg-white text-sky-600 hover:bg-sky-50 px-6 py-2 rounded-xl transition-all shadow-lg font-black text-xs flex items-center gap-2">
                     + NUEVA ORDEN
                 </button>
             </div>
@@ -96,7 +96,7 @@
                                     <span class="text-lg font-black text-slate-800">${{ order.total_cost }}</span>
                                 </td>
                                 <td class="py-6 px-4 text-center">
-                                    <a href="/order/{{ order.id }}" class="bg-slate-800 text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-sky-600 transition-colors shadow-md">
+                                    <a href="{{ base }}/order/{{ order.id }}" class="bg-slate-800 text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-sky-600 transition-colors shadow-md">
                                         ABRIR OT
                                     </a>
                                 </td>

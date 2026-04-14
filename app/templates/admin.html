@@ -17,8 +17,8 @@
     <nav class="bg-slate-800 text-white p-5 shadow-2xl flex justify-between items-center">
         <h1 class="text-xl font-black tracking-tighter">ANTIGRAVITY <span class="text-sky-400 font-light">CONFIG</span></h1>
         <div class="flex gap-4">
-            <a href="/vehicles" class="px-5 py-2 bg-slate-700 rounded-xl hover:bg-slate-600 border border-slate-600 text-xs font-bold uppercase transition-all">Móviles</a>
-            <a href="/" class="px-5 py-2 bg-slate-700 rounded-xl hover:bg-slate-600 border border-slate-600 text-xs font-bold uppercase transition-all">Dashboard</a>
+            <a href="{{ base }}/vehicles" class="px-5 py-2 bg-slate-700 rounded-xl hover:bg-slate-600 border border-slate-600 text-xs font-bold uppercase transition-all">Móviles</a>
+            <a href="{{ base }}/" class="px-5 py-2 bg-slate-700 rounded-xl hover:bg-slate-600 border border-slate-600 text-xs font-bold uppercase transition-all">Dashboard</a>
         </div>
     </nav>
 
@@ -39,7 +39,7 @@
             </h2>
             
             <!-- Inserción Rápida -->
-            <form hx-post="/admin/{{ table.path }}" @htmx:after-request="if($event.detail.successful) window.location.reload()" class="mb-8 flex gap-2">
+            <form hx-post="{{ base }}/admin/{{ table.path }}" @htmx:after-request="if($event.detail.successful) window.location.reload()" class="mb-8 flex gap-2">
                 <input type="text" name="name" placeholder="Nuevo..." required class="flex-1 p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-{{ table.color }}-500 outline-none transition-all text-sm">
                 <button type="submit" class="bg-{{ table.color }}-600 text-white px-5 py-3 rounded-xl hover:bg-{{ table.color }}-700 font-black shadow-lg transition-transform active:scale-95">+</button>
             </form>
@@ -52,7 +52,7 @@
                     
                     <div class="flex-1 mr-2">
                         <span x-show="!editing" class="text-sm font-bold text-slate-600">{{ item.name }}</span>
-                        <form x-show="editing" x-cloak hx-post="/admin/{{ table.path }}/{{ item.id }}/update" @htmx:after-request="window.location.reload()">
+                        <form x-show="editing" x-cloak hx-post="{{ base }}/admin/{{ table.path }}/{{ item.id }}/update" @htmx:after-request="window.location.reload()">
                             <input type="text" name="name" value="{{ item.name }}" class="w-full text-sm p-2 bg-white border border-{{ table.color }}-400 rounded-lg outline-none focus:ring-2 focus:ring-{{ table.color }}-100" @keyup.escape="editing = false" autofocus>
                         </form>
                     </div>
@@ -61,7 +61,7 @@
                         <button @click="editing = !editing" class="p-2 text-slate-300 hover:text-{{ table.color }}-600 bg-white rounded-lg shadow-sm border border-slate-100 transition-colors">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
                         </button>
-                        <button hx-post="/admin/{{ table.path }}/{{ item.id }}/delete" 
+                        <button hx-post="{{ base }}/admin/{{ table.path }}/{{ item.id }}/delete" 
                                 hx-confirm="¿Confirmas la eliminación definitiva?"
                                 hx-target="#notification-area"
                                 class="p-2 text-slate-300 hover:text-red-600 bg-white rounded-lg shadow-sm border border-slate-100 transition-colors">

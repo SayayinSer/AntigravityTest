@@ -20,7 +20,7 @@
                 </td>
                 <td class="py-4 font-mono font-bold">{{ task.duration_minutes }} min</td>
                 <td class="py-4">
-                    <button hx-delete="/task/{{ task.id }}" 
+                    <button hx-delete="{{ base }}/task/{{ task.id }}" 
                             hx-confirm="¿Estás seguro de eliminar esta tarea?"
                             hx-target="closest tr" 
                             hx-swap="outerHTML"

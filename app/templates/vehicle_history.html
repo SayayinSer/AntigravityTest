@@ -14,7 +14,7 @@
             <h1 class="text-xl font-black tracking-tighter">HISTORIA <span class="text-sky-400">CLÍNICA</span></h1>
             <p class="text-[10px] text-slate-400 uppercase font-bold">Unidad #{{ vehicle.internal_code }} &bull; {{ vehicle.plate }}</p>
         </div>
-        <a href="/vehicles" class="bg-slate-800 hover:bg-slate-700 px-6 py-2 rounded-xl text-xs font-black transition-all border border-slate-700 uppercase">Volver a Flota</a>
+        <a href="{{ base }}/vehicles" class="bg-slate-800 hover:bg-slate-700 px-6 py-2 rounded-xl text-xs font-black transition-all border border-slate-700 uppercase">Volver a Flota</a>
     </nav>
 
     <main class="container mx-auto py-12 px-4 max-w-5xl">
@@ -77,7 +77,7 @@
                                 <span class="text-sm font-black text-slate-800">{{ ot.tasks|length }} Realizadas</span>
                             </div>
                         </div>
-                        <a href="/order/{{ ot.id }}" class="text-[10px] font-black text-sky-500 uppercase hover:text-sky-600 transition-colors">Ver Detalles Completos &rarr;</a>
+                        <a href="{{ base }}/order/{{ ot.id }}" class="text-[10px] font-black text-sky-500 uppercase hover:text-sky-600 transition-colors">Ver Detalles Completos &rarr;</a>
                     </div>
                 </div>
             </div>

@@ -13,9 +13,9 @@
     <nav class="bg-slate-900 text-white p-6 shadow-2xl flex justify-between items-center">
         <h1 class="text-xl font-black tracking-tighter uppercase"><span class="text-sky-400">Security</span> Console</h1>
         <div class="flex gap-4">
-            <a href="/admin/audit" class="text-[10px] font-black uppercase text-sky-400 border border-sky-400/30 px-3 py-1.5 rounded-lg hover:bg-sky-400 hover:text-white transition-all">Reporte Auditoría</a>
-            <a href="/" class="text-[10px] font-black uppercase hover:text-sky-400 py-1.5">Volver al Dashboard</a>
-            <a href="/logout" class="text-[10px] font-black uppercase text-red-400 py-1.5">Cerrar Sesión</a>
+            <a href="{{ base }}/admin/audit" class="text-[10px] font-black uppercase text-sky-400 border border-sky-400/30 px-3 py-1.5 rounded-lg hover:bg-sky-400 hover:text-white transition-all">Reporte Auditoría</a>
+            <a href="{{ base }}/" class="text-[10px] font-black uppercase hover:text-sky-400 py-1.5">Volver al Dashboard</a>
+            <a href="{{ base }}/logout" class="text-[10px] font-black uppercase text-red-400 py-1.5">Cerrar Sesión</a>
         </div>
     </nav>
 
@@ -25,7 +25,7 @@
             <div class="lg:col-span-1">
                 <div class="bg-white p-8 rounded-[2rem] shadow-xl border border-slate-100">
                     <h2 class="text-xl font-black mb-6 text-slate-700">Nuevo Usuario</h2>
-                    <form hx-post="/admin/security/user" @htmx:after-request="if($event.detail.successful) window.location.reload()" class="space-y-4">
+                    <form hx-post="{{ base }}/admin/security/user" @htmx:after-request="if($event.detail.successful) window.location.reload()" class="space-y-4">
                         <div>
                             <label class="block text-[10px] font-black text-slate-400 uppercase mb-2">Username</label>
                             <input type="text" name="username" required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-sky-500">
@@ -88,7 +88,7 @@
                                             <span class="w-2 h-2 rounded-full bg-current"></span>
                                             {{ u.status }}
                                         </span>
-                                        <button hx-post="/admin/user/{{ u.id }}/toggle-status" 
+                                        <button hx-post="{{ base }}/admin/user/{{ u.id }}/toggle-status" 
                                                 hx-confirm="¿Cambiar estado de {{ u.username }}?"
                                                 @htmx:after-request="window.location.reload()"
                                                 class="text-[9px] font-black uppercase text-slate-400 hover:text-sky-600 underline">

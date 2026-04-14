@@ -1,7 +1,7 @@
 @echo off
 setlocal enabledelayedexpansion
 chcp 65001 >nul 2>&1
-title Antigravity - Work Order Management
+title Antigravity - NucleoTallerV1
 color 0A
 
 echo.
@@ -24,14 +24,14 @@ REM  Verificar si el servidor ya esta corriendo
 REM ================================================
 echo   [..] Verificando si el sistema ya esta activo...
 
-powershell -Command "try { $r = Invoke-WebRequest -Uri 'http://127.0.0.1:8000/login' -UseBasicParsing -TimeoutSec 2; exit 0 } catch { exit 1 }" >nul 2>&1
+powershell -Command "try { $r = Invoke-WebRequest -Uri 'http://127.0.0.1:8000/NucleoTallerV1/login' -UseBasicParsing -TimeoutSec 2; exit 0 } catch { exit 1 }" >nul 2>&1
 
 if !errorlevel! equ 0 (
     echo   [OK] El sistema ya esta en ejecucion.
     echo   [OK] Abriendo sesion de Login...
     echo.
     echo [%date% %time%] Sistema ya activo. Abriendo nuevo Login. >> "%LOGFILE%"
-    start "" http://127.0.0.1:8000/login
+    start "" http://127.0.0.1:8000/NucleoTallerV1/login
     timeout /t 3 >nul
     exit /b 0
 )
@@ -93,7 +93,7 @@ echo [%date% %time%] Todas las verificaciones pasaron. >> "%LOGFILE%"
 echo.
 echo   ----------------------------------------
 echo     Sistema listo. Abriendo navegador...
-echo     http://127.0.0.1:8000/login
+echo     http://127.0.0.1:8000/NucleoTallerV1/login
 echo   ----------------------------------------
 echo.
 echo     Presione Ctrl+C para detener
@@ -106,7 +106,7 @@ REM ================================================
 echo [%date% %time%] Iniciando Uvicorn en puerto 8000... >> "%LOGFILE%"
 
 REM Esperar 2 seg y abrir navegador en /login
-start /b cmd /c "timeout /t 2 /nobreak >nul & start "" http://127.0.0.1:8000/login"
+start /b cmd /c "timeout /t 2 /nobreak >nul & start "" http://127.0.0.1:8000/NucleoTallerV1/login"
 
 REM Iniciar servidor (errores al log)
 python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 2>> "%LOGFILE%"

@@ -16,7 +16,7 @@
     <div id="notification-area" class="fixed top-4 right-4 z-[200]"></div>
 
     <!-- Cabecera Reactiva -->
-    <div id="order-header" hx-get="/order/{{ order.id }}/header" hx-trigger="load, refresh-header from:body">
+    <div id="order-header" hx-get="{{ base }}/order/{{ order.id }}/header" hx-trigger="load, refresh-header from:body">
         {% include 'components/order_header.html' %}
     </div>
 
@@ -35,13 +35,13 @@
                 </div>
             </div>
 
-            <div id="order-summary" hx-get="/order/{{ order.id }}/summary" hx-trigger="load, refreshSummary from:body">
+            <div id="order-summary" hx-get="{{ base }}/order/{{ order.id }}/summary" hx-trigger="load, refreshSummary from:body">
                 <div class="animate-pulse bg-gray-200 h-32 rounded-2xl"></div>
             </div>
 
             <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200" 
                  x-data="{ selectedStatus: '{{ order.status }}' }"
-                 @refresh-status.window="htmx.ajax('GET', '/order/{{ order.id }}/status-only', { target: '#status-display' })">
+                 @refresh-status.window="htmx.ajax('GET', '{{ base }}/order/{{ order.id }}/status-only', { target: '#status-display' })">
                 <h2 class="text-lg font-bold mb-4 border-b pb-2">Estado de la Orden</h2>
                 <div id="status-display" class="mb-4">
                     <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded font-bold uppercase text-xs">{{ order.status }}</span>
@@ -83,7 +83,7 @@
                                     v.mileage = document.getElementById('mil_input').value;
                                     v.next_visit = document.getElementById('vis_input').value;
                                 }
-                                htmx.ajax('POST', '/order/{{ order.id }}/status', { values: v })
+                                htmx.ajax('POST', '{{ base }}/order/{{ order.id }}/status', { values: v })
                             "
                             class="w-full bg-slate-900 text-white py-3 rounded-xl hover:bg-black font-black shadow-xl transition-all uppercase text-xs tracking-widest">
                         Actualizar Estado
@@ -111,7 +111,7 @@
                 <div x-show="expanded" x-collapse x-cloak class="p-6">
                     {% if not is_closed %}
                     <div class="mb-8 p-6 bg-green-50/50 border border-green-100 rounded-2xl">
-                        <form hx-post="/order/{{ order.id }}/task" hx-target="#task-list"
+                        <form hx-post="{{ base }}/order/{{ order.id }}/task" hx-target="#task-list"
                               @htmx:after-request="if($event.detail.successful) { $el.reset(); }"
                               class="grid grid-cols-1 md:grid-cols-4 gap-4">
                             <input type="text" name="description" placeholder="Trabajo" required class="md:col-span-2 p-2.5 border rounded-xl">
@@ -140,7 +140,7 @@
                 <div x-show="expanded" x-collapse x-cloak class="p-6">
                     {% if not is_closed %}
                     <div class="mb-8 p-6 bg-amber-50/50 border border-amber-100 rounded-2xl">
-                        <form hx-post="/order/{{ order.id }}/part" hx-target="#part-list"
+                        <form hx-post="{{ base }}/order/{{ order.id }}/part" hx-target="#part-list"
                               @htmx:after-request="if($event.detail.successful) { $el.reset(); }"
                               class="grid grid-cols-1 md:grid-cols-4 gap-4">
                             <input type="text" name="description" placeholder="Insumo" required class="md:col-span-1 p-2.5 border rounded-xl">
@@ -168,7 +168,7 @@
                 <div x-show="expanded" x-collapse x-cloak class="p-6">
                     {% if not is_closed %}
                     <div class="mb-8 p-6 bg-red-50/50 border border-red-100 rounded-2xl">
-                        <form hx-post="/order/{{ order.id }}/third-party" hx-target="#third-party-list"
+                        <form hx-post="{{ base }}/order/{{ order.id }}/third-party" hx-target="#third-party-list"
                               @htmx:after-request="if($event.detail.successful) { $el.reset(); }"
                               class="grid grid-cols-1 md:grid-cols-4 gap-4">
                             <input type="text" name="provider" placeholder="Proveedor" required class="p-2.5 border rounded-xl">

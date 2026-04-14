@@ -15,7 +15,7 @@
         <div class="container mx-auto flex justify-between items-center">
             <h1 class="text-xl font-black tracking-tighter">ANTIGRAVITY <span class="text-sky-400">FLOTA</span></h1>
             <div class="flex gap-4 items-center">
-                <a href="/" class="text-xs font-bold uppercase hover:text-sky-400 transition-colors">Dashboard</a>
+                <a href="{{ base }}/" class="text-xs font-bold uppercase hover:text-sky-400 transition-colors">Dashboard</a>
                 <button @click="showForm = !showForm" class="bg-sky-500 hover:bg-sky-600 px-4 py-2 rounded-lg text-xs font-black shadow-lg transition-all uppercase">
                     + Nuevo Móvil
                 </button>
@@ -27,7 +27,7 @@
         <!-- Formulario (Código Interno Automático) -->
         <div x-show="showForm" x-transition x-cloak class="mb-12 bg-white p-8 rounded-[2rem] shadow-2xl border border-slate-200">
             <h2 class="text-xl font-black mb-6 text-slate-700">Registro de Unidad <span class="text-sky-500 font-light text-sm">(Código Autonumérico)</span></h2>
-            <form hx-post="/vehicles/save" @htmx:after-request="if($event.detail.successful) window.location.reload()" class="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <form hx-post="{{ base }}/vehicles/save" @htmx:after-request="if($event.detail.successful) window.location.reload()" class="grid grid-cols-1 md:grid-cols-4 gap-6">
                 <div>
                     <label class="block text-[10px] font-black text-slate-400 uppercase mb-2">Patente / Dominio</label>
                     <input type="text" name="plate" required placeholder="ABC-123" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sky-500 outline-none uppercase">
@@ -99,10 +99,10 @@
                 </div>
 
                 <div class="mt-8 flex gap-3">
-                    <a href="/vehicles/{{ v.id }}/history" class="flex-1 bg-sky-50 text-sky-600 py-3 rounded-2xl text-center text-[10px] font-black uppercase hover:bg-sky-100 transition-all border border-sky-100">
+                    <a href="{{ base }}/vehicles/{{ v.id }}/history" class="flex-1 bg-sky-50 text-sky-600 py-3 rounded-2xl text-center text-[10px] font-black uppercase hover:bg-sky-100 transition-all border border-sky-100">
                         Ver Historia Clínica
                     </a>
-                    <button hx-post="/vehicles/{{ v.id }}/delete" hx-confirm="¿Borrar unidad {{ v.internal_code }}?" class="p-3 text-slate-300 hover:text-red-500 transition-colors">
+                    <button hx-post="{{ base }}/vehicles/{{ v.id }}/delete" hx-confirm="¿Borrar unidad {{ v.internal_code }}?" class="p-3 text-slate-300 hover:text-red-500 transition-colors">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
                     </button>
                 </div>

@@ -77,7 +77,7 @@ async def get_current_user(request: Request, db: Session = Depends(database.get_
 def check_role(roles_allowed: list):
     async def role_checker(current_user: models.User = Depends(get_current_user)):
         if not current_user:
-            raise HTTPException(status_code=302, detail="No autenticado", headers={"Location": "/login"})
+            raise HTTPException(status_code=302, detail="No autenticado", headers={"Location": "/NucleoTallerV1/login"})
         
         user_roles = [r.name for r in current_user.roles]
         if not any(role in roles_allowed for role in user_roles):

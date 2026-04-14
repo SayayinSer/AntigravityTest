@@ -15,7 +15,7 @@
                 <td class="py-4">{{ tp.description }}</td>
                 <td class="py-4 text-right font-mono font-bold text-red-600">${{ tp.price }}</td>
                 <td class="py-4 px-4 text-right">
-                    <button hx-delete="/third-party/{{ tp.id }}" 
+                    <button hx-delete="{{ base }}/third-party/{{ tp.id }}" 
                             hx-confirm="¿Borrar este servicio de tercero?"
                             hx-target="closest tr" 
                             hx-swap="outerHTML"

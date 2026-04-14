@@ -7,7 +7,7 @@
             </button>
         </div>
 
-        <form hx-post="/order/save" @htmx:after-request="if($event.detail.successful) window.location.reload()" class="p-8 space-y-6">
+        <form hx-post="{{ base }}/order/save" @htmx:after-request="if($event.detail.successful) window.location.reload()" class="p-8 space-y-6">
             <div>
                 <label class="block text-[10px] font-black text-slate-400 uppercase mb-2 tracking-widest pl-2">Seleccionar Vehículo</label>
                 <select name="vehicle_id" required class="w-full p-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:ring-4 focus:ring-sky-500/10 transition-all font-bold text-slate-700">

@@ -9,13 +9,13 @@
         <button @click="$dispatch('confirm', { 
                     title: '¿Eliminar Orden?', 
                     message: 'Esta acción borrará físicamente la orden y todos sus registros asociados.',
-                    action: '/order/{{ order.id }}/delete',
+                    action: '{{ base }}/order/{{ order.id }}/delete',
                     target: 'body'
                 })"
                 class="px-4 py-2 bg-red-600 rounded-lg hover:bg-red-700 text-white text-sm font-bold shadow-md transition-transform active:scale-95">
             Eliminar Orden
         </button>
         {% endif %}
-        <a href="/" class="px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg text-white text-sm font-bold border border-white/20">Volver al Dashboard</a>
+        <a href="{{ base }}/" class="px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg text-white text-sm font-bold border border-white/20">Volver al Dashboard</a>
     </div>
 </nav>

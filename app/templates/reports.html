@@ -14,8 +14,8 @@
     <nav class="bg-sky-600 text-white p-4 shadow-lg flex justify-between items-center">
         <h1 class="text-xl font-bold">Reportes de Gestión</h1>
         <div class="flex gap-4">
-            <a href="/vehicles" class="px-4 py-2 bg-sky-700 rounded-lg hover:bg-sky-800 text-sm font-bold">Móviles</a>
-            <a href="/" class="px-4 py-2 bg-sky-700 rounded-lg hover:bg-sky-800 text-sm font-bold">Dashboard</a>
+            <a href="{{ base }}/vehicles" class="px-4 py-2 bg-sky-700 rounded-lg hover:bg-sky-800 text-sm font-bold">Móviles</a>
+            <a href="{{ base }}/" class="px-4 py-2 bg-sky-700 rounded-lg hover:bg-sky-800 text-sm font-bold">Dashboard</a>
         </div>
     </nav>
 
@@ -28,7 +28,7 @@
                 </svg>
                 Generar Reporte Detallado
             </h2>
-            <form hx-post="/reports/results" hx-target="#report-content" class="grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
+            <form hx-post="{{ base }}/reports/results" hx-target="#report-content" class="grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
                 <div>
                     <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Desde</label>
                     <input type="date" name="start_date" :value="today" required class="w-full p-2 border rounded-lg outline-none focus:ring-2 focus:ring-sky-500">

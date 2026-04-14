@@ -127,9 +127,218 @@
             "name": "Cami\u00f3n"
         }
     ],
-    "vehicles": [],
-    "work_orders": [],
-    "audit_logs": [],
+    "vehicles": [
+        {
+            "id": 1,
+            "internal_code": 1001,
+            "plate": "BDB-456-PZ",
+            "brand_id": 3,
+            "type_id": 3,
+            "model": "Basico",
+            "year": 2024,
+            "current_mileage": 50000,
+            "last_owner": "Carlitos",
+            "last_service_date": "2026-03-01T00:00:00",
+            "next_service_suggestion": null,
+            "created_at": "2026-04-14T12:37:27.542829",
+            "updated_at": null,
+            "created_by": 1,
+            "updated_by": null
+        },
+        {
+            "id": 2,
+            "internal_code": 1002,
+            "plate": "AA-932-ZC",
+            "brand_id": 7,
+            "type_id": 3,
+            "model": "Base",
+            "year": 2024,
+            "current_mileage": 1250000,
+            "last_owner": "Mario",
+            "last_service_date": "2026-04-14T13:30:40.964182",
+            "next_service_suggestion": "2026-05-31T00:00:00",
+            "created_at": "2026-04-14T13:28:11.215398",
+            "updated_at": "2026-04-14T13:30:40.962765",
+            "created_by": 1,
+            "updated_by": null
+        }
+    ],
+    "work_orders": [
+        {
+            "id": 1,
+            "vehicle_id": 1,
+            "status": "Pendiente",
+            "diagnosis": "Falla de Frenos y Luces",
+            "solution": null,
+            "recommendation": null,
+            "entry_date": "2026-04-14T12:37:50.274778",
+            "exit_date": null,
+            "recorded_mileage": null,
+            "updated_at": "2026-04-14T13:07:45.996089",
+            "created_by": 1,
+            "updated_by": 1
+        },
+        {
+            "id": 2,
+            "vehicle_id": 2,
+            "status": "Terminada",
+            "diagnosis": "Lubricacion y Luces",
+            "solution": "Se camabiaron las luces y se lavo el movil",
+            "recommendation": null,
+            "entry_date": "2026-04-14T13:28:33.220486",
+            "exit_date": "2026-04-14T13:30:40.964182",
+            "recorded_mileage": 1250000,
+            "updated_at": "2026-04-14T13:30:40.962765",
+            "created_by": 1,
+            "updated_by": 1
+        }
+    ],
+    "audit_logs": [
+        {
+            "id": 1,
+            "user_id": 1,
+            "action": "LOGIN",
+            "entity_name": "Usuario",
+            "entity_id": 1,
+            "timestamp": "2026-04-14T12:36:03.803599",
+            "details": "Inicio de sesi\u00f3n exitoso"
+        },
+        {
+            "id": 2,
+            "user_id": 1,
+            "action": "CREAR",
+            "entity_name": "Veh\u00edculo",
+            "entity_id": 1,
+            "timestamp": "2026-04-14T12:37:27.564300",
+            "details": "Alta de m\u00f3vil BDB-456-PZ"
+        },
+        {
+            "id": 3,
+            "user_id": 1,
+            "action": "CREAR",
+            "entity_name": "Orden",
+            "entity_id": 1,
+            "timestamp": "2026-04-14T12:37:50.282917",
+            "details": "Apertura de OT para veh\u00edculo ID 1"
+        },
+        {
+            "id": 4,
+            "user_id": 1,
+            "action": "LOGIN",
+            "entity_name": "Usuario",
+            "entity_id": 1,
+            "timestamp": "2026-04-14T13:07:12.354032",
+            "details": "Inicio de sesi\u00f3n exitoso"
+        },
+        {
+            "id": 5,
+            "user_id": 1,
+            "action": "MODIFICAR",
+            "entity_name": "Orden Tarea",
+            "entity_id": 1,
+            "timestamp": "2026-04-14T13:07:46.014142",
+            "details": "A\u00f1adida tarea a OT 1"
+        },
+        {
+            "id": 6,
+            "user_id": 1,
+            "action": "MODIFICAR",
+            "entity_name": "Orden Repuesto",
+            "entity_id": 1,
+            "timestamp": "2026-04-14T13:08:06.985071",
+            "details": null
+        },
+        {
+            "id": 7,
+            "user_id": 1,
+            "action": "MODIFICAR",
+            "entity_name": "Orden Tercero",
+            "entity_id": 1,
+            "timestamp": "2026-04-14T13:08:37.513059",
+            "details": null
+        },
+        {
+            "id": 8,
+            "user_id": 1,
+            "action": "LOGIN",
+            "entity_name": "Usuario",
+            "entity_id": 1,
+            "timestamp": "2026-04-14T13:19:15.679595",
+            "details": "Inicio de sesi\u00f3n exitoso"
+        },
+        {
+            "id": 9,
+            "user_id": 1,
+            "action": "CREAR",
+            "entity_name": "Veh\u00edculo",
+            "entity_id": 2,
+            "timestamp": "2026-04-14T13:28:11.233555",
+            "details": "Alta de m\u00f3vil AA-932-ZC"
+        },
+        {
+            "id": 10,
+            "user_id": 1,
+            "action": "CREAR",
+            "entity_name": "Orden",
+            "entity_id": 2,
+            "timestamp": "2026-04-14T13:28:33.228714",
+            "details": "Apertura de OT para veh\u00edculo ID 2"
+        },
+        {
+            "id": 11,
+            "user_id": 1,
+            "action": "MODIFICAR",
+            "entity_name": "Orden Tarea",
+            "entity_id": 2,
+            "timestamp": "2026-04-14T13:28:55.112152",
+            "details": "A\u00f1adida tarea a OT 2"
+        },
+        {
+            "id": 12,
+            "user_id": 1,
+            "action": "MODIFICAR",
+            "entity_name": "Orden Repuesto",
+            "entity_id": 2,
+            "timestamp": "2026-04-14T13:29:18.554018",
+            "details": null
+        },
+        {
+            "id": 13,
+            "user_id": 1,
+            "action": "MODIFICAR",
+            "entity_name": "Orden Tercero",
+            "entity_id": 2,
+            "timestamp": "2026-04-14T13:29:47.984274",
+            "details": null
+        },
+        {
+            "id": 14,
+            "user_id": 1,
+            "action": "TERMINAR",
+            "entity_name": "Orden",
+            "entity_id": 2,
+            "timestamp": "2026-04-14T13:30:40.962765",
+            "details": "Cierre de OT por SU"
+        },
+        {
+            "id": 15,
+            "user_id": 1,
+            "action": "LOGIN",
+            "entity_name": "Usuario",
+            "entity_id": 1,
+            "timestamp": "2026-04-14T13:33:44.978005",
+            "details": "Inicio de sesi\u00f3n exitoso"
+        },
+        {
+            "id": 16,
+            "user_id": 1,
+            "action": "LOGIN",
+            "entity_name": "Usuario",
+            "entity_id": 1,
+            "timestamp": "2026-04-14T13:43:54.330300",
+            "details": "Inicio de sesi\u00f3n exitoso"
+        }
+    ],
     "technicians": [
         {
             "id": 1,
@@ -148,7 +357,54 @@
             "name": "Soporte General"
         }
     ],
-    "wo_tasks": [],
-    "wo_parts": [],
-    "wo_third_parties": []
+    "wo_tasks": [
+        {
+            "id": 1,
+            "work_order_id": 1,
+            "description": "Ajustar y Lubricar Sistema de Frenos",
+            "duration_minutes": 120,
+            "technician_id": 1
+        },
+        {
+            "id": 2,
+            "work_order_id": 2,
+            "description": "Revisar Luces ",
+            "duration_minutes": 50,
+            "technician_id": 4
+        }
+    ],
+    "wo_parts": [
+        {
+            "id": 1,
+            "work_order_id": 1,
+            "description": "Liquido de Freno",
+            "quantity": "2.00",
+            "unit_price": "5000.00",
+            "uom": "Litros"
+        },
+        {
+            "id": 2,
+            "work_order_id": 2,
+            "description": "Cambio de Focos",
+            "quantity": "5.00",
+            "unit_price": "3000.00",
+            "uom": "Unidades"
+        }
+    ],
+    "wo_third_parties": [
+        {
+            "id": 1,
+            "work_order_id": 1,
+            "provider_name": "Sergio",
+            "description": "Lavado de Movil",
+            "price": "8000.00"
+        },
+        {
+            "id": 2,
+            "work_order_id": 2,
+            "provider_name": "Sergio",
+            "description": "lavado de Movil",
+            "price": "10000.00"
+        }
+    ]
 }
