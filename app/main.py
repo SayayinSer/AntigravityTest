@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends, HTTPException, Request, Form, Response, APIRouter
+from fastapi import FastAPI, Depends, HTTPException, Request, Form, Response, APIRouter, File, UploadFile
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
@@ -9,6 +9,9 @@ from datetime import datetime, timedelta
 from decimal import Decimal
 import traceback
 import re
+import os
+import shutil
+import uuid
 
 from . import models, schemas, database, auth
 
@@ -62,6 +65,16 @@ def log_audit(db: Session, user_id: int, action: str, entity: str, entity_id: in
     )
     db.add(log)
     db.commit()
+
+async def save_uploaded_img(photo: UploadFile) -> str:
+    if photo and photo.filename:
+        ext = photo.filename.split('.')[-1]
+        new_name = f"{uuid.uuid4()}.{ext}"
+        path = os.path.join("app", "static", "uploads", new_name)
+        with open(path, "wb") as buffer:
+            shutil.copyfileobj(photo.file, buffer)
+        return f"/static/uploads/{new_name}"
+    return None
 
 # --- SEGURIDAD (LOGIN / LOGOUT / ADMIN) ---
 
@@ -153,7 +166,9 @@ async def admin_page(request: Request, db: Session = Depends(get_db), user: Opti
     brands = db.query(models.Brand).all()
     types = db.query(models.VehicleType).all()
     techs = db.query(models.Technician).all()
-    return templates.TemplateResponse(request, "admin.html", {"brands": brands, "types": types, "technicians": techs, "user": user})
+    countries = db.query(models.Country).all()
+    provinces = db.query(models.Province).all()
+    return templates.TemplateResponse(request, "admin.html", {"brands": brands, "types": types, "technicians": techs, "countries": countries, "provinces": provinces, "user": user})
 
 # --- GESTION DE VEHICULOS ---
 
@@ -171,7 +186,7 @@ async def vehicle_history(request: Request, vehicle_id: int, db: Session = Depen
     return templates.TemplateResponse(request, "vehicle_history.html", {"vehicle": vehicle})
 
 @router.post("/vehicles/save", response_class=HTMLResponse)
-async def save_vehicle(plate: str = Form(...), brand_id: int = Form(...), type_id: int = Form(...), model: str = Form(None), year: int = Form(None), current_mileage: int = Form(0), last_owner: str = Form(None), last_service_date: str = Form(None), db: Session = Depends(get_db), user: Optional[models.User] = Depends(auth.get_current_user)):
+async def save_vehicle(plate: str = Form(...), brand_id: int = Form(...), type_id: int = Form(...), model: str = Form(None), year: int = Form(None), current_mileage: int = Form(0), last_owner: str = Form(None), last_service_date: str = Form(None), photo: UploadFile = File(None), db: Session = Depends(get_db), user: Optional[models.User] = Depends(auth.get_current_user)):
     try:
         service_date = datetime.strptime(last_service_date, "%Y-%m-%d") if last_service_date else None
         
@@ -179,9 +194,12 @@ async def save_vehicle(plate: str = Form(...), brand_id: int = Form(...), type_i
         max_code = db.query(models.Vehicle.internal_code).order_by(models.Vehicle.internal_code.desc()).first()
         new_code = (max_code[0] + 1) if max_code and max_code[0] else 1001
         
+        photo_path = await save_uploaded_img(photo)
+        
         db_vehicle = models.Vehicle(
             plate=plate.upper(), brand_id=brand_id, type_id=type_id, model=model, year=year,
             current_mileage=current_mileage, last_owner=last_owner, last_service_date=service_date,
+            photo_url=photo_path if photo_path else "/static/img/default_vehicle.png",
             created_by=user.id if user else None,
             internal_code=new_code
         )
@@ -306,26 +324,37 @@ async def save_order(vehicle_id: int = Form(...), diagnosis: str = Form(None), d
     return HTMLResponse(content='<script>window.location.reload();</script>')
 
 @router.post("/admin/{entity_name}", response_class=HTMLResponse)
-async def create_admin_entity(request: Request, entity_name: str, name: str = Form(...), db: Session = Depends(get_db)):
-    model_map = {"brand": models.Brand, "type": models.VehicleType, "tech": models.Technician}
+async def create_admin_entity(request: Request, entity_name: str, db: Session = Depends(get_db)):
+    form = await request.form()
+    name = form.get("name").strip() if form.get("name") else ""
+    model_map = {"brand": models.Brand, "type": models.VehicleType, "tech": models.Technician, "country": models.Country, "province": models.Province}
+    
     if entity_name in model_map:
-        db.add(model_map[entity_name](name=name.strip()))
+        if entity_name == "province":
+            db.add(models.Province(name=name, country_id=int(form.get("country_id"))))
+        else:
+            db.add(model_map[entity_name](name=name))
         db.commit()
     return HTMLResponse(content='<script>window.location.reload();</script>')
 
 @router.post("/admin/{entity_name}/{entity_id}/update", response_class=HTMLResponse)
-async def update_admin_entity(request: Request, entity_name: str, entity_id: int, name: str = Form(...), db: Session = Depends(get_db)):
-    model_map = {"brand": models.Brand, "type": models.VehicleType, "tech": models.Technician}
+async def update_admin_entity(request: Request, entity_name: str, entity_id: int, db: Session = Depends(get_db)):
+    form = await request.form()
+    name = form.get("name").strip() if form.get("name") else ""
+    model_map = {"brand": models.Brand, "type": models.VehicleType, "tech": models.Technician, "country": models.Country, "province": models.Province}
+    
     if entity_name in model_map:
         obj = db.get(model_map[entity_name], entity_id)
         if obj:
-            obj.name = name.strip()
+            obj.name = name
+            if entity_name == "province" and form.get("country_id"):
+                obj.country_id = int(form.get("country_id"))
             db.commit()
     return HTMLResponse(content='<script>window.location.reload();</script>')
 
 @router.post("/admin/{entity_name}/{entity_id}/delete", response_class=HTMLResponse)
 async def delete_admin_entity(request: Request, entity_name: str, entity_id: int, db: Session = Depends(get_db)):
-    model_map = {"brand": models.Brand, "type": models.VehicleType, "tech": models.Technician}
+    model_map = {"brand": models.Brand, "type": models.VehicleType, "tech": models.Technician, "country": models.Country, "province": models.Province}
     if entity_name in model_map:
         obj = db.get(model_map[entity_name], entity_id)
         if obj:
@@ -467,6 +496,164 @@ async def reset_password(password: str = Form(...), confirm_password: str = Form
         return HTMLResponse(content='<div class="bg-green-100 p-4 rounded-xl text-green-700 font-bold">Contraseña actualizada con éxito. Ya puede iniciar sesión.</div>')
     except ValueError as e:
         return HTMLResponse(content=f'<div id="error-msg" hx-swap-oob="true" class="text-red-500 font-bold">{str(e)}</div>', status_code=400)
+
+# --- AGENDA DE TURNOS ---
+
+@router.get("/appointments", response_class=HTMLResponse)
+async def appointments_page(request: Request, db: Session = Depends(get_db), user: Optional[models.User] = Depends(auth.get_current_user)):
+    today_start = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
+    today_end = today_start + timedelta(days=1)
+    
+    # Turnos para hoy
+    today_appointments = db.query(models.Appointment).filter(
+        models.Appointment.scheduled_date >= today_start,
+        models.Appointment.scheduled_date < today_end
+    ).order_by(models.Appointment.scheduled_date.asc()).all()
+    
+    # Próximos turnos a partir de mañana
+    upcoming_appointments = db.query(models.Appointment).filter(
+        models.Appointment.scheduled_date >= today_end
+    ).order_by(models.Appointment.scheduled_date.asc()).limit(50).all()
+    
+    vehicles = db.query(models.Vehicle).all()
+    return templates.TemplateResponse(request, "appointments.html", {
+        "today_appointments": today_appointments,
+        "upcoming_appointments": upcoming_appointments,
+        "vehicles": vehicles,
+        "user": user,
+        "today_date": today_start.strftime("%Y-%m-%d")
+    })
+
+@router.get("/appointments/api/check-client")
+async def check_client(email: str, db: Session = Depends(get_db)):
+    owner = db.query(models.Owner).filter(models.Owner.email == email.strip()).first()
+    if owner:
+        return {"found": True, "name": owner.full_name, "phone": owner.phone}
+    
+    # Buscar el último turno asociado a este email por compatibilidad
+    last_apt = db.query(models.Appointment).filter(models.Appointment.client_email == email.strip()).order_by(models.Appointment.id.desc()).first()
+    if last_apt:
+        return {"found": True, "name": last_apt.client_name, "phone": last_apt.client_phone}
+    return {"found": False}
+
+@router.post("/appointments/save", response_class=HTMLResponse)
+async def save_appointment(
+    client_email: str = Form(...), client_name: str = Form(...), client_phone: str = Form(...),
+    scheduled_date: str = Form(...), scheduled_time: str = Form(...),
+    vehicle_id: str = Form(""), plate: str = Form(""), reason: str = Form(""),
+    db: Session = Depends(get_db), user: Optional[models.User] = Depends(auth.get_current_user)
+):
+    date_val = datetime.strptime(f"{scheduled_date} {scheduled_time}", "%Y-%m-%d %H:%M")
+    v_id = int(vehicle_id) if vehicle_id else None
+    
+    # Pre-cargar Owner "silenciosamente"
+    owner = db.query(models.Owner).filter(models.Owner.email == client_email.strip()).first()
+    if not owner:
+        owner = models.Owner(
+            email=client_email.strip(),
+            full_name=client_name.strip(),
+            phone=client_phone.strip()
+        )
+        db.add(owner)
+        db.flush()
+    
+    nuevo_turno = models.Appointment(
+        owner_id=owner.id,
+        client_email=client_email.strip(), client_name=client_name.strip(), client_phone=client_phone.strip(),
+        vehicle_id=v_id, plate=plate.strip().upper() if not v_id else None,
+        scheduled_date=date_val, reason=reason.strip(),
+        created_by=user.id if user else None
+    )
+    db.add(nuevo_turno)
+    db.commit()
+    log_audit(db, user.id if user else None, "CREAR", "Turno", nuevo_turno.id, f"Reserva para {nuevo_turno.client_email} el {date_val}")
+    return HTMLResponse(content='<script>window.location.reload();</script>')
+
+@router.post("/appointments/{apt_id}/status", response_class=HTMLResponse)
+async def update_appointment_status(request: Request, apt_id: int, status: str = Form(...), db: Session = Depends(get_db), user: Optional[models.User] = Depends(auth.get_current_user)):
+    apt = db.get(models.Appointment, apt_id)
+    if apt:
+        old_val = apt.status
+        apt.status = status
+        apt.updated_by = user.id if user else None
+        db.commit()
+        log_audit(db, user.id if user else None, "ESTADO", "Turno", apt.id, f"Cambio de {old_val} a {status}")
+    return HTMLResponse(content='<script>window.location.reload();</script>')
+
+@router.post("/appointments/report", response_class=HTMLResponse)
+async def appointments_report(request: Request, start_date: str = Form(...), end_date: str = Form(...), db: Session = Depends(get_db)):
+    start = datetime.strptime(start_date, "%Y-%m-%d")
+    end = datetime.strptime(end_date, "%Y-%m-%d") + timedelta(days=1)
+    
+    appointments = db.query(models.Appointment).filter(
+        models.Appointment.scheduled_date >= start,
+        models.Appointment.scheduled_date < end
+    ).order_by(models.Appointment.scheduled_date.asc()).all()
+    
+    return templates.TemplateResponse(request, "components/appointment_report_results.html", {"appointments": appointments})
+
+# --- GESTION DE CLIENTES ---
+
+@router.get("/clients", response_class=HTMLResponse)
+async def clients_page(request: Request, db: Session = Depends(get_db), user: Optional[models.User] = Depends(auth.get_current_user)):
+    clients = db.query(models.Owner).order_by(models.Owner.owner_number.desc()).all()
+    countries = db.query(models.Country).all()
+    provinces = db.query(models.Province).all()
+    return templates.TemplateResponse(request, "clients.html", {"clients": clients, "countries": countries, "provinces": provinces, "user": user})
+
+@router.post("/clients/save", response_class=HTMLResponse)
+async def save_client(
+    client_id: str = Form(""), email: str = Form(...), full_name: str = Form(...), phone: str = Form(""),
+    address: str = Form(""), owner_type: str = Form(...), document_id: str = Form(""), country_id: str = Form(""), province_id: str = Form(""), photo: UploadFile = File(None),
+    db: Session = Depends(get_db), user: Optional[models.User] = Depends(auth.get_current_user)
+):
+    try:
+        photo_path = await save_uploaded_img(photo)
+        c_id = int(country_id) if country_id else None
+        p_id = int(province_id) if province_id else None
+        
+        if client_id:
+            c = db.get(models.Owner, int(client_id))
+            c.email = email.strip()
+            c.full_name = full_name.strip()
+            c.phone = phone.strip()
+            c.address = address.strip()
+            c.owner_type = owner_type
+            c.document_id = document_id.strip()
+            c.country_id = c_id
+            c.province_id = p_id
+            if photo_path: c.photo_url = photo_path
+            action = "MODIFICAR"
+        else:
+            c = models.Owner(
+                email=email.strip(), full_name=full_name.strip(), phone=phone.strip(),
+                address=address.strip(), owner_type=owner_type, document_id=document_id.strip(),
+                country_id=c_id, province_id=p_id,
+                photo_url=photo_path if photo_path else "/static/img/default_avatar.png"
+            )
+            db.add(c)
+            action = "CREAR"
+            
+        db.commit()
+        log_audit(db, user.id if user else None, action, "Propietario/Cliente", c.id)
+        return HTMLResponse(content='<script>window.location.reload();</script>')
+    except IntegrityError:
+        db.rollback()
+        return HTMLResponse(content='<div id="notification-area" hx-swap-oob="true" class="bg-red-600 p-4 rounded-xl text-white font-bold">El Email ingresado ya se encuentra registrado.</div>', status_code=400)
+
+@router.post("/clients/{client_id}/delete", response_class=HTMLResponse)
+async def delete_client(client_id: int, db: Session = Depends(get_db), user: Optional[models.User] = Depends(auth.get_current_user)):
+    c = db.get(models.Owner, client_id)
+    if c:
+        try:
+            db.delete(c)
+            db.commit()
+            log_audit(db, user.id if user else None, "BORRAR", "Propietario/Cliente", client_id)
+        except IntegrityError:
+            db.rollback()
+            return HTMLResponse(content='<div id="notification-area" hx-swap-oob="true" class="bg-red-600 p-4 rounded-xl text-white font-bold">No se puede eliminar porque posee turnos vinculados.</div>', status_code=400)
+    return HTMLResponse(content='<script>window.location.reload();</script>')
+
 
 # ── Register Router with Module Prefix ──
 app.include_router(router)

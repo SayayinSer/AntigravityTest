@@ -1,0 +1,70 @@
+openapi: 3.0.3
+info:
+  title: Antigravity - Geografía API
+  description: Definición estandarizada del catálogo georeferencial para Fichas de Clientes. Mantenido vía Back-Office Admin.
+  version: 1.0.0
+servers:
+  - url: /NucleoTallerV1/admin
+paths:
+  /country:
+    post:
+      summary: Insertar País
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Nombre del país
+              required:
+                - name
+      responses:
+        '200':
+          description: Recarga de Vista Admin.
+  
+  /province:
+    post:
+      summary: Insertar Provincia anidada
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                country_id:
+                  type: integer
+                  description: ID del país padre
+                name:
+                  type: string
+                  description: Nombre de la Provincia o Estado
+              required:
+                - country_id
+                - name
+      responses:
+        '200':
+          description: Recarga
+          
+components:
+  schemas:
+    Country:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+    Province:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        country_id:
+          type: integer
+        name:
+          type: string

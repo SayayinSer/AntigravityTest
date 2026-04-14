@@ -32,6 +32,19 @@ class Role(Base):
     
     users = relationship("User", secondary=user_roles, back_populates="roles")
 
+class Country(Base):
+    __tablename__ = "countries"
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(100), unique=True, nullable=False)
+    provinces = relationship("Province", back_populates="country")
+
+class Province(Base):
+    __tablename__ = "provinces"
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(100), nullable=False)
+    country_id = Column(Integer, ForeignKey("countries.id", ondelete="CASCADE"))
+    country = relationship("Country", back_populates="provinces")
+
 class Brand(Base):
     __tablename__ = "brands"
     id = Column(Integer, primary_key=True, index=True)
@@ -57,6 +70,7 @@ class Vehicle(Base):
     last_owner = Column(String(150))
     last_service_date = Column(DateTime)
     next_service_suggestion = Column(DateTime)
+    photo_url = Column(String(255), default="/static/img/default_vehicle.png")
 
     # Auditoria
     created_at = Column(DateTime, server_default=func.now())
@@ -139,3 +153,46 @@ class AuditLog(Base):
     details = Column(Text) # JSON o descripción de cambios
 
     user = relationship("User")
+
+class Owner(Base):
+    __tablename__ = "owners"
+    id = Column(Integer, primary_key=True, index=True)
+    owner_number = Column(Integer, unique=True, index=True, autoincrement=True)
+    email = Column(String(150), unique=True, index=True, nullable=False)
+    full_name = Column(String(150), nullable=False)
+    phone = Column(String(50))
+    address = Column(String(255))
+    owner_type = Column(Enum('Persona Física', 'Persona Jurídica', name='owner_type_enum', native_enum=False), default='Persona Física')
+    document_id = Column(String(50)) # DNI o CUIT
+    photo_url = Column(String(255), default="/static/img/default_avatar.png")
+    country_id = Column(Integer, ForeignKey("countries.id", ondelete="SET NULL"), nullable=True)
+    province_id = Column(Integer, ForeignKey("provinces.id", ondelete="SET NULL"), nullable=True)
+    
+    country = relationship("Country")
+    province = relationship("Province")
+    
+    # Auditoria
+    created_at = Column(DateTime, server_default=func.now())
+    updated_at = Column(DateTime, onupdate=func.now())
+
+class Appointment(Base):
+    __tablename__ = "appointments"
+    id = Column(Integer, primary_key=True, index=True)
+    owner_id = Column(Integer, ForeignKey("owners.id", ondelete="RESTRICT"), nullable=True) # Ligado al Propietario "Silenciosamente"
+    client_email = Column(String(150), index=True) # Histórico
+    client_name = Column(String(150), nullable=False) # Histórico
+    client_phone = Column(String(50)) # Histórico
+    vehicle_id = Column(Integer, ForeignKey("vehicles.id", ondelete="SET NULL"), nullable=True)
+    plate = Column(String(20))
+    scheduled_date = Column(DateTime, nullable=False, index=True)
+    reason = Column(Text)
+    status = Column(Enum('Pendiente', 'Confirmado', 'Atendido', 'Cancelado', name='appointment_status_enum', native_enum=False), default='Pendiente')
+    
+    created_at = Column(DateTime, server_default=func.now())
+    updated_at = Column(DateTime, onupdate=func.now())
+    created_by = Column(Integer, ForeignKey("users.id", ondelete="SET NULL"))
+    updated_by = Column(Integer, ForeignKey("users.id", ondelete="SET NULL"))
+
+    vehicle = relationship("Vehicle")
+    owner = relationship("Owner")
+

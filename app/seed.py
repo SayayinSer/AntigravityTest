@@ -58,9 +58,27 @@ def seed_data():
                 )
                 user.roles.append(db_roles[u_data["role"]])
                 db.add(user)
+                
+        # 6. GEOGRAFÍA ESTRUCTURAL (Argentina por Defecto)
+        arg = db.query(models.Country).filter_by(name="Argentina").first()
+        if not arg:
+            arg = models.Country(name="Argentina")
+            db.add(arg)
+            db.flush()
+            
+        provs = [
+            'Buenos Aires', 'Catamarca', 'Chaco', 'Chubut', 'Ciudad Autónoma de Buenos Aires',
+            'Córdoba', 'Corrientes', 'Entre Ríos', 'Formosa', 'Jujuy', 'La Pampa', 'La Rioja',
+            'Mendoza', 'Misiones', 'Neuquén', 'Río Negro', 'Salta', 'San Juan', 'San Luis',
+            'Santa Cruz', 'Santa Fe', 'Santiago del Estero', 'Tierra del Fuego', 'Tucumán'
+        ]
         
+        for p in provs:
+            if not db.query(models.Province).filter_by(name=p, country_id=arg.id).first():
+                db.add(models.Province(name=p, country_id=arg.id))
+
         db.commit()
-        print("¡Módulo de Seguridad y Datos Maestros inicializados!")
+        print("¡Módulo de Seguridad, Geografía y Datos Maestros inicializados!")
     except Exception as e:
         print(f"Error en seeding: {e}")
         db.rollback()

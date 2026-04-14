@@ -27,7 +27,7 @@
         <!-- Formulario (Código Interno Automático) -->
         <div x-show="showForm" x-transition x-cloak class="mb-12 bg-white p-8 rounded-[2rem] shadow-2xl border border-slate-200">
             <h2 class="text-xl font-black mb-6 text-slate-700">Registro de Unidad <span class="text-sky-500 font-light text-sm">(Código Autonumérico)</span></h2>
-            <form hx-post="{{ base }}/vehicles/save" @htmx:after-request="if($event.detail.successful) window.location.reload()" class="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <form hx-post="{{ base }}/vehicles/save" hx-encoding="multipart/form-data" @htmx:after-request="if($event.detail.successful) window.location.reload()" class="grid grid-cols-1 md:grid-cols-4 gap-6">
                 <div>
                     <label class="block text-[10px] font-black text-slate-400 uppercase mb-2">Patente / Dominio</label>
                     <input type="text" name="plate" required placeholder="ABC-123" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sky-500 outline-none uppercase">
@@ -64,6 +64,10 @@
                     <label class="block text-[10px] font-black text-slate-400 uppercase mb-2">Fecha Últ. Service</label>
                     <input type="date" name="last_service_date" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none">
                 </div>
+                <div>
+                    <label class="block text-[10px] font-black text-slate-400 uppercase mb-2">Foto / Referencia</label>
+                    <input type="file" name="photo" accept="image/*" class="w-full p-2 bg-slate-50 border border-slate-200 rounded-xl outline-none text-xs">
+                </div>
                 <div class="md:col-span-4">
                     <button type="submit" class="w-full bg-slate-800 text-white p-4 rounded-xl font-black hover:bg-slate-700 shadow-xl transition-all">
                         ALTA DE VEHÍCULO
@@ -97,6 +101,8 @@
                         <span class="font-medium text-slate-700">{{ v.last_owner or 'N/D' }}</span>
                     </div>
                 </div>
+
+                <div class="mt-4 rounded-xl h-32 bg-cover bg-center border border-slate-200" style="background-image: url('{{ v.photo_url }}');"></div>
 
                 <div class="mt-8 flex gap-3">
                     <a href="{{ base }}/vehicles/{{ v.id }}/history" class="flex-1 bg-sky-50 text-sky-600 py-3 rounded-2xl text-center text-[10px] font-black uppercase hover:bg-sky-100 transition-all border border-sky-100">

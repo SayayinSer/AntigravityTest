@@ -1,0 +1,92 @@
+openapi: 3.0.3
+info:
+  title: Antigravity - Propietarios API
+  description: API interna para la administración de clientes y propietarios de vehículos
+  version: 1.0.0
+servers:
+  - url: /NucleoTallerV1
+paths:
+  /clients/save:
+    post:
+      summary: Crear o Modificar Propietario
+      description: Graba la entidad en la base de datos (Upsert por Id).
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                client_id:
+                  type: string
+                  description: Vacío si es nuevo, de lo contrario ID del cliente.
+                email:
+                  type: string
+                  format: email
+                full_name:
+                  type: string
+                phone:
+                  type: string
+                address:
+                  type: string
+                owner_type:
+                  type: string
+                  enum: [Persona Física, Persona Jurídica]
+                document_id:
+                  type: string
+              required:
+                - email
+                - full_name
+                - owner_type
+      responses:
+        '200':
+          description: OK HTMLReload
+        '400':
+          description: Contiene conflicto de emails registrados
+  
+  /clients/{client_id}/delete:
+    post:
+      summary: Eliminar Propietario
+      description: Borra lógicamente o físicamente al propietario si la integridad referencial de postgresql lo permite.
+      parameters:
+        - in: path
+          name: client_id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Reload App HTML
+        '400':
+          description: Error por integridad o dependencias de turnos
+
+components:
+  schemas:
+    Owner:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        owner_number:
+          type: integer
+          readOnly: true
+        email:
+          type: string
+          format: email
+        full_name:
+          type: string
+        phone:
+          type: string
+        address:
+          type: string
+        owner_type:
+          type: string
+          enum: [Persona Física, Persona Jurídica]
+        document_id:
+          type: string
+        photo_url:
+          type: string
+      required:
+        - email
+        - full_name

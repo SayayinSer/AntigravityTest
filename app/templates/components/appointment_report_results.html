@@ -1,0 +1,61 @@
+{% if appointments %}
+<div class="mt-4 animate-in slide-in-from-top-4 duration-500" id="agenda-pdf-area">
+    <div class="flex justify-between items-center mb-4 no-print">
+        <h4 class="text-sm font-bold text-slate-500 border-b pb-2">Resultados Obtenidos ({{ appointments|length }})</h4>
+        <button onclick="downloadAgendaPDF()" class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-xs font-black shadow hover:bg-indigo-700 transition">
+            DESCARGAR LISTADO PDF
+        </button>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow border border-slate-100 overflow-hidden">
+        <table class="w-full text-left">
+            <thead>
+                <tr class="text-[10px] bg-slate-50 font-black text-slate-400 uppercase tracking-widest border-b">
+                    <th class="py-3 px-4">Fecha y Hora</th>
+                    <th class="py-3 px-4">Cliente / Contacto</th>
+                    <th class="py-3 px-4">Vehículo</th>
+                    <th class="py-3 px-4">Estado Final</th>
+                    <th class="py-3 px-4">Motivo</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-50 text-sm">
+                {% for apt in appointments %}
+                <tr class="hover:bg-slate-50 transition-colors {% if apt.status == 'Cancelado' %}opacity-50{% endif %}">
+                    <td class="py-3 px-4">
+                        <div class="font-bold text-slate-700">{{ apt.scheduled_date.strftime('%d/%m/%Y') }}</div>
+                        <div class="text-[10px] font-black text-sky-600">{{ apt.scheduled_date.strftime('%H:%M') }}</div>
+                    </td>
+                    <td class="py-3 px-4">
+                        <div class="font-bold">{{ apt.client_name }}</div>
+                        <div class="text-[10px] text-slate-500">{{ apt.client_phone }}</div>
+                    </td>
+                    <td class="py-3 px-4 font-mono font-bold">{{ apt.plate or (apt.vehicle.plate if apt.vehicle else 'N/A') }}</td>
+                    <td class="py-3 px-4">
+                        <span class="text-[9px] font-black uppercase tracking-widest bg-slate-100 px-2 py-0.5 rounded">{{ apt.status }}</span>
+                    </td>
+                    <td class="py-3 px-4 text-xs italic text-slate-500">{{ apt.reason }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function downloadAgendaPDF() {
+            const element = document.getElementById('agenda-pdf-area');
+            const opt = {
+                margin:       10,
+                filename:     'Reporte_Agenda_Antigravity.pdf',
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2 },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'landscape' }
+            };
+            html2pdf().from(element).set(opt).save();
+        }
+    </script>
+</div>
+{% else %}
+<div class="p-8 text-center bg-slate-50 rounded-2xl border border-dashed border-slate-200 mt-6">
+    <p class="text-slate-400 font-bold italic">No se encontraron turnos en las fechas indicadas.</p>
+</div>
+{% endif %}
