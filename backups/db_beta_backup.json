@@ -337,6 +337,78 @@
             "entity_id": 1,
             "timestamp": "2026-04-14T13:43:54.330300",
             "details": "Inicio de sesi\u00f3n exitoso"
+        },
+        {
+            "id": 17,
+            "user_id": 1,
+            "action": "LOGIN",
+            "entity_name": "Usuario",
+            "entity_id": 1,
+            "timestamp": "2026-04-14T15:36:16.867554",
+            "details": "Inicio de sesi\u00f3n exitoso"
+        },
+        {
+            "id": 18,
+            "user_id": 1,
+            "action": "LOGIN",
+            "entity_name": "Usuario",
+            "entity_id": 1,
+            "timestamp": "2026-04-14T15:47:09.228244",
+            "details": "Inicio de sesi\u00f3n exitoso"
+        },
+        {
+            "id": 19,
+            "user_id": 1,
+            "action": "LOGIN",
+            "entity_name": "Usuario",
+            "entity_id": 1,
+            "timestamp": "2026-04-14T16:19:58.785239",
+            "details": "Inicio de sesi\u00f3n exitoso"
+        },
+        {
+            "id": 20,
+            "user_id": 1,
+            "action": "CREAR",
+            "entity_name": "Propietario/Cliente",
+            "entity_id": 1,
+            "timestamp": "2026-04-14T16:21:16.622586",
+            "details": null
+        },
+        {
+            "id": 21,
+            "user_id": 1,
+            "action": "MODIFICAR",
+            "entity_name": "Propietario/Cliente",
+            "entity_id": 1,
+            "timestamp": "2026-04-14T16:21:26.132505",
+            "details": null
+        },
+        {
+            "id": 22,
+            "user_id": 1,
+            "action": "LOGIN",
+            "entity_name": "Usuario",
+            "entity_id": 1,
+            "timestamp": "2026-04-14T16:45:12.431959",
+            "details": "Inicio de sesi\u00f3n exitoso"
+        },
+        {
+            "id": 23,
+            "user_id": 1,
+            "action": "LOGIN",
+            "entity_name": "Usuario",
+            "entity_id": 1,
+            "timestamp": "2026-04-14T16:47:19.703726",
+            "details": "Inicio de sesi\u00f3n exitoso"
+        },
+        {
+            "id": 24,
+            "user_id": 1,
+            "action": "LOGIN",
+            "entity_name": "Usuario",
+            "entity_id": 1,
+            "timestamp": "2026-04-14T16:47:35.486907",
+            "details": "Inicio de sesi\u00f3n exitoso"
         }
     ],
     "technicians": [
