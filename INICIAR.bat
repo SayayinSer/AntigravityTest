@@ -1,6 +1,12 @@
 @echo off
 setlocal enabledelayedexpansion
+REM ======================================================
+REM ANTIGRAVITY - Sistema de Ordenes (NucleoTallerV1)
+REM ======================================================
+
+REM Forzar codificacion UTF-8 para la consola
 chcp 65001 >nul 2>&1
+
 title Antigravity - NucleoTallerV1
 color 0A
 
@@ -10,24 +16,23 @@ echo     ANTIGRAVITY - Sistema de Ordenes
 echo   ======================================
 echo.
 
+REM Asegurar que estamos en la carpeta del script
 cd /d "%~dp0"
 
-REM Crear carpeta de logs
+REM Crear carpeta de logs si no existe
 if not exist "logs" mkdir logs
-
-REM Archivo de log con fecha
 set LOGFILE=logs\startup.log
 echo [%date% %time%] === INICIO DE ARRANQUE === >> "%LOGFILE%"
 
 REM ================================================
-REM  Verificar si el servidor ya esta corriendo
+REM  Verificar si el servidor ya esta activo
 REM ================================================
 echo   [..] Verificando si el sistema ya esta activo...
 
 powershell -Command "try { $r = Invoke-WebRequest -Uri 'http://127.0.0.1:8000/NucleoTallerV1/login' -UseBasicParsing -TimeoutSec 2; exit 0 } catch { exit 1 }" >nul 2>&1
 
 if !errorlevel! equ 0 (
-    echo   [OK] El sistema ya esta en ejecucion.
+    echo   [OK] El sistema ya esta en ejecucion en el puerto 8000.
     echo   [OK] Abriendo sesion de Login...
     echo.
     echo [%date% %time%] Sistema ya activo. Abriendo nuevo Login. >> "%LOGFILE%"
@@ -36,82 +41,93 @@ if !errorlevel! equ 0 (
     exit /b 0
 )
 
-echo   [--] Sistema no detectado. Iniciando...
+echo   [--] Sistema no detectado. Iniciando proceso de arranque...
 echo [%date% %time%] Sistema no activo. Procediendo con arranque. >> "%LOGFILE%"
 
 REM ================================================
-REM  Verificar entorno virtual
+REM  Verificar entorno virtual (.venv)
 REM ================================================
-if not exist ".venv\Scripts\activate.bat" (
-    echo   [ERROR] No se encontro el entorno virtual .venv
-    echo   [ERROR] Ejecute primero: python setup_local.py
+REM Verificamos la ruta absoluta para evitar ambiguedades
+set VENV_PATH=%~dp0.venv
+if not exist "%VENV_PATH%\Scripts\activate.bat" (
+    echo   [ERROR] No se encontro el entorno virtual en: %VENV_PATH%
+    echo   [TIP]   Ejecute primero: python setup_local.py
     echo.
-    echo [%date% %time%] ERROR: Entorno virtual .venv no encontrado. >> "%LOGFILE%"
-    echo [%date% %time%] Solucion: Ejecutar python setup_local.py >> "%LOGFILE%"
+    echo [%date% %time%] ERROR: .venv no encontrado en %VENV_PATH% >> "%LOGFILE%"
     pause
     exit /b 1
 )
 
-call .venv\Scripts\activate.bat
-echo   [OK] Entorno virtual activado
+call "%VENV_PATH%\Scripts\activate.bat"
+echo   [OK] Entorno virtual activado.
 echo [%date% %time%] Entorno virtual activado. >> "%LOGFILE%"
 
 REM ================================================
-REM  Verificar dependencias
+REM  Verificar dependencias criticas
 REM ================================================
-python -c "import uvicorn" 2>nul
+python -c "import uvicorn, fastapi, sqlalchemy, psycopg2" 2>nul
 if !errorlevel! neq 0 (
-    echo   [!] Faltan dependencias. Instalando...
-    echo [%date% %time%] Dependencias faltantes. Instalando... >> "%LOGFILE%"
+    echo   [!] Faltan dependencias criticas en el entorno. Instalando...
+    echo [%date% %time%] Dependencias faltantes. Instalando desde requirements.txt... >> "%LOGFILE%"
     pip install -r requirements.txt >> "%LOGFILE%" 2>&1
     if !errorlevel! neq 0 (
-        echo   [ERROR] Fallo la instalacion de dependencias.
+        echo   [ERROR] No se pudieron instalar las dependencias automaticamente.
+        echo   [TIP]   Ejecute 'pip install -r requirements.txt' manualmente.
         echo [%date% %time%] ERROR: pip install fallo. >> "%LOGFILE%"
         pause
         exit /b 1
     )
 )
-echo   [OK] Dependencias verificadas
+echo   [OK] Dependencias verificadas.
 
 REM ================================================
-REM  Verificar conexion a PostgreSQL
+REM  Verificar / Arrancar PostgreSQL
 REM ================================================
 echo   [..] Verificando conexion a PostgreSQL...
-python -c "from app.database import engine; c=engine.connect(); c.close(); print('OK')" >nul 2>> "%LOGFILE%"
+python -c "from app.database import engine; c=engine.connect(); c.close(); print('OK')" >nul 2>nul
 if !errorlevel! neq 0 (
-    echo   [ERROR] No se pudo conectar a PostgreSQL.
-    echo   [ERROR] Verifique que el servicio PostgreSQL este activo.
-    echo.
-    echo [%date% %time%] ERROR: Conexion a PostgreSQL fallida. >> "%LOGFILE%"
-    echo [%date% %time%] Verifique: servicio PostgreSQL activo, credenciales en app/database.py >> "%LOGFILE%"
-    pause
-    exit /b 1
+    echo   [!] Base de Datos no responde. Intentando levantar servicio...
+    echo [%date% %time%] DB no responde. Probando 'net start'... >> "%LOGFILE%"
+    
+    REM Intentar nombres comunes de servicio de Postgres
+    net start postgresql-x64-16 >nul 2>&1
+    if !errorlevel! neq 0 net start postgresql-x64-15 >nul 2>&1
+    if !errorlevel! neq 0 net start postgresql-x64-14 >nul 2>&1
+    if !errorlevel! neq 0 net start postgresql >nul 2>&1
+    
+    REM Esperar a que el servicio estabilice
+    timeout /t 4 /nobreak >nul
+    
+    python -c "from app.database import engine; c=engine.connect(); c.close(); print('OK')" >nul 2>nul
+    if !errorlevel! neq 0 (
+        echo   [ERROR] No se pudo levantar PostgreSQL automaticamente.
+        echo   [TIP]   Asegurese de abrir este script como ADMINISTRADOR.
+        echo   [TIP]   O inicie el servicio manualmente desde 'Services.msc'.
+        echo [%date% %time%] ERROR: No se pudo conectar a PostgreSQL tras intento de arranque. >> "%LOGFILE%"
+        pause
+        exit /b 1
+    )
+    echo   [OK] PostgreSQL arrancado exitosamente.
 )
-echo   [OK] PostgreSQL conectado
-
-echo [%date% %time%] Todas las verificaciones pasaron. >> "%LOGFILE%"
-echo.
-echo   ----------------------------------------
-echo     Sistema listo. Abriendo navegador...
-echo     http://127.0.0.1:8000/NucleoTallerV1/login
-echo   ----------------------------------------
-echo.
-echo     Presione Ctrl+C para detener
-echo   ----------------------------------------
-echo.
+echo   [OK] Conexion a Base de Datos establecida.
 
 REM ================================================
-REM  Abrir navegador en LOGIN y arrancar servidor
+REM  Lanzamiento Final
 REM ================================================
-echo [%date% %time%] Iniciando Uvicorn en puerto 8000... >> "%LOGFILE%"
+echo.
+echo   ----------------------------------------
+echo     SISTEMA LISTO. Levantando Aliso Web...
+echo     URL: http://127.0.0.1:8000/NucleoTallerV1/login
+echo   ----------------------------------------
+echo.
+echo [%date% %time%] Iniciando Uvicorn... >> "%LOGFILE%"
 
-REM Esperar 2 seg y abrir navegador en /login
-start /b cmd /c "timeout /t 2 /nobreak >nul & start "" http://127.0.0.1:8000/NucleoTallerV1/login"
+REM Abrir navegador con retraso para que el servidor este listo
+start /b cmd /c "timeout /t 3 /nobreak >nul & start "" http://127.0.0.1:8000/NucleoTallerV1/login"
 
-REM Iniciar servidor (errores al log)
-python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 2>> "%LOGFILE%"
+REM Arrancar servidor
+python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --log-level info
 
-REM Si llega aqui, el servidor se detuvo
 echo.
 echo   [!] Servidor detenido.
 echo [%date% %time%] Servidor detenido. >> "%LOGFILE%"

@@ -8,3 +8,6 @@ __pycache__/
 instance/
 venv/
 env/
+.venv/
+credentials.json
+.agents/skills/*/credentials.json

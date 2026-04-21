@@ -27,6 +27,9 @@ templates.env.globals["base"] = MODULE_PREFIX
 # Router with module prefix
 router = APIRouter(prefix=MODULE_PREFIX)
 
+# Static files mounting
+app.mount(f"{MODULE_PREFIX}/static", StaticFiles(directory="app/static"), name="static")
+
 # Dependency
 def get_db():
     db = database.SessionLocal()
