@@ -1,21 +1,29 @@
-<nav class="bg-sky-600 text-white p-4 shadow-lg flex justify-between items-center transition-colors"
-     :class="state === 'Terminada' ? 'bg-slate-700' : (state === 'Anulada' ? 'bg-red-700' : 'bg-sky-600')">
-    <div class="flex items-center gap-4">
-        <h1 class="text-xl font-bold">Detalle de OT #{{ order.id }}</h1>
-        <span class="px-2 py-0.5 bg-white/20 rounded text-xs uppercase tracking-widest">{{ order.vehicle.plate }}</span>
+<!-- order_header.html -->
+<div class="card-premium !bg-slate-900 border-none">
+    <div class="flex flex-col lg:flex-row justify-between items-center gap-6">
+        <div>
+            <div class="flex items-center gap-3 mb-2">
+                <span class="bg-sky-500 text-white font-black text-[10px] px-3 py-1 rounded-full shadow-lg shadow-sky-500/20">ORDEN #{{ order.id }}</span>
+                <span class="text-slate-400 text-[10px] font-black uppercase tracking-[0.2em]">{{ order.entry_date.strftime('%d/%m/%Y %H:%M') }}hs</span>
+            </div>
+            <h1 class="text-3xl font-black text-white tracking-tight">
+                {{ order.vehicle.brand.name }} <span class="font-normal text-slate-400">{{ order.vehicle.model }}</span>
+                <span class="text-sky-400 font-mono text-xl ml-2">{{ order.vehicle.plate }}</span>
+            </h1>
+        </div>
+        
+        <div class="flex items-center gap-6">
+            <div class="text-right">
+                <p class="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-1">Diagnóstico Declarado</p>
+                <p class="text-slate-200 font-bold italic text-sm max-w-md">{{ order.diagnosis or 'Sin diagnóstico inicial' }}</p>
+            </div>
+            <div class="h-12 w-px bg-white/10 hidden lg:block"></div>
+            <div class="flex flex-col items-end">
+                <span class="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-1">Estado Actual</span>
+                <span class="px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider {% if is_closed %}bg-slate-700 text-slate-400{% else %}bg-sky-500 text-white shadow-lg shadow-sky-500/20{% endif %}">
+                    {{ order.status }}
+                </span>
+            </div>
+        </div>
     </div>
-    <div class="flex gap-3">
-        {% if order.status == 'Pendiente' %}
-        <button @click="$dispatch('confirm', { 
-                    title: '¿Eliminar Orden?', 
-                    message: 'Esta acción borrará físicamente la orden y todos sus registros asociados.',
-                    action: '{{ base }}/order/{{ order.id }}/delete',
-                    target: 'body'
-                })"
-                class="px-4 py-2 bg-red-600 rounded-lg hover:bg-red-700 text-white text-sm font-bold shadow-md transition-transform active:scale-95">
-            Eliminar Orden
-        </button>
-        {% endif %}
-        <a href="{{ base }}/" class="px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg text-white text-sm font-bold border border-white/20">Volver al Dashboard</a>
-    </div>
-</nav>
+</div>

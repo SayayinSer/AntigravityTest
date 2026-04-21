@@ -1,131 +1,150 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Configuración - Antigravity OT</title>
-    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <style>[x-cloak] { display: none !important; }</style>
-</head>
-<body class="bg-slate-100 min-h-screen text-slate-800" x-data>
-    {% include 'components/confirm_modal.html' %}
+{% extends "base.html" %}
+
+{% block title %}Tablas Maestras - Aliso Workflow{% endblock %}
+
+{% block content %}
+<div class="space-y-12">
     
-    <div id="notification-area" class="fixed top-4 right-4 z-[200]"></div>
-
-    <nav class="bg-slate-800 text-white p-5 shadow-2xl flex justify-between items-center">
-        <h1 class="text-xl font-black tracking-tighter">ANTIGRAVITY <span class="text-sky-400 font-light">CONFIG</span></h1>
-        <div class="flex gap-4">
-            <a href="{{ base }}/vehicles" class="px-5 py-2 bg-slate-700 rounded-xl hover:bg-slate-600 border border-slate-600 text-xs font-bold uppercase transition-all">Móviles</a>
-            <a href="{{ base }}/" class="px-5 py-2 bg-slate-700 rounded-xl hover:bg-slate-600 border border-slate-600 text-xs font-bold uppercase transition-all">Dashboard</a>
-        </div>
-    </nav>
-
-    <main class="container mx-auto py-10 px-4 grid grid-cols-1 md:grid-cols-3 gap-8">
-        {% set tables = [
-            {'title': 'Marcas', 'color': 'sky', 'rows': brands, 'path': 'brand'},
-            {'title': 'Vehículos', 'color': 'purple', 'rows': types, 'path': 'type'},
-            {'title': 'Expertos', 'color': 'green', 'rows': technicians, 'path': 'tech'},
-            {'title': 'Países', 'color': 'amber', 'rows': countries, 'path': 'country'}
-        ] %}
-
-        {% for table in tables %}
-        <div class="bg-white p-8 rounded-3xl shadow-xl border border-slate-200/60 relative overflow-hidden">
-            <div class="absolute top-0 right-0 w-24 h-24 bg-{{ table.color }}-50 -mr-8 -mt-8 rounded-full blur-2xl opacity-50"></div>
-            
-            <h2 class="text-lg font-black mb-6 flex items-center gap-2 text-slate-700">
-                <span class="w-2 h-6 bg-{{ table.color }}-500 rounded-full shadow-lg"></span>
-                {{ table.title }}
+    <div class="flex flex-col md:flex-row justify-between items-center gap-6 mb-10">
+        <div>
+            <h2 class="text-3xl font-black text-slate-800 flex items-center gap-4">
+                <span class="w-2 h-10 bg-slate-400 rounded-full shadow-lg"></span>
+                Configuración del Sistema
             </h2>
-            
-            <!-- Inserción Rápida -->
-            <form hx-post="{{ base }}/admin/{{ table.path }}" @htmx:after-request="if($event.detail.successful) window.location.reload()" class="mb-8 flex gap-2">
-                <input type="text" name="name" placeholder="Nuevo..." required class="flex-1 p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-{{ table.color }}-500 outline-none transition-all text-sm">
-                <button type="submit" class="bg-{{ table.color }}-600 text-white px-5 py-3 rounded-xl hover:bg-{{ table.color }}-700 font-black shadow-lg transition-transform active:scale-95">+</button>
-            </form>
+            <p class="text-slate-400 text-xs font-bold uppercase tracking-widest mt-2 ml-6">Gestión de catálogos y entidades transversales</p>
+        </div>
+    </div>
 
-            <!-- Listado Maestro -->
-            <div class="space-y-3 max-h-96 overflow-y-auto pr-2">
-                {% for item in table.rows %}
-                <div class="p-4 bg-slate-50/50 rounded-2xl flex justify-between items-center group border border-transparent hover:border-{{ table.color }}-200 hover:bg-white transition-all shadow-sm hover:shadow-md"
-                     x-data="{ editing: false }">
-                    
-                    <div class="flex-1 mr-2">
-                        <span x-show="!editing" class="text-sm font-bold text-slate-600">{{ item.name }}</span>
-                        <form x-show="editing" x-cloak hx-post="{{ base }}/admin/{{ table.path }}/{{ item.id }}/update" @htmx:after-request="window.location.reload()">
-                            <input type="text" name="name" value="{{ item.name }}" class="w-full text-sm p-2 bg-white border border-{{ table.color }}-400 rounded-lg outline-none focus:ring-2 focus:ring-{{ table.color }}-100" @keyup.escape="editing = false" autofocus>
+    <!-- Grilla de Tablas -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+        
+        <!-- Marcas y Tipos -->
+        <div class="space-y-10">
+            <!-- TABLA: Marcas -->
+            <div class="card-premium">
+                <h3 class="text-xl font-black text-slate-800 mb-6 flex items-center gap-3">
+                    <span class="w-1.5 h-6 bg-sky-500 rounded-full"></span> 
+                    Marcas de Vehículos
+                </h3>
+                <form hx-post="{{ base }}/admin/brand" class="flex gap-4 mb-8">
+                    <input type="text" name="name" placeholder="Nueva Marca..." required class="input-premium">
+                    <button type="submit" class="btn-primary !px-4"><span class="text-xl">+</span></button>
+                </form>
+                <div class="space-y-2 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
+                    {% for b in brands %}
+                    <div class="flex justify-between items-center p-4 bg-slate-50/50 rounded-2xl border border-slate-100 group transition-all hover:bg-white hover:shadow-sm">
+                        <span class="font-bold text-slate-700">{{ b.name }}</span>
+                        <form hx-post="{{ base }}/admin/brand/{{ b.id }}/delete" class="opacity-0 group-hover:opacity-100 transition-opacity">
+                            <button type="submit" class="text-red-400 hover:text-red-600 transition-colors" hx-confirm="¿Eliminar esta marca?">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                            </button>
                         </form>
                     </div>
-
-                    <div class="flex gap-2">
-                        <button @click="editing = !editing" class="p-2 text-slate-300 hover:text-{{ table.color }}-600 bg-white rounded-lg shadow-sm border border-slate-100 transition-colors">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
-                        </button>
-                        <button hx-post="{{ base }}/admin/{{ table.path }}/{{ item.id }}/delete" 
-                                hx-confirm="¿Confirmas la eliminación definitiva?"
-                                hx-target="#notification-area"
-                                class="p-2 text-slate-300 hover:text-red-600 bg-white rounded-lg shadow-sm border border-slate-100 transition-colors">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
-                        </button>
-                    </div>
+                    {% endfor %}
                 </div>
-                {% endfor %}
             </div>
-        </div>
-        {% endfor %}
 
-        <!-- Panel Especial Provincias con anidación a País -->
-        <div class="bg-white p-8 rounded-3xl shadow-xl border border-slate-200/60 relative overflow-hidden md:col-span-2">
-            <div class="absolute top-0 right-0 w-24 h-24 bg-teal-50 -mr-8 -mt-8 rounded-full blur-2xl opacity-50"></div>
-            
-            <h2 class="text-lg font-black mb-6 flex items-center gap-2 text-slate-700">
-                <span class="w-2 h-6 bg-teal-500 rounded-full shadow-lg"></span>
-                Provincias / Estados
-            </h2>
-            
-            <!-- Inserción Rápida Province -->
-            <form hx-post="{{ base }}/admin/province" @htmx:after-request="if($event.detail.successful) window.location.reload()" class="mb-8 flex flex-wrap gap-2">
-                <select name="country_id" required class="w-1/3 p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-teal-500 outline-none transition-all text-sm">
-                    <option value="">País...</option>
-                    {% for c in countries %}<option value="{{ c.id }}">{{ c.name }}</option>{% endfor %}
-                </select>
-                <input type="text" name="name" placeholder="Nueva Provincia..." required class="flex-1 p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-teal-500 outline-none transition-all text-sm">
-                <button type="submit" class="bg-teal-600 text-white px-5 py-3 rounded-xl hover:bg-teal-700 font-black shadow-lg transition-transform active:scale-95">+</button>
-            </form>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-96 overflow-y-auto pr-2">
-                {% for item in provinces %}
-                <div class="p-4 bg-slate-50/50 rounded-2xl flex justify-between items-center group border border-transparent hover:border-teal-200 hover:bg-white transition-all shadow-sm hover:shadow-md"
-                     x-data="{ editing: false }">
-                    
-                    <div class="flex-1 mr-2">
-                        <span x-show="!editing" class="text-sm font-bold text-slate-600">{{ item.name }} <span class="text-[10px] text-teal-600 ml-1">({{ item.country.name if item.country else 'S/P' }})</span></span>
-                        <form x-show="editing" x-cloak hx-post="{{ base }}/admin/province/{{ item.id }}/update" @htmx:after-request="window.location.reload()" class="flex flex-col gap-2">
-                            <select name="country_id" class="w-full text-xs p-1 bg-white border border-teal-400 rounded-lg outline-none">
-                                {% for c in countries %}<option value="{{ c.id }}" {% if c.id == item.country_id %}selected{% endif %}>{{ c.name }}</option>{% endfor %}
-                            </select>
-                            <input type="text" name="name" value="{{ item.name }}" class="w-full text-sm p-2 bg-white border border-teal-400 rounded-lg outline-none focus:ring-2 focus:ring-teal-100" @keyup.escape="editing = false">
-                            <button type="submit" class="hidden"></button>
+            <!-- TABLA: Tipos -->
+            <div class="card-premium">
+                <h3 class="text-xl font-black text-slate-800 mb-6 flex items-center gap-3">
+                    <span class="w-1.5 h-6 bg-sky-500 rounded-full"></span> 
+                    Tipos de Unidades
+                </h3>
+                <form hx-post="{{ base }}/admin/type" class="flex gap-4 mb-8">
+                    <input type="text" name="name" placeholder="Nuevo Tipo (Bus, Camión, Auto)..." required class="input-premium">
+                    <button type="submit" class="btn-primary !px-4"><span class="text-xl">+</span></button>
+                </form>
+                <div class="space-y-2 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
+                    {% for t in types %}
+                    <div class="flex justify-between items-center p-4 bg-slate-50/50 rounded-2xl border border-slate-100 group transition-all hover:bg-white hover:shadow-sm">
+                        <span class="font-bold text-slate-700">{{ t.name }}</span>
+                        <form hx-post="{{ base }}/admin/type/{{ t.id }}/delete" class="opacity-0 group-hover:opacity-100 transition-opacity">
+                            <button type="submit" class="text-red-400 hover:text-red-600 transition-colors" hx-confirm="¿Eliminar este tipo?">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                            </button>
                         </form>
                     </div>
-
-                    <div class="flex gap-2">
-                        <button @click="editing = !editing" class="p-2 text-slate-300 hover:text-teal-600 bg-white rounded-lg shadow-sm border border-slate-100 transition-colors">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
-                        </button>
-                        <button hx-post="{{ base }}/admin/province/{{ item.id }}/delete" 
-                                hx-confirm="¿Confirmas la eliminación definitiva?"
-                                hx-target="#notification-area"
-                                class="p-2 text-slate-300 hover:text-red-600 bg-white rounded-lg shadow-sm border border-slate-100 transition-colors">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
-                        </button>
-                    </div>
+                    {% endfor %}
                 </div>
-                {% endfor %}
             </div>
         </div>
 
-    </main>
-</body>
-</html>
+        <!-- Técnicos y Geografía -->
+        <div class="space-y-10">
+            <!-- TABLA: Técnicos -->
+            <div class="card-premium">
+                <h3 class="text-xl font-black text-slate-800 mb-6 flex items-center gap-3">
+                    <span class="w-1.5 h-6 bg-emerald-500 rounded-full"></span> 
+                    Staff Técnico
+                </h3>
+                <form hx-post="{{ base }}/admin/tech" class="flex gap-4 mb-8">
+                    <input type="text" name="name" placeholder="Nombre Operador..." required class="input-premium">
+                    <button type="submit" class="btn-primary bg-emerald-600 shadow-emerald-100 !px-4"><span class="text-xl">+</span></button>
+                </form>
+                <div class="space-y-2 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
+                    {% for tech in technicians %}
+                    <div class="flex justify-between items-center p-4 bg-slate-50/50 rounded-2xl border border-slate-100 group transition-all hover:bg-white hover:shadow-sm">
+                        <span class="font-bold text-slate-700">{{ tech.name }}</span>
+                        <form hx-post="{{ base }}/admin/tech/{{ tech.id }}/delete" class="opacity-0 group-hover:opacity-100 transition-opacity">
+                            <button type="submit" class="text-red-400 hover:text-red-600 transition-colors" hx-confirm="¿Eliminar este técnico?">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                            </button>
+                        </form>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Geografía -->
+            <div class="card-premium">
+                <h3 class="text-xl font-black text-slate-800 mb-6 flex items-center gap-3">
+                    <span class="w-1.5 h-6 bg-slate-800 rounded-full"></span> 
+                    Ubicaciones Geográficas
+                </h3>
+                
+                <!-- Países -->
+                <div class="mb-8">
+                    <p class="label-premium !text-slate-400">Países</p>
+                    <form hx-post="{{ base }}/admin/country" class="flex gap-3 mb-4">
+                        <input type="text" name="name" placeholder="Nuevo País..." class="input-premium py-2 text-sm">
+                        <button type="submit" class="btn-primary !py-2 !px-4 text-xs">AÑADIR</button>
+                    </form>
+                    <div class="flex flex-wrap gap-2">
+                        {% for c in countries %}
+                        <div class="bg-slate-100 px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-600 flex items-center gap-2 group">
+                            {{ c.name }}
+                            <form hx-post="{{ base }}/admin/country/{{ c.id }}/delete" class="inline">
+                                <button type="submit" class="text-slate-300 hover:text-red-500 transition-colors" hx-confirm="¿Eliminar país?">✖</button>
+                            </form>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Provincias -->
+                <div>
+                    <p class="label-premium !text-slate-400">Provincias / Estados</p>
+                    <form hx-post="{{ base }}/admin/province" class="grid grid-cols-3 gap-3 mb-4">
+                        <select name="country_id" class="input-premium py-2 text-xs">
+                            {% for c in countries %}<option value="{{ c.id }}">{{ c.name }}</option>{% endfor %}
+                        </select>
+                        <input type="text" name="name" placeholder="Nueva Prov..." class="input-premium py-2 text-sm">
+                        <button type="submit" class="btn-primary !py-2 !px-4 text-xs">AÑADIR</button>
+                    </form>
+                    <div class="flex flex-wrap gap-2 max-h-40 overflow-y-auto">
+                        {% for p in provinces %}
+                        <div class="bg-sky-50 px-3 py-1.5 rounded-xl border border-sky-100 text-[10px] font-black text-sky-700 flex items-center gap-2">
+                            {{ p.name }} <span class="text-sky-300 font-normal">({{ p.country.name }})</span>
+                             <form hx-post="{{ base }}/admin/province/{{ p.id }}/delete" class="inline">
+                                <button type="submit" class="text-sky-300 hover:text-red-500 transition-colors" hx-confirm="¿Eliminar provincia?">✖</button>
+                            </form>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

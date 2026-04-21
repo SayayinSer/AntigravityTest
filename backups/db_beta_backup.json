@@ -143,7 +143,8 @@
             "created_at": "2026-04-14T12:37:27.542829",
             "updated_at": null,
             "created_by": 1,
-            "updated_by": null
+            "updated_by": null,
+            "photo_url": null
         },
         {
             "id": 2,
@@ -160,7 +161,8 @@
             "created_at": "2026-04-14T13:28:11.215398",
             "updated_at": "2026-04-14T13:30:40.962765",
             "created_by": 1,
-            "updated_by": null
+            "updated_by": null,
+            "photo_url": null
         }
     ],
     "work_orders": [
@@ -408,6 +410,186 @@
             "entity_name": "Usuario",
             "entity_id": 1,
             "timestamp": "2026-04-14T16:47:35.486907",
+            "details": "Inicio de sesi\u00f3n exitoso"
+        },
+        {
+            "id": 25,
+            "user_id": 1,
+            "action": "LOGIN",
+            "entity_name": "Usuario",
+            "entity_id": 1,
+            "timestamp": "2026-04-20T11:44:06.763212",
+            "details": "Inicio de sesi\u00f3n exitoso"
+        },
+        {
+            "id": 26,
+            "user_id": 1,
+            "action": "LOGIN",
+            "entity_name": "Usuario",
+            "entity_id": 1,
+            "timestamp": "2026-04-20T11:44:11.922060",
+            "details": "Inicio de sesi\u00f3n exitoso"
+        },
+        {
+            "id": 27,
+            "user_id": 1,
+            "action": "LOGIN",
+            "entity_name": "Usuario",
+            "entity_id": 1,
+            "timestamp": "2026-04-20T11:44:14.419813",
+            "details": "Inicio de sesi\u00f3n exitoso"
+        },
+        {
+            "id": 28,
+            "user_id": 1,
+            "action": "LOGIN",
+            "entity_name": "Usuario",
+            "entity_id": 1,
+            "timestamp": "2026-04-20T11:44:15.049547",
+            "details": "Inicio de sesi\u00f3n exitoso"
+        },
+        {
+            "id": 29,
+            "user_id": 1,
+            "action": "LOGIN",
+            "entity_name": "Usuario",
+            "entity_id": 1,
+            "timestamp": "2026-04-20T11:44:15.389185",
+            "details": "Inicio de sesi\u00f3n exitoso"
+        },
+        {
+            "id": 30,
+            "user_id": 1,
+            "action": "LOGIN",
+            "entity_name": "Usuario",
+            "entity_id": 1,
+            "timestamp": "2026-04-20T11:44:15.725370",
+            "details": "Inicio de sesi\u00f3n exitoso"
+        },
+        {
+            "id": 31,
+            "user_id": 1,
+            "action": "LOGIN",
+            "entity_name": "Usuario",
+            "entity_id": 1,
+            "timestamp": "2026-04-20T11:44:16.067694",
+            "details": "Inicio de sesi\u00f3n exitoso"
+        },
+        {
+            "id": 32,
+            "user_id": 1,
+            "action": "LOGIN",
+            "entity_name": "Usuario",
+            "entity_id": 1,
+            "timestamp": "2026-04-20T11:44:16.405425",
+            "details": "Inicio de sesi\u00f3n exitoso"
+        },
+        {
+            "id": 33,
+            "user_id": 1,
+            "action": "LOGIN",
+            "entity_name": "Usuario",
+            "entity_id": 1,
+            "timestamp": "2026-04-20T11:44:16.730800",
+            "details": "Inicio de sesi\u00f3n exitoso"
+        },
+        {
+            "id": 34,
+            "user_id": 1,
+            "action": "LOGIN",
+            "entity_name": "Usuario",
+            "entity_id": 1,
+            "timestamp": "2026-04-20T11:44:17.059977",
+            "details": "Inicio de sesi\u00f3n exitoso"
+        },
+        {
+            "id": 35,
+            "user_id": 1,
+            "action": "LOGIN",
+            "entity_name": "Usuario",
+            "entity_id": 1,
+            "timestamp": "2026-04-20T11:44:17.416811",
+            "details": "Inicio de sesi\u00f3n exitoso"
+        },
+        {
+            "id": 36,
+            "user_id": 1,
+            "action": "LOGIN",
+            "entity_name": "Usuario",
+            "entity_id": 1,
+            "timestamp": "2026-04-20T11:44:17.749021",
+            "details": "Inicio de sesi\u00f3n exitoso"
+        },
+        {
+            "id": 37,
+            "user_id": 1,
+            "action": "LOGIN",
+            "entity_name": "Usuario",
+            "entity_id": 1,
+            "timestamp": "2026-04-20T11:44:18.073391",
+            "details": "Inicio de sesi\u00f3n exitoso"
+        },
+        {
+            "id": 38,
+            "user_id": 1,
+            "action": "LOGIN",
+            "entity_name": "Usuario",
+            "entity_id": 1,
+            "timestamp": "2026-04-20T11:44:18.398625",
+            "details": "Inicio de sesi\u00f3n exitoso"
+        },
+        {
+            "id": 39,
+            "user_id": 1,
+            "action": "LOGIN",
+            "entity_name": "Usuario",
+            "entity_id": 1,
+            "timestamp": "2026-04-20T11:44:18.732517",
+            "details": "Inicio de sesi\u00f3n exitoso"
+        },
+        {
+            "id": 40,
+            "user_id": 1,
+            "action": "LOGIN",
+            "entity_name": "Usuario",
+            "entity_id": 1,
+            "timestamp": "2026-04-20T11:44:30.470366",
+            "details": "Inicio de sesi\u00f3n exitoso"
+        },
+        {
+            "id": 41,
+            "user_id": 1,
+            "action": "LOGIN",
+            "entity_name": "Usuario",
+            "entity_id": 1,
+            "timestamp": "2026-04-20T11:44:31.216556",
+            "details": "Inicio de sesi\u00f3n exitoso"
+        },
+        {
+            "id": 42,
+            "user_id": 1,
+            "action": "LOGIN",
+            "entity_name": "Usuario",
+            "entity_id": 1,
+            "timestamp": "2026-04-20T11:44:31.760219",
+            "details": "Inicio de sesi\u00f3n exitoso"
+        },
+        {
+            "id": 43,
+            "user_id": 1,
+            "action": "LOGIN",
+            "entity_name": "Usuario",
+            "entity_id": 1,
+            "timestamp": "2026-04-20T11:44:32.092143",
+            "details": "Inicio de sesi\u00f3n exitoso"
+        },
+        {
+            "id": 44,
+            "user_id": 1,
+            "action": "LOGIN",
+            "entity_name": "Usuario",
+            "entity_id": 1,
+            "timestamp": "2026-04-20T12:13:49.319088",
             "details": "Inicio de sesi\u00f3n exitoso"
         }
     ],

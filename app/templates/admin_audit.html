@@ -1,88 +1,83 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reporte de Auditoría - Antigravity</title>
-    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&display=swap" rel="stylesheet">
-</head>
-<body class="bg-slate-50 min-h-screen font-sans" style="font-family: 'Outfit', sans-serif;">
+{% extends "base.html" %}
+
+{% block title %}Auditoría de Sistema - Aliso Workflow{% endblock %}
+
+{% block content %}
+<div class="space-y-10">
     
-    <nav class="bg-slate-900 text-white p-6 shadow-2xl flex justify-between items-center">
-        <h1 class="text-xl font-black tracking-tighter uppercase"><span class="text-sky-400">Audit</span> Log</h1>
-        <div class="flex gap-4">
-            <a href="{{ base }}/admin/security" class="text-[10px] font-black uppercase hover:text-sky-400">Seguridad</a>
-            <a href="{{ base }}/" class="text-[10px] font-black uppercase hover:text-sky-400">Dashboard</a>
+    <div class="flex flex-col md:flex-row justify-between items-center gap-6 mb-10">
+        <div>
+            <h2 class="text-3xl font-black text-slate-800 flex items-center gap-4">
+                <span class="w-2 h-10 bg-amber-500 rounded-full shadow-lg shadow-amber-100"></span>
+                Trazabilidad / Auditoría
+            </h2>
+            <p class="text-slate-400 text-xs font-bold uppercase tracking-widest mt-2 ml-6">Registro detallado de transacciones y accesos</p>
         </div>
-    </nav>
-
-    <main class="container mx-auto py-12 px-4 max-w-6xl">
-        <div class="bg-white rounded-[2.5rem] shadow-2xl border border-slate-100 overflow-hidden">
-            <!-- Filtros -->
-            <div class="p-8 border-b border-slate-50 bg-slate-50/50">
-                <form hx-get="{{ base }}/admin/audit/filter" hx-target="#audit-results" class="flex flex-wrap items-end gap-6">
-                    <div>
-                        <label class="block text-[10px] font-black text-slate-400 uppercase mb-2">Desde</label>
-                        <input type="date" name="start_date" value="{{ today }}" class="p-3 bg-white border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-sky-500 text-sm font-bold">
-                    </div>
-                    <div>
-                        <label class="block text-[10px] font-black text-slate-400 uppercase mb-2">Hasta</label>
-                        <input type="date" name="end_date" value="{{ today }}" class="p-3 bg-white border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-sky-500 text-sm font-bold">
-                    </div>
-                    <button type="submit" class="bg-slate-900 text-white px-8 py-3.5 rounded-xl font-black text-xs uppercase hover:bg-black transition-all shadow-lg">
-                        FILTRAR LOGS
-                    </button>
-                </form>
-            </div>
-
-            <!-- Tabla de Resultados -->
-            <div id="audit-results" class="p-4">
-                <table class="w-full text-left">
-                    <thead class="text-[10px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-50">
-                        <tr>
-                            <th class="p-6">Fecha / Hora</th>
-                            <th class="p-6">Usuario</th>
-                            <th class="p-6">Acción</th>
-                            <th class="p-6">Objeto (ID)</th>
-                            <th class="p-6">Detalles</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-50">
-                        {% for log in logs %}
-                        <tr class="hover:bg-sky-50/30 transition-colors">
-                            <td class="p-6">
-                                <span class="text-xs font-bold text-slate-400">{{ log.timestamp.strftime('%d/%m/%Y %H:%M') }}</span>
-                            </td>
-                            <td class="p-6">
-                                <div class="flex items-center gap-2">
-                                    <div class="w-7 h-7 bg-slate-100 rounded-full flex items-center justify-center text-[10px] font-black">{{ log.user.username[:2].upper() if log.user else '?' }}</div>
-                                    <span class="text-sm font-black text-slate-700">{{ log.user.username if log.user else 'Sistema' }}</span>
-                                </div>
-                            </td>
-                            <td class="p-6">
-                                <span class="px-2 py-0.5 rounded text-[9px] font-black uppercase shadow-sm border
-                                    {% if log.action == 'CREAR' %}bg-green-100 text-green-700 border-green-200
-                                    {% elif log.action == 'MODIFICAR' or log.action == 'ESTADO' %}bg-blue-100 text-blue-700 border-blue-200
-                                    {% elif log.action == 'BORRAR' %}bg-red-100 text-red-700 border-red-200
-                                    {% else %}bg-slate-100 text-slate-600 border-slate-200{% endif %}">
-                                    {{ log.action }}
-                                </span>
-                            </td>
-                            <td class="p-6">
-                                <div class="text-xs font-bold text-slate-600">{{ log.entity_name }}</div>
-                                <div class="text-[9px] text-slate-400 italic">ID: {{ log.entity_id }}</div>
-                            </td>
-                            <td class="p-6 text-xs text-slate-500 italic max-w-xs truncate">
-                                {{ log.details or '-' }}
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
+        
+        <div class="flex gap-3">
+             <a href="{{ base }}/admin/security" class="btn-secondary">
+                <span class="text-sm">🔒</span> VOLVER A SEGURIDAD
+            </a>
         </div>
-    </main>
-</body>
-</html>
+    </div>
+
+    <!-- Filtros -->
+    <div class="card-premium mb-8">
+        <form hx-get="{{ base }}/admin/audit/filter" hx-target="#audit-results" class="flex flex-wrap items-end gap-6">
+            <div class="flex-grow max-w-xs">
+                <label class="label-premium">Desde</label>
+                <input type="date" name="start_date" value="{{ today }}" class="input-premium">
+            </div>
+            <div class="flex-grow max-w-xs">
+                <label class="label-premium">Hasta</label>
+                <input type="date" name="end_date" value="{{ today }}" class="input-premium">
+            </div>
+            <button type="submit" class="btn-primary bg-slate-800 h-[52px] !px-10">FILTRAR LOGS</button>
+        </form>
+    </div>
+
+    <!-- Tabla de Logs -->
+    <div class="card-premium">
+        {% block results %}
+        <div id="audit-results" class="overflow-x-auto">
+            <table class="w-full text-left">
+                <thead>
+                    <tr class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] border-b border-slate-50">
+                        <th class="pb-6 px-4">Estampa Temporal</th>
+                        <th class="pb-6 px-4">Usuario</th>
+                        <th class="pb-6 px-4">Acción</th>
+                        <th class="pb-6 px-4">Entidad</th>
+                        <th class="pb-6 px-4 text-center">ID Obj.</th>
+                        <th class="pb-6 px-4">Observaciones</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-50">
+                    {% for log in logs %}
+                    <tr class="hover:bg-slate-50 transition-colors">
+                        <td class="py-6 px-4 font-mono text-[11px] text-slate-500">{{ log.timestamp.strftime('%d/%m/%Y %H:%M:%S') }}</td>
+                        <td class="py-6 px-4">
+                            <span class="font-bold text-slate-700">{{ log.user.username }}</span>
+                        </td>
+                        <td class="py-6 px-4">
+                            {% set action_class = 'bg-slate-100 text-slate-600' %}
+                            {% if log.action == 'CREAR' %}{% set action_class = 'bg-emerald-100 text-emerald-700' %}
+                            {% elif log.action == 'BORRAR' %}{% set action_class = 'bg-red-100 text-red-700' %}
+                            {% elif log.action == 'LOGIN' %}{% set action_class = 'bg-sky-100 text-sky-700' %}
+                            {% endif %}
+                            <span class="px-2.5 py-1 rounded-md text-[9px] font-black uppercase tracking-wider {{ action_class }}">
+                                {{ log.action }}
+                            </span>
+                        </td>
+                        <td class="py-6 px-4 text-[11px] font-bold text-slate-500 uppercase">{{ log.entity_name }}</td>
+                        <td class="py-6 px-4 text-center font-mono text-xs text-slate-400">#{{ log.entity_id or '-' }}</td>
+                        <td class="py-6 px-4 text-xs italic text-slate-500">{{ log.details or '-' }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endblock %}
+    </div>
+
+</div>
+{% endblock %}

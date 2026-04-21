@@ -1,28 +1,38 @@
-from app.database import engine
+from app.database import engine, Base
 from sqlalchemy import text, inspect
-from app.models import Base
+import app.models # Ensure all models are loaded
 
 def migrate():
     inspector = inspect(engine)
-    columns = [c['name'] for c in inspector.get_columns('users')]
+    existing_tables = inspector.get_table_names()
     
     with engine.connect() as conn:
-        print("Checking users table...")
-        if 'email' not in columns:
-            print("Adding email...")
-            conn.execute(text("ALTER TABLE users ADD COLUMN email VARCHAR(150) UNIQUE"))
-        if 'status' not in columns:
-            print("Adding status...")
-            conn.execute(text("ALTER TABLE users ADD COLUMN status VARCHAR(20) DEFAULT 'Activo'"))
-        if 'failed_attempts' not in columns:
-            print("Adding failed_attempts...")
-            conn.execute(text("ALTER TABLE users ADD COLUMN failed_attempts INT DEFAULT 0"))
+        print("--- Iniciando Reparación de Esquema de Base de Datos ---")
         
-        print("Creating remaining tables (audit_logs)...")
-        Base.metadata.create_all(bind=engine)
+        for table_name, table in Base.metadata.tables.items():
+            if table_name not in existing_tables:
+                print(f"Table {table_name} does not exist. Creating all tables...")
+                Base.metadata.create_all(bind=engine)
+                break # metadata.create_all handles all missing tables
+            
+            # Check for missing columns in existing table
+            existing_columns = [c['name'] for c in inspector.get_columns(table_name)]
+            for column in table.columns:
+                if column.name not in existing_columns:
+                    print(f"Adding missing column: {table_name}.{column.name}...")
+                    # Get column type and definition for basic types
+                    col_type = str(column.type)
+                    # Adjust types for PostgreSQL if necessary
+                    if "VARCHAR" in col_type: col_type = "VARCHAR(255)"
+                    if "ENUM" in col_type: col_type = "VARCHAR(50)" # Use varchar for enums in simple migration
+                    
+                    try:
+                        conn.execute(text(f"ALTER TABLE {table_name} ADD COLUMN {column.name} {col_type}"))
+                    except Exception as e:
+                        print(f"Error adding {column.name}: {e}")
         
         conn.commit()
-    print("Migration finished successfully.")
+    print("--- Proceso de Migración/Reparación finalizado con éxito ---")
 
 if __name__ == "__main__":
     migrate()

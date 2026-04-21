@@ -1,73 +1,73 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reportes de Gestión - Antigravity</title>
-    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <!-- Motor de PDF -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-</head>
-<body class="bg-gray-50 min-h-screen text-gray-800" x-data="{ today: new Date().toISOString().split('T')[0] }">
-    <nav class="bg-sky-600 text-white p-4 shadow-lg flex justify-between items-center">
-        <h1 class="text-xl font-bold">Reportes de Gestión</h1>
-        <div class="flex gap-4">
-            <a href="{{ base }}/vehicles" class="px-4 py-2 bg-sky-700 rounded-lg hover:bg-sky-800 text-sm font-bold">Móviles</a>
-            <a href="{{ base }}/" class="px-4 py-2 bg-sky-700 rounded-lg hover:bg-sky-800 text-sm font-bold">Dashboard</a>
-        </div>
-    </nav>
+{% extends "base.html" %}
 
-    <main class="container mx-auto py-8 px-4">
-        <!-- Filtros -->
-        <div class="bg-white p-6 rounded-2xl shadow-md border mb-8 border-sky-100">
-            <h2 class="text-lg font-bold mb-4 flex items-center gap-2 text-sky-700">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
-                </svg>
-                Generar Reporte Detallado
+{% block title %}Reportes de Gestión - Aliso Workflow{% endblock %}
+
+{% block head %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="space-y-10">
+    
+    <div class="flex flex-col md:flex-row justify-between items-center gap-6 mb-10">
+        <div>
+            <h2 class="text-3xl font-black text-slate-800 flex items-center gap-4">
+                <span class="w-2 h-10 bg-sky-600 rounded-full shadow-lg shadow-sky-100"></span>
+                Inteligencia de Negocio
             </h2>
-            <form hx-post="{{ base }}/reports/results" hx-target="#report-content" class="grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
-                <div>
-                    <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Desde</label>
-                    <input type="date" name="start_date" :value="today" required class="w-full p-2 border rounded-lg outline-none focus:ring-2 focus:ring-sky-500">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Hasta</label>
-                    <input type="date" name="end_date" :value="today" required class="w-full p-2 border rounded-lg outline-none focus:ring-2 focus:ring-sky-500">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Estado OT</label>
-                    <select name="status" class="w-full p-2 border rounded-lg outline-none focus:ring-2 focus:ring-sky-500">
-                        <option value="all">Todos</option>
-                        <option value="Pendiente">Pendiente</option>
-                        <option value="En Ejecución">En Ejecución</option>
-                        <option value="Terminada">Terminada</option>
-                        <option value="Anulada">Anulada</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Técnico Resp.</label>
-                    <select name="tech_id" class="w-full p-2 border rounded-lg outline-none focus:ring-2 focus:ring-sky-500">
-                        <option value="">Consolidado</option>
-                        {% for t in technicians %}
-                        <option value="{{ t.id }}">{{ t.name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <button type="submit" class="bg-sky-600 text-white font-bold py-2 rounded-lg hover:bg-sky-700 shadow-lg transition-transform active:scale-95">
-                    Consultar
-                </button>
-            </form>
+            <p class="text-slate-400 text-xs font-bold uppercase tracking-widest mt-2 ml-6">Análisis de costos, productividad y desempeño operativo</p>
         </div>
+    </div>
 
-        <!-- Contenido del Reporte -->
-        <div id="report-content" class="min-h-[400px]">
-            <div class="text-center py-20 text-gray-400 italic bg-white rounded-2xl border border-dashed border-gray-300">
-                Los resultados del reporte aparecerán aquí...
+    <!-- Panel de Filtros -->
+    <div class="card-premium">
+        <h3 class="text-xl font-black text-slate-800 mb-8 flex items-center gap-3">
+            <span class="w-1.5 h-6 bg-slate-800 rounded-full"></span> 
+            Parámetros del Reporte
+        </h3>
+        
+        <form hx-post="{{ base }}/reports/results" hx-target="#report-results" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div>
+                <label class="label-premium">Fecha Inicio</label>
+                <input type="date" name="start_date" required class="input-premium">
             </div>
+            <div>
+                <label class="label-premium">Fecha Fin</label>
+                <input type="date" name="end_date" required class="input-premium">
+            </div>
+            <div>
+                <label class="label-premium">Estado de OT</label>
+                <select name="status" class="input-premium">
+                    <option value="all">Todas las órdenes</option>
+                    <option value="Pendiente">Pendientes</option>
+                    <option value="En Ejecución">En Ejecución</option>
+                    <option value="Terminada">Terminadas</option>
+                    <option value="Anulada">Anuladas</option>
+                </select>
+            </div>
+            <div>
+                <label class="label-premium">Especialidad / Técnico</label>
+                <select name="tech_id" class="input-premium">
+                    <option value="">Todos los técnicos</option>
+                    {% for tech in technicians %}<option value="{{ tech.id }}">{{ tech.name }}</option>{% endfor %}
+                </select>
+            </div>
+            <div class="lg:col-span-4 flex justify-end">
+                <button type="submit" class="btn-primary py-4 px-12 shadow-sky-200 group">
+                    EJECUTAR ANÁLISIS
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 group-hover:rotate-12 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Resultados (Cargados vía HTMX) -->
+    <div id="report-results" class="min-h-[200px] transition-all">
+        <div class="flex flex-col items-center justify-center py-20 text-slate-300 opacity-30">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" /></svg>
+            <p class="font-black uppercase tracking-[0.3em] text-sm">A la espera de parámetros para procesar datos</p>
         </div>
-    </main>
-</body>
-</html>
+    </div>
+
+</div>
+{% endblock %}

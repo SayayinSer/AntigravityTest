@@ -1,118 +1,93 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Antigravity - Gestión de Órdenes de Trabajo</title>
-    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <style>
-        .glass { background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.3); }
-        .bg-gradient { background: linear-gradient(135deg, #0ea5e9 0%, #0369a1 100%); }
-    </style>
-</head>
-<body class="bg-slate-50 min-h-screen text-slate-800 font-sans flex flex-col">
-    <nav class="bg-gradient text-white p-4 shadow-xl sticky top-0 z-50">
-        <div class="container mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-            <h1 class="text-2xl font-black tracking-tighter">ANTIGRAVITY <span class="font-light text-sky-200">WORKFLOW</span></h1>
-            <div class="flex flex-wrap items-center justify-center gap-3">
-                {% if user %}
-                <div class="flex items-center gap-3 bg-white/10 px-4 py-1.5 rounded-full border border-white/20 mr-2">
-                    <div class="w-6 h-6 bg-sky-300 text-sky-900 rounded-full flex items-center justify-center text-[10px] font-black">{{ user.username[0] }}</div>
-                    <span class="text-[10px] font-bold uppercase tracking-wider">{{ user.username }}</span>
-                    <a href="{{ base }}/logout" class="text-[10px] text-sky-200 hover:text-white ml-2 underline">Salir</a>
-                </div>
-                {% endif %}
+{% extends "base.html" %}
 
-                <a href="{{ base }}/appointments" class="bg-indigo-600 hover:bg-indigo-500 px-4 py-2 rounded-xl transition-all border border-indigo-400 text-xs font-black shadow-lg flex items-center gap-2">📆 AGENDAS</a>
-                <a href="{{ base }}/clients" class="bg-teal-600 hover:bg-teal-500 px-4 py-2 rounded-xl transition-all border border-teal-400 text-xs font-black shadow-lg flex items-center gap-2">👥 CLIENTES</a>
-                <a href="{{ base }}/vehicles" class="bg-white/10 hover:bg-white/20 px-4 py-2 rounded-xl transition-all border border-white/20 text-xs font-bold flex items-center gap-2">Móviles</a>
-                <a href="{{ base }}/reports" class="bg-white/10 hover:bg-white/20 px-4 py-2 rounded-xl transition-all border border-white/20 text-xs font-bold flex items-center gap-2">Reportes</a>
-                <a href="{{ base }}/admin" class="bg-white/10 hover:bg-white/20 px-4 py-2 rounded-xl transition-all border border-white/20 text-xs font-bold flex items-center gap-2">Tablas</a>
-                
-                {% if user and 'OficialSeguridad' in user.roles|map(attribute='name') %}
-                <a href="{{ base }}/admin/security" class="bg-amber-400 hover:bg-amber-500 text-amber-950 px-4 py-2 rounded-xl transition-all shadow-lg text-xs font-black flex items-center gap-2">
-                    🔒 SEGURIDAD
-                </a>
-                {% endif %}
+{% block title %}Dashboard - Aliso Workflow{% endblock %}
 
-                <button hx-get="{{ base }}/order/new" hx-target="#main-panel" class="bg-white text-sky-600 hover:bg-sky-50 px-6 py-2 rounded-xl transition-all shadow-lg font-black text-xs flex items-center gap-2">
-                    + NUEVA ORDEN
-                </button>
+{% block content %}
+<div id="main-panel" class="grid gap-8">
+    <div class="card-premium">
+        <div class="flex flex-col md:flex-row justify-between items-center mb-10 gap-4">
+            <div>
+                <h2 class="text-3xl font-black text-slate-800 flex items-center gap-4">
+                    <span class="w-2 h-10 bg-sky-500 rounded-full shadow-lg shadow-sky-200"></span>
+                    Panel de Operaciones
+                </h2>
+                <p class="text-slate-400 text-xs font-bold uppercase tracking-widest mt-2 ml-6">Gestión de Órdenes de Trabajo en Tiempo Real</p>
             </div>
-            </div>
+            
+            <button hx-get="{{ base }}/order/new" hx-target="#main-panel" class="btn-primary py-4 px-8 shadow-sky-200">
+                <span class="text-xl">+</span> NUEVA ORDEN
+            </button>
         </div>
-    </nav>
-
-    <main class="container mx-auto py-8 px-4 flex-grow">
-        <div id="main-panel" class="grid gap-8">
-            <div class="glass p-8 rounded-[2rem] shadow-2xl border-white/40">
-                <div class="flex justify-between items-center mb-8">
-                    <h2 class="text-2xl font-black text-slate-800 flex items-center gap-3">
-                        <span class="w-3 h-8 bg-sky-500 rounded-full shadow-lg shadow-sky-200"></span>
-                        Gestión de Operaciones
-                    </h2>
-                </div>
-                
-                <div class="overflow-x-auto -mx-4 md:mx-0">
-                    <table class="w-full text-left">
-                        <thead>
-                            <tr class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] border-b border-slate-100">
-                                <th class="pb-5 px-4">Orden</th>
-                                <th class="pb-5 px-4">Vehículo</th>
-                                <th class="pb-5 px-4">Status</th>
-                                <th class="pb-5 px-6">Productividad</th>
-                                <th class="pb-5 px-6 text-right">Inversión</th>
-                                <th class="pb-5 px-4 text-center">Gestión</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-slate-50">
-                            {% if not orders %}
-                                <tr>
-                                    <td colspan="6" class="py-20 text-center text-slate-300 italic font-light">No hay registros en el sistema.</td>
-                                </tr>
+        
+        <div class="overflow-x-auto -mx-4 md:mx-0">
+            <table class="w-full text-left">
+                <thead>
+                    <tr class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] border-b border-slate-100">
+                        <th class="pb-6 px-4">Orden</th>
+                        <th class="pb-6 px-4">Móvil / Vehículo</th>
+                        <th class="pb-6 px-4 text-center">Estado</th>
+                        <th class="pb-6 px-6 text-center">Producción</th>
+                        <th class="pb-6 px-6 text-right">Inversión</th>
+                        <th class="pb-6 px-4 text-right">Gestión</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-50">
+                    {% if not orders %}
+                        <tr>
+                            <td colspan="6" class="py-24 text-center">
+                                <div class="flex flex-col items-center gap-4 text-slate-300">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 opacity-20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                                    </svg>
+                                    <p class="text-sm italic font-medium">No hay órdenes registradas en este período.</p>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endif %}
+                    {% for order in orders %}
+                    <tr class="hover:bg-slate-50/80 transition-all group">
+                        <td class="py-8 px-4">
+                            <span class="text-xl font-black text-slate-400 group-hover:text-sky-600 transition-colors">#{{ order.id }}</span>
+                        </td>
+                        <td class="py-8 px-4">
+                            <div class="flex flex-col">
+                                <span class="font-bold text-slate-700 text-lg">{{ order.vehicle.brand.name }} <span class="font-normal text-slate-400">{{ order.vehicle.model }}</span></span>
+                                <div class="flex items-center gap-2 mt-1">
+                                    <span class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded-md font-mono border border-slate-200">{{ order.vehicle.plate }}</span>
+                                    <span class="text-[9px] text-slate-400 font-bold uppercase tracking-tighter">Code: {{ order.vehicle.internal_code }}</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="py-8 px-4 text-center">
+                            {% set status_class = 'bg-sky-100 text-sky-700' %}
+                            {% if order.status == 'Terminada' %}{% set status_class = 'bg-slate-200 text-slate-600 font-medium' %}
+                            {% elif order.status == 'Anulada' %}{% set status_class = 'bg-red-100 text-red-700' %}
+                            {% elif order.status == 'En Ejecución' %}{% set status_class = 'bg-amber-100 text-amber-700 animate-pulse' %}
                             {% endif %}
-                            {% for order in orders %}
-                            <tr class="hover:bg-sky-50/50 transition-all group">
-                                <td class="py-6 px-4">
-                                    <span class="text-lg font-black text-sky-600">#{{ order.id }}</span>
-                                </td>
-                                <td class="py-6 px-4">
-                                    <div class="font-bold text-slate-700">{{ order.vehicle.brand.name }} <span class="font-light">{{ order.vehicle.model }}</span></div>
-                                    <div class="text-[10px] bg-slate-100 text-slate-500 inline-block px-1.5 py-0.5 rounded font-mono mt-1 border border-slate-200">{{ order.vehicle.plate }}</div>
-                                </td>
-                                <td class="py-6 px-4">
-                                    <span class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-tighter"
-                                          :class="state === 'Terminada' ? 'bg-slate-200 text-slate-700' : 'bg-sky-100 text-sky-700'">
-                                        {{ order.status }}
-                                    </span>
-                                </td>
-                                <td class="py-6 px-6">
-                                    <div class="flex items-center gap-2">
-                                        <div class="w-1.5 h-1.5 rounded-full bg-sky-400"></div>
-                                        <span class="font-mono font-bold text-slate-600">{{ order.formatted_time }}</span>
-                                    </div>
-                                </td>
-                                <td class="py-6 px-6 text-right">
-                                    <span class="text-lg font-black text-slate-800">${{ order.total_cost }}</span>
-                                </td>
-                                <td class="py-6 px-4 text-center">
-                                    <a href="{{ base }}/order/{{ order.id }}" class="bg-slate-800 text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-sky-600 transition-colors shadow-md">
-                                        ABRIR OT
-                                    </a>
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+                            <span class="px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider {{ status_class }}">
+                                {{ order.status }}
+                            </span>
+                        </td>
+                        <td class="py-8 px-6 text-center">
+                            <div class="flex flex-col items-center gap-1">
+                                <span class="font-mono font-black text-slate-700">{{ order.formatted_time }}</span>
+                                <span class="text-[8px] text-slate-400 font-black uppercase tracking-widest">Hs de Trabajo</span>
+                            </div>
+                        </td>
+                        <td class="py-8 px-6 text-right">
+                            <span class="text-xl font-black text-slate-900 font-mono tracking-tighter">${{ "{:,.2f}".format(order.total_cost) }}</span>
+                        </td>
+                        <td class="py-8 px-4 text-right">
+                            <a href="{{ base }}/order/{{ order.id }}" class="bg-slate-800 text-white px-5 py-2.5 rounded-xl text-[10px] font-black hover:bg-sky-600 transition-all shadow-md active:scale-95 inline-flex items-center gap-2">
+                                GESTIONAR OT
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
-    </main>
-
-    <footer class="py-10 text-center text-slate-400 text-[10px] tracking-widest uppercase font-light">
-        &copy; 2026 Antigravity Workflow Engine &bull; Argentina
-    </footer>
-</body>
-</html>
+    </div>
+</div>
+{% endblock %}

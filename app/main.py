@@ -87,23 +87,26 @@ async def login(response: Response, username: str = Form(...), password: str = F
     user = db.query(models.User).filter(models.User.username == username).first()
     
     if not user:
-        return HTMLResponse(content='<div id="error-msg" class="text-red-500 font-bold text-sm bg-red-50 p-3 rounded-lg border border-red-100 mb-4">Usuario no existe</div>', status_code=401)
+        return HTMLResponse(content='<div id="error-msg" class="text-red-500 font-black text-[10px] uppercase tracking-widest bg-red-50 p-4 rounded-2xl border border-red-100 mb-6 shadow-sm">Usuario no registrado</div', status_code=401)
     
     if user.status == 'Suspendido':
-        return HTMLResponse(content='<div id="error-msg" class="text-white font-bold text-sm bg-red-600 p-3 rounded-lg border border-red-700 mb-4">CUENTA SUSPENDIDA. Contacte soporte.</div>', status_code=403)
+        return HTMLResponse(content='<div id="error-msg" class="text-white font-black text-[10px] uppercase tracking-[0.2em] bg-red-600 p-4 rounded-2xl border border-red-700 mb-6 shadow-xl shadow-red-900/20">CUENTA SUSPENDIDA. Contacte soporte.</div>', status_code=403)
 
     if not auth.verify_password(password, user.hashed_password):
         auth.handle_failed_login(db, user)
         msg = f"Clave incorrecta. Intentos: {user.failed_attempts}/3"
         if user.status == 'Suspendido':
             msg = "CUENTA SUSPENDIDA POR INTENTOS FALLIDOS."
-        return HTMLResponse(content=f'<div id="error-msg" class="text-red-500 font-bold text-sm bg-red-50 p-3 rounded-lg border border-red-100 mb-4">{msg}</div>', status_code=401)
+        return HTMLResponse(content=f'<div id="error-msg" class="text-red-500 font-black text-[10px] uppercase tracking-widest bg-red-50 p-4 rounded-2xl border border-red-100 mb-6 shadow-sm">{msg}</div>', status_code=401)
     
     # Éxito
     auth.reset_failed_login(db, user)
     access_token = auth.create_access_token(data={"sub": user.username})
-    response = RedirectResponse(url=f"{MODULE_PREFIX}/", status_code=302)
+    
+    # Professional redirect via HTMX Header
+    response = Response(status_code=204) # No content, redirect handled by header
     response.set_cookie(key="access_token", value=f"Bearer {access_token}", httponly=True, path="/")
+    response.headers["HX-Redirect"] = f"{MODULE_PREFIX}/"
     
     log_audit(db, user.id, "LOGIN", "Usuario", user.id, "Inicio de sesión exitoso")
     
@@ -119,7 +122,7 @@ async def logout():
 async def security_admin(request: Request, db: Session = Depends(get_db), current_user: models.User = Depends(auth.check_role(["OficialSeguridad"]))):
     users = db.query(models.User).all()
     roles = db.query(models.Role).all()
-    return templates.TemplateResponse(request, "security_admin.html", {"users": users, "roles": roles, "current_user": current_user})
+    return templates.TemplateResponse(request, "security_admin.html", {"users": users, "roles": roles, "current_user": current_user, "active_page": "security"})
 
 @router.post("/admin/security/user", response_class=HTMLResponse)
 async def create_user(username: str = Form(...), full_name: str = Form(...), password: str = Form(...), email: Optional[str] = Form(None), role_id: int = Form(...), db: Session = Depends(get_db), current_user: models.User = Depends(auth.check_role(["OficialSeguridad"]))):
@@ -133,8 +136,8 @@ async def create_user(username: str = Form(...), full_name: str = Form(...), pas
         db.commit()
         log_audit(db, current_user.id, "CREAR", "Usuario", new_user.id, f"Creación de {username}")
         return HTMLResponse(content='<script>window.location.reload();</script>')
-    except ValueError as e: return HTMLResponse(content=f'<div class="bg-red-500 text-white p-2">{str(e)}</div>', status_code=400)
-    except IntegrityError: return HTMLResponse(content='<div class="bg-red-500 text-white p-2">Usuario/Email ya existe</div>', status_code=400)
+    except ValueError as e: return HTMLResponse(content=f'<div class="bg-red-50 text-red-600 border border-red-100 p-4 rounded-2xl font-bold text-xs shadow-sm">{str(e)}</div>', status_code=400)
+    except IntegrityError: return HTMLResponse(content='<div class="bg-red-50 text-red-600 border border-red-100 p-4 rounded-2xl font-bold text-xs shadow-sm">Usuario/Email ya existe</div>', status_code=400)
 
 @router.post("/admin/user/{user_id}/toggle-status")
 async def toggle_status(user_id: int, db: Session = Depends(get_db), current_user: models.User = Depends(auth.check_role(["OficialSeguridad"]))):
@@ -150,7 +153,7 @@ async def toggle_status(user_id: int, db: Session = Depends(get_db), current_use
 async def audit_report(request: Request, db: Session = Depends(get_db), current_user: models.User = Depends(auth.check_role(["OficialSeguridad"]))):
     today = datetime.now().strftime("%Y-%m-%d")
     logs = db.query(models.AuditLog).order_by(models.AuditLog.timestamp.desc()).limit(100).all()
-    return templates.TemplateResponse(request, "admin_audit.html", {"logs": logs, "today": today, "user": current_user})
+    return templates.TemplateResponse(request, "admin_audit.html", {"logs": logs, "today": today, "user": current_user, "active_page": "admin"})
 
 @router.get("/admin/audit/filter", response_class=HTMLResponse)
 async def audit_filter(start_date: str, end_date: str, db: Session = Depends(get_db)):
@@ -168,7 +171,7 @@ async def admin_page(request: Request, db: Session = Depends(get_db), user: Opti
     techs = db.query(models.Technician).all()
     countries = db.query(models.Country).all()
     provinces = db.query(models.Province).all()
-    return templates.TemplateResponse(request, "admin.html", {"brands": brands, "types": types, "technicians": techs, "countries": countries, "provinces": provinces, "user": user})
+    return templates.TemplateResponse(request, "admin.html", {"brands": brands, "types": types, "technicians": techs, "countries": countries, "provinces": provinces, "user": user, "active_page": "admin"})
 
 # --- GESTION DE VEHICULOS ---
 
@@ -177,7 +180,7 @@ async def vehicles_page(request: Request, db: Session = Depends(get_db), user: O
     vehicles = db.query(models.Vehicle).all()
     brands = db.query(models.Brand).all()
     types = db.query(models.VehicleType).all()
-    return templates.TemplateResponse(request, "vehicles.html", {"vehicles": vehicles, "brands": brands, "types": types, "user": user})
+    return templates.TemplateResponse(request, "vehicles.html", {"vehicles": vehicles, "brands": brands, "types": types, "user": user, "active_page": "vehicles"})
 
 @router.get("/vehicles/{vehicle_id}/history", response_class=HTMLResponse)
 async def vehicle_history(request: Request, vehicle_id: int, db: Session = Depends(get_db)):
@@ -207,7 +210,7 @@ async def save_vehicle(plate: str = Form(...), brand_id: int = Form(...), type_i
         db.commit()
         log_audit(db, user.id if user else None, "CREAR", "Vehículo", db_vehicle.id, f"Alta de móvil {db_vehicle.plate}")
         return HTMLResponse(content='<script>window.location.reload();</script>')
-    except IntegrityError: return HTMLResponse(content='<div id="notification-area" hx-swap-oob="true" class="bg-red-600 p-4 rounded-xl">Patente ya existe</div>', status_code=400)
+    except IntegrityError: return HTMLResponse(content='<div id="notification-area" hx-swap-oob="true" class="bg-red-50 text-red-600 border border-red-200 p-4 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-2xl">Patente ya existe</div>', status_code=400)
 
 @router.post("/vehicles/{vehicle_id}/delete", response_class=HTMLResponse)
 async def delete_vehicle(request: Request, vehicle_id: int, db: Session = Depends(get_db), user: Optional[models.User] = Depends(auth.get_current_user)):
@@ -218,7 +221,7 @@ async def delete_vehicle(request: Request, vehicle_id: int, db: Session = Depend
             db.commit()
             log_audit(db, user.id if user else None, "BORRAR", "Vehículo", vehicle_id)
         except IntegrityError:
-            return HTMLResponse(content='<div id="notification-area" hx-swap-oob="true" class="bg-red-600 p-4 rounded-xl text-white">Este móvil tiene órdenes asignadas y no puede eliminarse.</div>', status_code=400)
+            return HTMLResponse(content='<div id="notification-area" hx-swap-oob="true" class="bg-red-50 text-red-600 border border-red-200 p-4 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-2xl">Este móvil tiene órdenes asignadas y no puede eliminarse.</div>', status_code=400)
     return HTMLResponse(content='<script>window.location.reload();</script>')
 
 @router.get("/", response_class=HTMLResponse)
@@ -227,7 +230,7 @@ async def index(request: Request, db: Session = Depends(get_db), user: Optional[
     for ot in orders:
         ot.total_cost = sum(p.quantity * p.unit_price for p in ot.parts) + sum(t.price for t in ot.third_parties)
         ot.formatted_time = format_duration(timedelta(minutes=sum(t.duration_minutes for t in ot.tasks)))
-    return templates.TemplateResponse(request, "index.html", {"orders": orders, "user": user})
+    return templates.TemplateResponse(request, "index.html", {"orders": orders, "user": user, "active_page": "dashboard"})
 
 @router.get("/order/new", response_class=HTMLResponse)
 async def new_order_form(request: Request, db: Session = Depends(get_db), user: Optional[models.User] = Depends(auth.get_current_user)):
@@ -248,8 +251,8 @@ async def update_status(request: Request, order_id: int, status: str = Form(...)
     order.updated_by = user.id if user else None
     if status == "Terminada":
         if not order.tasks:
-            return HTMLResponse(content='<div id="notification-area" hx-swap-oob="true" class="bg-red-600 p-4 rounded-xl">NO PUEDE CERRAR: El móvil no tiene TAREAS cargadas.</div>', status_code=400)
-        if not solution or not mileage: return HTMLResponse(content='<div id="notification-area" hx-swap-oob="true" class="bg-red-600 p-4 rounded-xl">Datos incompletos para cierre</div>', status_code=400)
+            return HTMLResponse(content='<div id="notification-area" hx-swap-oob="true" class="bg-red-50 text-red-600 border border-red-200 p-4 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-2xl">NO PUEDE CERRAR: El móvil no tiene TAREAS cargadas.</div>', status_code=400)
+        if not solution or not mileage: return HTMLResponse(content='<div id="notification-area" hx-swap-oob="true" class="bg-red-50 text-red-600 border border-red-200 p-4 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-2xl">Datos incompletos para cierre</div>', status_code=400)
         order.status = "Terminada"; order.solution = solution; order.recorded_mileage = mileage; order.exit_date = datetime.now()
         v = order.vehicle; v.current_mileage = mileage; v.last_service_date = order.exit_date
         v.next_service_suggestion = datetime.strptime(next_visit, "%Y-%m-%d") if next_visit else (order.exit_date + timedelta(days=180))
@@ -267,7 +270,7 @@ async def update_status(request: Request, order_id: int, status: str = Form(...)
 @router.get("/reports", response_class=HTMLResponse)
 async def report_page(request: Request, db: Session = Depends(get_db), user: Optional[models.User] = Depends(auth.get_current_user)):
     techs = db.query(models.Technician).all()
-    return templates.TemplateResponse(request, "reports.html", {"technicians": techs, "user": user})
+    return templates.TemplateResponse(request, "reports.html", {"technicians": techs, "user": user, "active_page": "reports"})
 
 @router.post("/reports/results", response_class=HTMLResponse)
 async def generate_report(request: Request, start_date: str = Form(...), end_date: str = Form(...), status: str = Form(...), tech_id: str = Form(""), db: Session = Depends(get_db)):
@@ -521,7 +524,8 @@ async def appointments_page(request: Request, db: Session = Depends(get_db), use
         "upcoming_appointments": upcoming_appointments,
         "vehicles": vehicles,
         "user": user,
-        "today_date": today_start.strftime("%Y-%m-%d")
+        "today_date": today_start.strftime("%Y-%m-%d"),
+        "active_page": "appointments"
     })
 
 @router.get("/appointments/api/check-client")
@@ -599,7 +603,7 @@ async def clients_page(request: Request, db: Session = Depends(get_db), user: Op
     clients = db.query(models.Owner).order_by(models.Owner.owner_number.desc()).all()
     countries = db.query(models.Country).all()
     provinces = db.query(models.Province).all()
-    return templates.TemplateResponse(request, "clients.html", {"clients": clients, "countries": countries, "provinces": provinces, "user": user})
+    return templates.TemplateResponse(request, "clients.html", {"clients": clients, "countries": countries, "provinces": provinces, "user": user, "active_page": "clients"})
 
 @router.post("/clients/save", response_class=HTMLResponse)
 async def save_client(
