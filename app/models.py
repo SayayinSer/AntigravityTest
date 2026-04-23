@@ -131,6 +131,10 @@ class WOPart(Base):
     uom = Column(String(20))
 
     work_order = relationship("WorkOrder", back_populates="parts")
+    
+    @property
+    def total_price(self):
+        return (self.quantity or 0) * (self.unit_price or 0)
 
 class WOThirdParty(Base):
     __tablename__ = "wo_third_parties"

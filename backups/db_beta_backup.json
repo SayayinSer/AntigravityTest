@@ -129,24 +129,6 @@
     ],
     "vehicles": [
         {
-            "id": 1,
-            "internal_code": 1001,
-            "plate": "BDB-456-PZ",
-            "brand_id": 3,
-            "type_id": 3,
-            "model": "Basico",
-            "year": 2024,
-            "current_mileage": 50000,
-            "last_owner": "Carlitos",
-            "last_service_date": "2026-03-01T00:00:00",
-            "next_service_suggestion": null,
-            "created_at": "2026-04-14T12:37:27.542829",
-            "updated_at": null,
-            "created_by": 1,
-            "updated_by": null,
-            "photo_url": null
-        },
-        {
             "id": 2,
             "internal_code": 1002,
             "plate": "AA-932-ZC",
@@ -163,23 +145,27 @@
             "created_by": 1,
             "updated_by": null,
             "photo_url": null
+        },
+        {
+            "id": 1,
+            "internal_code": 1001,
+            "plate": "BDB-456-PZ",
+            "brand_id": 3,
+            "type_id": 3,
+            "model": "Basico",
+            "year": 2024,
+            "current_mileage": 57500,
+            "last_owner": "Carlitos",
+            "last_service_date": "2026-04-23T15:39:33.461207",
+            "next_service_suggestion": "2026-06-23T00:00:00",
+            "created_at": "2026-04-14T12:37:27.542829",
+            "updated_at": "2026-04-23T15:39:33.459619",
+            "created_by": 1,
+            "updated_by": null,
+            "photo_url": null
         }
     ],
     "work_orders": [
-        {
-            "id": 1,
-            "vehicle_id": 1,
-            "status": "Pendiente",
-            "diagnosis": "Falla de Frenos y Luces",
-            "solution": null,
-            "recommendation": null,
-            "entry_date": "2026-04-14T12:37:50.274778",
-            "exit_date": null,
-            "recorded_mileage": null,
-            "updated_at": "2026-04-14T13:07:45.996089",
-            "created_by": 1,
-            "updated_by": 1
-        },
         {
             "id": 2,
             "vehicle_id": 2,
@@ -191,6 +177,20 @@
             "exit_date": "2026-04-14T13:30:40.964182",
             "recorded_mileage": 1250000,
             "updated_at": "2026-04-14T13:30:40.962765",
+            "created_by": 1,
+            "updated_by": 1
+        },
+        {
+            "id": 1,
+            "vehicle_id": 1,
+            "status": "Terminada",
+            "diagnosis": "Falla de Frenos y Luces",
+            "solution": "Movil Operativo y controlado",
+            "recommendation": null,
+            "entry_date": "2026-04-14T12:37:50.274778",
+            "exit_date": "2026-04-23T15:39:33.461207",
+            "recorded_mileage": 57500,
+            "updated_at": "2026-04-23T15:39:33.459619",
             "created_by": 1,
             "updated_by": 1
         }
@@ -600,6 +600,60 @@
             "entity_id": 1,
             "timestamp": "2026-04-21T00:20:45.247685",
             "details": "Inicio de sesi\u00f3n exitoso"
+        },
+        {
+            "id": 46,
+            "user_id": 1,
+            "action": "LOGIN",
+            "entity_name": "Usuario",
+            "entity_id": 1,
+            "timestamp": "2026-04-23T15:36:45.213301",
+            "details": "Inicio de sesi\u00f3n exitoso"
+        },
+        {
+            "id": 47,
+            "user_id": 1,
+            "action": "MODIFICAR",
+            "entity_name": "Orden Tarea",
+            "entity_id": 1,
+            "timestamp": "2026-04-23T15:37:23.855290",
+            "details": "A\u00f1adida tarea a OT 1"
+        },
+        {
+            "id": 48,
+            "user_id": 1,
+            "action": "MODIFICAR",
+            "entity_name": "Orden Repuesto",
+            "entity_id": 1,
+            "timestamp": "2026-04-23T15:38:06.120248",
+            "details": null
+        },
+        {
+            "id": 49,
+            "user_id": 1,
+            "action": "MODIFICAR",
+            "entity_name": "Orden Tercero",
+            "entity_id": 1,
+            "timestamp": "2026-04-23T15:38:39.420712",
+            "details": null
+        },
+        {
+            "id": 50,
+            "user_id": 1,
+            "action": "TERMINAR",
+            "entity_name": "Orden",
+            "entity_id": 1,
+            "timestamp": "2026-04-23T15:39:33.459619",
+            "details": "Cierre de OT por SU"
+        },
+        {
+            "id": 51,
+            "user_id": 1,
+            "action": "LOGIN",
+            "entity_name": "Usuario",
+            "entity_id": 1,
+            "timestamp": "2026-04-23T15:58:12.570605",
+            "details": "Inicio de sesi\u00f3n exitoso"
         }
     ],
     "technicians": [
@@ -634,6 +688,13 @@
             "description": "Revisar Luces ",
             "duration_minutes": 50,
             "technician_id": 4
+        },
+        {
+            "id": 3,
+            "work_order_id": 1,
+            "description": "Revision de Fluidos",
+            "duration_minutes": 20,
+            "technician_id": 1
         }
     ],
     "wo_parts": [
@@ -652,6 +713,14 @@
             "quantity": "5.00",
             "unit_price": "3000.00",
             "uom": "Unidades"
+        },
+        {
+            "id": 3,
+            "work_order_id": 1,
+            "description": "Liquido para parabrizas",
+            "quantity": "1.00",
+            "unit_price": "4000.00",
+            "uom": "Lt"
         }
     ],
     "wo_third_parties": [
@@ -668,6 +737,13 @@
             "provider_name": "Sergio",
             "description": "lavado de Movil",
             "price": "10000.00"
+        },
+        {
+            "id": 3,
+            "work_order_id": 1,
+            "provider_name": "mario",
+            "description": "Alianeado y balanceo",
+            "price": "19000.00"
         }
     ]
 }

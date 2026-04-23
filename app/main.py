@@ -2,7 +2,7 @@ from fastapi import FastAPI, Depends, HTTPException, Request, Form, Response, AP
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from sqlalchemy.exc import IntegrityError
 from typing import List, Optional
 from datetime import datetime, timedelta
@@ -159,7 +159,7 @@ async def audit_report(request: Request, db: Session = Depends(get_db), current_
     return templates.TemplateResponse(request, "admin_audit.html", {"logs": logs, "today": today, "user": current_user, "active_page": "admin"})
 
 @router.get("/admin/audit/filter", response_class=HTMLResponse)
-async def audit_filter(start_date: str, end_date: str, db: Session = Depends(get_db)):
+async def audit_filter(request: Request, start_date: str, end_date: str, db: Session = Depends(get_db), current_user: models.User = Depends(auth.check_role(["OficialSeguridad"]))):
     start = datetime.strptime(start_date, "%Y-%m-%d")
     end = datetime.strptime(end_date, "%Y-%m-%d") + timedelta(days=1)
     logs = db.query(models.AuditLog).filter(models.AuditLog.timestamp >= start, models.AuditLog.timestamp < end).order_by(models.AuditLog.timestamp.desc()).all()
@@ -185,11 +185,12 @@ async def vehicles_page(request: Request, db: Session = Depends(get_db), user: O
     types = db.query(models.VehicleType).all()
     return templates.TemplateResponse(request, "vehicles.html", {"vehicles": vehicles, "brands": brands, "types": types, "user": user, "active_page": "vehicles"})
 
+
 @router.get("/vehicles/{vehicle_id}/history", response_class=HTMLResponse)
-async def vehicle_history(request: Request, vehicle_id: int, db: Session = Depends(get_db)):
-    vehicle = db.get(models.Vehicle, vehicle_id)
+async def vehicle_history(request: Request, vehicle_id: int, db: Session = Depends(get_db), user: Optional[models.User] = Depends(auth.get_current_user)):
+    vehicle = db.query(models.Vehicle).options(joinedload(models.Vehicle.orders)).filter(models.Vehicle.id == vehicle_id).first()
     if not vehicle: raise HTTPException(status_code=404, detail="Vehicle not found")
-    return templates.TemplateResponse(request, "vehicle_history.html", {"vehicle": vehicle})
+    return templates.TemplateResponse(request, "vehicle_history.html", {"vehicle": vehicle, "user": user})
 
 @router.post("/vehicles/save", response_class=HTMLResponse)
 async def save_vehicle(plate: str = Form(...), brand_id: int = Form(...), type_id: int = Form(...), model: str = Form(None), year: int = Form(None), current_mileage: int = Form(0), last_owner: str = Form(None), last_service_date: str = Form(None), photo: UploadFile = File(None), db: Session = Depends(get_db), user: Optional[models.User] = Depends(auth.get_current_user)):
@@ -293,8 +294,8 @@ async def generate_report(request: Request, start_date: str = Form(...), end_dat
     tech_time = {}
     
     for ot in orders:
-        parts_total += sum(p.quantity * p.unit_price for p in ot.parts)
-        third_total += sum(t.price for t in ot.third_parties)
+        parts_total += sum((p.quantity or 0) * (p.unit_price or 0) for p in ot.parts)
+        third_total += sum((t.price or 0) for t in ot.third_parties)
         parts_count += len(ot.parts)
         third_count += len(ot.third_parties)
         

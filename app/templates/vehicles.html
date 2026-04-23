@@ -131,7 +131,7 @@
 
             <!-- Footer Acciones -->
             <div class="p-6 bg-slate-50 flex gap-3 border-t border-slate-100/50">
-                <a hx-get="{{ base }}/vehicles/{{ v.id }}/history" hx-target="#main-panel" class="flex-1 btn-secondary !px-3 !py-2 !text-[10px] justify-center cursor-pointer">
+                <a href="{{ base }}/vehicles/{{ v.id }}/history" class="flex-1 btn-secondary !px-3 !py-2 !text-[10px] justify-center cursor-pointer">
                     HISTORIAL
                 </a>
                 <form hx-post="{{ base }}/vehicles/{{ v.id }}/delete" class="flex-1">
