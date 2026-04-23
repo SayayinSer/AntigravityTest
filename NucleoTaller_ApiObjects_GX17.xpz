@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ExportFile>
+  <KMW>
+    <MajorVersion>4</MajorVersion>
+    <MinorVersion>0</MinorVersion>
+    <Build>149605</Build>
+  </KMW>
+  <Source kb="00000000-0000-0000-0000-000000000000" username="Antigravity">
+    <Version guid="00000000-0000-0000-0000-000000000000" name="NucleoTaller"/>
+  </Source>
+  <Objects>
+    <!-- apiOwner -->
+    <Object type="de43003a-c0e7-4de0-9112-921d7bba4e24" guid="9b29dbcd-2245-4277-bc65-037fcdbbbb11" name="apiOwner">
+      <Part type="c414d7a4-e9cb-4ba3-bfaf-f2fb50b55615">
+        <Source><![CDATA[Service Owner
+{
+    [RestMethod: GET]
+    [Path: "/owner"]
+    => GetOwners(out:&SDTOwners);
+
+    [RestMethod: GET]
+    [Path: "/owner/{id}"]
+    => GetOwnerById(in:&id, out:&SDTOwner);
+
+    [RestMethod: POST]
+    [Path: "/owner"]
+    => InsertOwner(in:&SDTOwner, out:&Messages);
+
+    [RestMethod: PUT]
+    [Path: "/owner/{id}"]
+    => UpdateOwner(in:&id, in:&SDTOwner, out:&Messages);
+
+    [RestMethod: DELETE]
+    [Path: "/owner/{id}"]
+    => DeleteOwner(in:&id, out:&Messages);
+}]]></Source>
+      </Part>
+    </Object>
+
+    <!-- apiVehicle -->
+    <Object type="de43003a-c0e7-4de0-9112-921d7bba4e24" guid="a1b2c3d4-e5f6-4788-b9a0-c1d2e3f4a5b6" name="apiVehicle">
+      <Part type="c414d7a4-e9cb-4ba3-bfaf-f2fb50b55615">
+        <Source><![CDATA[Service Vehicle
+{
+    [RestMethod: GET]
+    [Path: "/vehicle"]
+    => GetVehicles(out:&SDTVehicles);
+
+    [RestMethod: GET]
+    [Path: "/vehicle/{id}"]
+    => GetVehicleById(in:&id, out:&SDTVehicle);
+
+    [RestMethod: POST]
+    [Path: "/vehicle"]
+    => InsertVehicle(in:&SDTVehicle, out:&Messages);
+
+    [RestMethod: PUT]
+    [Path: "/vehicle/{id}"]
+    => UpdateVehicle(in:&id, in:&SDTVehicle, out:&Messages);
+
+    [RestMethod: DELETE]
+    [Path: "/vehicle/{id}"]
+    => DeleteVehicle(in:&id, out:&Messages);
+}]]></Source>
+      </Part>
+    </Object>
+
+    <!-- apiAppointment -->
+    <Object type="de43003a-c0e7-4de0-9112-921d7bba4e24" guid="f7e8d9c0-b1a2-4355-c4d5-e6f7a8b9c0d1" name="apiAppointment">
+      <Part type="c414d7a4-e9cb-4ba3-bfaf-f2fb50b55615">
+        <Source><![CDATA[Service Appointment
+{
+    [RestMethod: GET]
+    [Path: "/appointment"]
+    => GetAppointments(out:&SDTAppointments);
+
+    [RestMethod: GET]
+    [Path: "/appointment/{id}"]
+    => GetAppointmentById(in:&id, out:&SDTAppointment);
+
+    [RestMethod: POST]
+    [Path: "/appointment"]
+    => InsertAppointment(in:&SDTAppointment, out:&Messages);
+
+    [RestMethod: PUT]
+    [Path: "/appointment/{id}"]
+    => UpdateAppointment(in:&id, in:&SDTAppointment, out:&Messages);
+
+    [RestMethod: DELETE]
+    [Path: "/appointment/{id}"]
+    => DeleteAppointment(in:&id, out:&Messages);
+}]]></Source>
+      </Part>
+    </Object>
+
+    <!-- apiWorkOrder -->
+    <Object type="de43003a-c0e7-4de0-9112-921d7bba4e24" guid="2b3c4d5e-6f7a-8b9c-0d1e-2f3a4b5c6d7e" name="apiWorkOrder">
+      <Part type="c414d7a4-e9cb-4ba3-bfaf-f2fb50b55615">
+        <Source><![CDATA[Service WorkOrder
+{
+    [RestMethod: GET]
+    [Path: "/workorder"]
+    => GetWorkOrders(out:&SDTWorkOrders);
+
+    [RestMethod: GET]
+    [Path: "/workorder/{id}"]
+    => GetWorkOrderById(in:&id, out:&SDTWorkOrder);
+
+    [RestMethod: POST]
+    [Path: "/workorder"]
+    => InsertWorkOrder(in:&SDTWorkOrder, out:&Messages);
+
+    [RestMethod: PUT]
+    [Path: "/workorder/{id}"]
+    => UpdateWorkOrder(in:&id, in:&SDTWorkOrder, out:&Messages);
+
+    [RestMethod: DELETE]
+    [Path: "/workorder/{id}"]
+    => DeleteWorkOrder(in:&id, out:&Messages);
+}]]></Source>
+      </Part>
+    </Object>
+
+  </Objects>
+  <Dependencies/>
+</ExportFile>
