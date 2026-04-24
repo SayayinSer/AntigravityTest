@@ -344,10 +344,14 @@ async def generate_report(request: Request, start_date: str = Form(...), end_dat
         tdata["formatted"] = format_duration(timedelta(minutes=tdata["minutes"]))
         tech_stats.append(tdata)
         
+    print(f"DEBUG: Reporte generado con {len(orders)} ordenes. Total Repuestos: {parts_total}")
+
     return templates.TemplateResponse(request, "components/report_results.html", {
         "orders": orders,
-        "parts_total": parts_total, "parts_count": parts_count,
-        "third_total": third_total, "third_count": third_count,
+        "parts_total": "{:,.2f}".format(parts_total),
+        "parts_count": parts_count,
+        "third_total": "{:,.2f}".format(third_total),
+        "third_count": third_count,
         "tech_stats": tech_stats
     })
 
