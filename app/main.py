@@ -278,10 +278,37 @@ async def report_page(request: Request, db: Session = Depends(get_db), user: Opt
 
 @router.post("/reports/results", response_class=HTMLResponse)
 async def generate_report(request: Request, start_date: str = Form(...), end_date: str = Form(...), status: str = Form(...), tech_id: str = Form(""), db: Session = Depends(get_db)):
-    start = datetime.strptime(start_date, "%Y-%m-%d")
-    end = datetime.strptime(end_date, "%Y-%m-%d") + timedelta(days=1)
+    try:
+        # Flexible date parsing
+        if "-" in start_date:
+            start = datetime.strptime(start_date, "%Y-%m-%d")
+        elif "/" in start_date:
+            try:
+                start = datetime.strptime(start_date, "%d/%m/%Y")
+            except:
+                start = datetime.strptime(start_date, "%Y/%m/%d")
+        else:
+            start = datetime.strptime(start_date, "%Y-%m-%d") # fallback
+
+        if "-" in end_date:
+            end = datetime.strptime(end_date, "%Y-%m-%d") + timedelta(days=1)
+        elif "/" in end_date:
+            try:
+                end = datetime.strptime(end_date, "%d/%m/%Y") + timedelta(days=1)
+            except:
+                end = datetime.strptime(end_date, "%Y/%m/%d") + timedelta(days=1)
+        else:
+             end = datetime.strptime(end_date, "%Y-%m-%d") + timedelta(days=1) # fallback
+    except Exception as e:
+        return HTMLResponse(content=f'<div class="p-8 bg-red-50 border-2 border-red-200 rounded-3xl text-red-700 font-bold">Error en formato de fecha: {str(e)}. Use YYYY-MM-DD o DD/MM/YYYY.</div>', status_code=400)
     
-    query = db.query(models.WorkOrder).filter(models.WorkOrder.entry_date >= start, models.WorkOrder.entry_date < end)
+    query = db.query(models.WorkOrder).options(
+        joinedload(models.WorkOrder.parts),
+        joinedload(models.WorkOrder.third_parties),
+        joinedload(models.WorkOrder.tasks).joinedload(models.WOTask.technician),
+        joinedload(models.WorkOrder.vehicle).joinedload(models.Vehicle.brand)
+    ).filter(models.WorkOrder.entry_date >= start, models.WorkOrder.entry_date < end)
+    
     if status != "all":
         query = query.filter(models.WorkOrder.status == status)
     
@@ -299,16 +326,18 @@ async def generate_report(request: Request, start_date: str = Form(...), end_dat
         parts_count += len(ot.parts)
         third_count += len(ot.third_parties)
         
-        ot_minutes = sum(t.duration_minutes for t in ot.tasks)
+        ot_minutes = sum((t.duration_minutes or 0) for t in ot.tasks)
         ot.total_minutes = ot_minutes
         ot.work_duration = format_duration(timedelta(minutes=ot_minutes))
         
         for t in ot.tasks:
             if tech_id and str(t.technician_id) != tech_id:
                 continue
-            if t.technician_id not in tech_time:
-                tech_time[t.technician_id] = {"name": t.technician.name, "minutes": 0}
-            tech_time[t.technician_id]["minutes"] += t.duration_minutes
+            t_id = t.technician_id or 0
+            if t_id not in tech_time:
+                t_name = t.technician.name if t.technician else "Sin asignar"
+                tech_time[t_id] = {"name": t_name, "minutes": 0}
+            tech_time[t_id]["minutes"] += (t.duration_minutes or 0)
             
     tech_stats = []
     for tdata in tech_time.values():

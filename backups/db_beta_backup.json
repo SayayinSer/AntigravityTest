@@ -654,6 +654,24 @@
             "entity_id": 1,
             "timestamp": "2026-04-23T15:58:12.570605",
             "details": "Inicio de sesi\u00f3n exitoso"
+        },
+        {
+            "id": 52,
+            "user_id": 1,
+            "action": "LOGIN",
+            "entity_name": "Usuario",
+            "entity_id": 1,
+            "timestamp": "2026-04-23T18:30:58.190939",
+            "details": "Inicio de sesi\u00f3n exitoso"
+        },
+        {
+            "id": 53,
+            "user_id": 1,
+            "action": "LOGIN",
+            "entity_name": "Usuario",
+            "entity_id": 1,
+            "timestamp": "2026-04-23T20:47:26.448078",
+            "details": "Inicio de sesi\u00f3n exitoso"
         }
     ],
     "technicians": [

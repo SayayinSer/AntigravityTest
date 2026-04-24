@@ -109,8 +109,9 @@
             <p class="text-slate-400 text-xs font-bold uppercase tracking-widest mt-2 ml-6">Base de datos centralizada de portadores de vehículos</p>
         </div>
         
-        <button @click="showModal = true; editMode = false; clientData = {type:'Persona Física', country: '1'};" class="btn-primary shadow-slate-200">
-            <span class="text-xl">+</span> REGISTRAR PROPIETARIO
+        <button @click="showModal = true; editMode = false; clientData = {type:'Persona Física', country: '1'};" class="btn-primary py-4 px-8 shadow-slate-200 group">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 group-hover:translate-y-[-2px] transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            <span class="tracking-widest uppercase">Registrar Propietario</span>
         </button>
     </div>
 

@@ -36,6 +36,14 @@
             @apply bg-white text-slate-700 border border-slate-200 px-6 py-2.5 rounded-xl font-bold transition-all hover:bg-slate-50 active:scale-95 flex items-center gap-2;
         }
 
+        .btn-success {
+            @apply bg-emerald-600 text-white px-6 py-2.5 rounded-xl font-bold transition-all shadow-lg hover:bg-emerald-700 active:scale-95 flex items-center gap-2;
+        }
+
+        .btn-warning {
+            @apply bg-amber-500 text-white px-6 py-2.5 rounded-xl font-bold transition-all shadow-lg hover:bg-amber-600 active:scale-95 flex items-center gap-2;
+        }
+
         .btn-danger {
             @apply bg-red-50 text-red-600 border border-red-100 px-4 py-2 rounded-xl font-bold transition-all hover:bg-red-100 flex items-center gap-2;
         }
@@ -59,6 +67,11 @@
         ::-webkit-scrollbar-track { background: #f1f5f9; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        /* HTMX Indicator */
+        .htmx-indicator { opacity: 0; transition: opacity 200ms ease-in; pointer-events: none; }
+        .htmx-request .htmx-indicator { opacity: 1; }
+        .htmx-request.htmx-indicator { opacity: 1; }
     </style>
     
     {% block head %}{% endblock %}
