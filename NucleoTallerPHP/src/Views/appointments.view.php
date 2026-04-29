@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+
+{% block title %}Agenda de Turnos - Aliso Workflow{% endblock %}
+
+{% block head %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+{% endblock %}
+
+{% block content %}
+<div x-data="{ showModal: false, showReport: false }">
+    
+    <!-- Modales -->
+    {% include 'components/appointment_modal.html' %}
+
+    <div class="flex flex-col md:flex-row justify-between items-center mb-10 gap-6">
+        <div>
+            <h2 class="text-3xl font-black text-slate-800 flex items-center gap-4">
+                <span class="w-2 h-10 bg-indigo-500 rounded-full shadow-lg shadow-indigo-200"></span>
+                Agenda de Recepción
+            </h2>
+            <p class="text-slate-400 text-xs font-bold uppercase tracking-widest mt-2 ml-6">Planificación y seguimiento de turnos programados</p>
+        </div>
+        
+        <div class="flex gap-3">
+            <button @click="showReport = !showReport" class="btn-secondary">
+                <span class="text-lg">📊</span> REPORTE AGENDA
+            </button>
+            <button @click="showModal = true" class="btn-primary bg-indigo-600 shadow-indigo-200 hover:bg-indigo-700 py-4 px-8 group">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 group-hover:rotate-12 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                <span class="tracking-widest uppercase">Nuevo Turno</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Panel de Reporte (Colapsable) -->
+    <div x-show="showReport" x-collapse x-cloak class="card-premium mb-8 border-indigo-100 bg-indigo-50/10">
+        <h3 class="text-lg font-black text-slate-700 mb-6 flex items-center gap-2">
+            <span class="w-1.5 h-6 bg-indigo-400 rounded-full"></span> 
+            Filtros de Búsqueda
+        </h3>
+        <form hx-post="<?= htmlspecialchars(strval($base ?? "")) ?>/appointments/report" hx-target="#report-results" class="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
+            <div>
+                <label class="label-premium">Desde</label>
+                <input type="date" name="start_date" required class="input-premium">
+            </div>
+            <div>
+                <label class="label-premium">Hasta</label>
+                <input type="date" name="end_date" required class="input-premium">
+            </div>
+            <button type="submit" class="btn-primary w-full h-[52px] justify-center bg-slate-800">
+                GENERAR REPORTE
+            </button>
+        </form>
+        <div id="report-results" class="mt-8"></div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <!-- Hoy -->
+        <div class="lg:col-span-4">
+            <div class="bg-white rounded-[2rem] shadow-xl overflow-hidden border border-slate-100 flex flex-col h-full ring-1 ring-slate-100">
+                <div class="bg-slate-900 text-white p-6 flex justify-between items-center">
+                    <div>
+                        <h3 class="font-black tracking-widest uppercase text-sm">Agenda de Hoy</h3>
+                        <p class="text-[10px] text-slate-400 font-bold mt-1"><?= htmlspecialchars(strval($today_date ?? "")) ?></p>
+                    </div>
+                    <span class="bg-indigo-500 text-white text-[10px] font-black px-3 py-1.5 rounded-full shadow-lg"><?= htmlspecialchars(strval(count($today_appointments ?? []) ?? "")) ?></span>
+                </div>
+                
+                <div class="p-6 space-y-6 flex-grow overflow-y-auto max-h-[700px]">
+                    <?php if (not today_appointments): ?>
+                        <div class="flex flex-col items-center justify-center py-20 text-slate-300 opacity-50">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            <p class="text-xs font-black uppercase tracking-widest">Sin turnos para hoy</p>
+                        </div>
+                    <?php endif; ?>
+                    
+                    <?php foreach ($today_appointments ?? [] as $apt): ?>
+                    <div class="p-5 rounded-3xl border-2 transition-all group relative <?php if (apt.status == 'Atendido'): ?>bg-slate-50 opacity-60 border-slate-100 shadow-none<?php elseif (apt.status == 'Cancelado'): ?>bg-red-50 border-red-100 opacity-60 shadow-none<?php else: ?>bg-white border-slate-50 shadow-md hover:shadow-xl hover:border-indigo-100<?php endif; ?>">
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="text-xs font-black font-mono text-indigo-600 bg-indigo-50 px-3 py-1 rounded-lg">
+                                <?= htmlspecialchars(strval($apt->scheduled_date->strftime('%H:%M') ?? "")) ?>
+                            </span>
+                            <span class="text-[9px] font-black uppercase tracking-[0.2em] <?php if (apt.status == 'Cancelado'): ?>text-red-500<?php elseif (apt.status == 'Atendido'): ?>text-slate-400<?php else: ?>text-amber-500<?php endif; ?>">
+                                <?= htmlspecialchars(strval($apt->status ?? "")) ?>
+                            </span>
+                        </div>
+                        
+                        <h4 class="font-black text-slate-800 text-lg leading-tight"><?= htmlspecialchars(strval($apt->client_name ?? "")) ?></h4>
+                        <div class="flex items-center gap-2 mt-1 mb-4">
+                            <span class="text-[10px] font-bold text-slate-400 capitalize"><?= htmlspecialchars(strval($apt->client_phone ?? "")) ?></span>
+                            <span class="w-1 h-1 rounded-full bg-slate-300"></span>
+                            <span class="text-[10px] font-black text-slate-600 font-mono"><?= htmlspecialchars(strval($apt->plate or (apt->vehicle->plate if apt->vehicle else 'S/P') ?? "")) ?></span>
+                        </div>
+                        
+                        <p class="text-[11px] text-slate-500 italic bg-slate-50/50 p-3 rounded-2xl border border-slate-100/50 mb-4"><?= htmlspecialchars(strval($apt->reason ?? "")) ?></p>
+                        
+                        <?php if (apt.status == 'Pendiente' or apt.status == 'Confirmado'): ?>
+                        <div class="flex gap-2">
+                            <form hx-post="<?= htmlspecialchars(strval($base ?? "")) ?>/appointments/<?= htmlspecialchars(strval($apt->id ?? "")) ?>/status" class="flex-1">
+                                <input type="hidden" name="status" value="Atendido">
+                                <button type="submit" class="w-full text-[10px] font-black uppercase tracking-widest bg-emerald-50 text-emerald-600 hover:bg-emerald-600 hover:text-white py-2.5 rounded-xl transition-all active:scale-95 border border-emerald-100/50">Atender</button>
+                            </form>
+                            <form hx-post="<?= htmlspecialchars(strval($base ?? "")) ?>/appointments/<?= htmlspecialchars(strval($apt->id ?? "")) ?>/status" class="flex-1">
+                                <input type="hidden" name="status" value="Cancelado">
+                                <button type="submit" class="w-full text-[10px] font-black uppercase tracking-widest bg-slate-50 text-slate-400 hover:bg-red-500 hover:text-white py-2.5 rounded-xl transition-all active:scale-95 border border-slate-100">Cancelar</button>
+                            </form>
+                        </div>
+                        <?php endif; ?>
+                    </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </div>
+
+        <!-- Futuros -->
+        <div class="lg:col-span-8">
+            <div class="bg-white rounded-[2rem] shadow-xl border border-slate-100 p-8 h-full ring-1 ring-slate-100">
+                <h3 class="text-xl font-black text-slate-800 mb-8 flex items-center gap-3">
+                    <span class="w-2 h-6 bg-slate-800 rounded-full"></span> 
+                    Próximos Turnos Programados
+                </h3>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead>
+                            <tr class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] border-b border-slate-50">
+                                <th class="pb-6 px-4">Programación</th>
+                                <th class="pb-6 px-4">Cliente / Contacto</th>
+                                <th class="pb-6 px-4">Móvil</th>
+                                <th class="pb-6 px-4">Motivo / Requerimiento</th>
+                                <th class="pb-6 px-4 text-right">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-50">
+                            <?php if (not upcoming_appointments): ?>
+                            <tr>
+                                <td colspan="5" class="py-20 text-center text-slate-300 italic font-medium">No hay turnos planificados para los próximos días.</td>
+                            </tr>
+                            <?php endif; ?>
+                            <?php foreach ($upcoming_appointments ?? [] as $uapt): ?>
+                            <tr class="hover:bg-slate-50/50 transition-all group <?php if (uapt.status == 'Cancelado'): ?>opacity-40 grayscale<?php endif; ?>">
+                                <td class="py-6 px-4">
+                                    <div class="font-black text-slate-800"><?= htmlspecialchars(strval($uapt->scheduled_date->strftime('%d/%m/%Y') ?? "")) ?></div>
+                                    <div class="text-[11px] font-black text-indigo-500 font-mono tracking-tighter"><?= htmlspecialchars(strval($uapt->scheduled_date->strftime('%H:%M') ?? "")) ?>hs</div>
+                                </td>
+                                <td class="py-6 px-4">
+                                    <div class="font-bold text-slate-700"><?= htmlspecialchars(strval($uapt->client_name ?? "")) ?></div>
+                                    <div class="text-[10px] text-slate-400 font-bold"><?= htmlspecialchars(strval($uapt->client_phone ?? "")) ?></div>
+                                </td>
+                                <td class="py-6 px-4">
+                                    <span class="bg-slate-100 text-slate-600 text-[10px] px-3 py-1 rounded-lg font-mono font-black border border-slate-200">
+                                        <?= htmlspecialchars(strval($uapt->plate or (uapt->vehicle->plate if uapt->vehicle else '---') ?? "")) ?>
+                                    </span>
+                                </td>
+                                <td class="py-6 px-4">
+                                    <p class="text-xs text-slate-500 max-w-[200px] line-clamp-2 italic" title="<?= htmlspecialchars(strval($uapt->reason ?? "")) ?>">
+                                        <?= htmlspecialchars(strval($uapt->reason ?? "")) ?>
+                                    </p>
+                                </td>
+                                <td class="py-6 px-4 text-right">
+                                    <?php if (uapt.status != 'Cancelado'): ?>
+                                    <form hx-post="<?= htmlspecialchars(strval($base ?? "")) ?>/appointments/<?= htmlspecialchars(strval($uapt->id ?? "")) ?>/status">
+                                        <input type="hidden" name="status" value="Cancelado">
+                                        <button type="submit" class="text-[10px] font-black uppercase text-red-400 hover:text-red-700 px-3 py-1.5 rounded-lg hover:bg-red-50 transition-all" hx-confirm="ATENCIÓN: ¿Seguro que desea CANCELAR este turno futuro?">
+                                            Cancelar Turno
+                                        </button>
+                                    </form>
+                                    <?php else: ?>
+                                    <span class="text-[9px] font-black uppercase tracking-widest text-red-700 bg-red-100 px-3 py-1 rounded-full">Cancelado</span>
+                                    <?php endif; ?>
+                                </td>
+                            </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

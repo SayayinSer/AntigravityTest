@@ -276,31 +276,24 @@ async def report_page(request: Request, db: Session = Depends(get_db), user: Opt
     techs = db.query(models.Technician).all()
     return templates.TemplateResponse(request, "reports.html", {"technicians": techs, "user": user, "active_page": "reports"})
 
-@router.post("/reports/results", response_class=HTMLResponse)
-async def generate_report(request: Request, start_date: str = Form(...), end_date: str = Form(...), status: str = Form(...), tech_id: str = Form(""), db: Session = Depends(get_db)):
+@router.post("/reports/generate", response_class=HTMLResponse)
+async def generate_report_fragment(request: Request, 
+                                 start_date: str = Form(...), 
+                                 end_date: str = Form(...), 
+                                 status: str = Form(...), 
+                                 tech_id: str = Form(""), 
+                                 db: Session = Depends(get_db)):
     try:
-        # Flexible date parsing
-        if "-" in start_date:
-            start = datetime.strptime(start_date, "%Y-%m-%d")
-        elif "/" in start_date:
-            try:
-                start = datetime.strptime(start_date, "%d/%m/%Y")
-            except:
-                start = datetime.strptime(start_date, "%Y/%m/%d")
-        else:
-            start = datetime.strptime(start_date, "%Y-%m-%d") # fallback
+        # Parsing de fechas robusto
+        if "-" in start_date: start = datetime.strptime(start_date, "%Y-%m-%d")
+        elif "/" in start_date: start = datetime.strptime(start_date, "%d/%m/%Y")
+        else: start = datetime.strptime(start_date, "%Y-%m-%d")
 
-        if "-" in end_date:
-            end = datetime.strptime(end_date, "%Y-%m-%d") + timedelta(days=1)
-        elif "/" in end_date:
-            try:
-                end = datetime.strptime(end_date, "%d/%m/%Y") + timedelta(days=1)
-            except:
-                end = datetime.strptime(end_date, "%Y/%m/%d") + timedelta(days=1)
-        else:
-             end = datetime.strptime(end_date, "%Y-%m-%d") + timedelta(days=1) # fallback
+        if "-" in end_date: end = datetime.strptime(end_date, "%Y-%m-%d") + timedelta(days=1)
+        elif "/" in end_date: end = datetime.strptime(end_date, "%d/%m/%Y") + timedelta(days=1)
+        else: end = datetime.strptime(end_date, "%Y-%m-%d") + timedelta(days=1)
     except Exception as e:
-        return HTMLResponse(content=f'<div class="p-8 bg-red-50 border-2 border-red-200 rounded-3xl text-red-700 font-bold">Error en formato de fecha: {str(e)}. Use YYYY-MM-DD o DD/MM/YYYY.</div>', status_code=400)
+        return HTMLResponse(content=f'<div class="p-8 bg-red-50 border-2 border-red-200 rounded-3xl text-red-700 font-bold">⚠️ Error en fechas: {str(e)}. Use formato YYYY-MM-DD.</div>', status_code=200)
     
     query = db.query(models.WorkOrder).options(
         joinedload(models.WorkOrder.parts),
@@ -321,8 +314,8 @@ async def generate_report(request: Request, start_date: str = Form(...), end_dat
     tech_time = {}
     
     for ot in orders:
-        parts_total += sum((p.quantity or 0) * (p.unit_price or 0) for p in ot.parts)
-        third_total += sum((t.price or 0) for t in ot.third_parties)
+        parts_total += ot.total_parts_price
+        third_total += ot.total_third_party_price
         parts_count += len(ot.parts)
         third_count += len(ot.third_parties)
         
@@ -331,8 +324,7 @@ async def generate_report(request: Request, start_date: str = Form(...), end_dat
         ot.work_duration = format_duration(timedelta(minutes=ot_minutes))
         
         for t in ot.tasks:
-            if tech_id and str(t.technician_id) != tech_id:
-                continue
+            if tech_id and str(t.technician_id) != tech_id: continue
             t_id = t.technician_id or 0
             if t_id not in tech_time:
                 t_name = t.technician.name if t.technician else "Sin asignar"
@@ -344,8 +336,6 @@ async def generate_report(request: Request, start_date: str = Form(...), end_dat
         tdata["formatted"] = format_duration(timedelta(minutes=tdata["minutes"]))
         tech_stats.append(tdata)
         
-    print(f"DEBUG: Reporte generado con {len(orders)} ordenes. Total Repuestos: {parts_total}")
-
     return templates.TemplateResponse(request, "components/report_results.html", {
         "orders": orders,
         "parts_total": "{:,.2f}".format(parts_total),

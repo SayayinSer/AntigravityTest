@@ -11,3 +11,6 @@ env/
 .venv/
 credentials.json
 .agents/skills/*/credentials.json
+
+php_bin/
+deploy_package/

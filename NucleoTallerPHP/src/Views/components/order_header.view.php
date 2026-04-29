@@ -1,0 +1,29 @@
+<!-- order_header.html -->
+<div class="card-premium !bg-slate-900 border-none">
+    <div class="flex flex-col lg:flex-row justify-between items-center gap-6">
+        <div>
+            <div class="flex items-center gap-3 mb-2">
+                <span class="bg-sky-500 text-white font-black text-[10px] px-3 py-1 rounded-full shadow-lg shadow-sky-500/20">ORDEN #<?= htmlspecialchars(strval($order->id ?? "")) ?></span>
+                <span class="text-slate-400 text-[10px] font-black uppercase tracking-[0.2em]"><?= htmlspecialchars(strval($order->entry_date->strftime('%d/%m/%Y %H:%M') ?? "")) ?>hs</span>
+            </div>
+            <h1 class="text-3xl font-black text-white tracking-tight">
+                <?= htmlspecialchars(strval($order->vehicle->brand->name ?? "")) ?> <span class="font-normal text-slate-400"><?= htmlspecialchars(strval($order->vehicle->model ?? "")) ?></span>
+                <span class="text-sky-400 font-mono text-xl ml-2"><?= htmlspecialchars(strval($order->vehicle->plate ?? "")) ?></span>
+            </h1>
+        </div>
+        
+        <div class="flex items-center gap-6">
+            <div class="text-right">
+                <p class="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-1">Diagnóstico Declarado</p>
+                <p class="text-slate-200 font-bold italic text-sm max-w-md"><?= htmlspecialchars(strval($order->diagnosis or 'Sin diagnóstico inicial' ?? "")) ?></p>
+            </div>
+            <div class="h-12 w-px bg-white/10 hidden lg:block"></div>
+            <div class="flex flex-col items-end">
+                <span class="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-1">Estado Actual</span>
+                <span class="px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider <?php if ($is_closed): ?>bg-slate-700 text-slate-400<?php else: ?>bg-sky-500 text-white shadow-lg shadow-sky-500/20<?php endif; ?>">
+                    <?= htmlspecialchars(strval($order->status ?? "")) ?>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>

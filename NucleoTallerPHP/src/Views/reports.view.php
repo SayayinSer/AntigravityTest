@@ -26,7 +26,7 @@
             Parámetros del Reporte
         </h3>
         
-        <form hx-post="{{ base }}/reports/generate" hx-target="#report-results" hx-indicator="#loading-report" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <form hx-post="<?= htmlspecialchars(strval($base ?? "")) ?>/reports/generate" hx-target="#report-results" hx-indicator="#loading-report" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <div>
                 <label class="label-premium">Fecha Inicio</label>
                 <input type="date" name="start_date" required class="input-premium">
@@ -49,9 +49,9 @@
                 <label class="label-premium">Especialidad / Técnico</label>
                 <select name="tech_id" class="input-premium">
                     <option value="">Todos los técnicos</option>
-                    {% for tech in technicians %}
-                    <option value="{{ tech.id }}">{{ tech.name }}</option>
-                    {% endfor %}
+                    <?php foreach ($technicians ?? [] as $tech): ?>
+                    <option value="<?= htmlspecialchars(strval($tech->id ?? "")) ?>"><?= htmlspecialchars(strval($tech->name ?? "")) ?></option>
+                    <?php endforeach; ?>
                 </select>
             </div>
             <div class="lg:col-span-4 flex justify-end items-center gap-6">

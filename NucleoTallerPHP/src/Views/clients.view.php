@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+
+{% block title %}Maestro de Clientes - Aliso Workflow{% endblock %}
+
+{% block content %}
+<div x-data="{ showModal: false, editMode: false, clientData: {} }">
+    
+    <!-- Modal Formulario (Rediseñado) -->
+    <div x-show="showModal" x-cloak class="fixed inset-0 z-[150] flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-md" @click="showModal = false" x-transition.opacity></div>
+        <div class="bg-white rounded-[2.5rem] shadow-2xl relative w-full max-w-2xl overflow-hidden ring-1 ring-white/20" 
+             x-transition:enter="transition ease-out duration-300"
+             x-transition:enter-start="opacity-0 scale-90 translate-y-12"
+             x-transition:enter-end="opacity-100 scale-100 translate-y-0">
+            
+            <div class="bg-slate-900 text-white p-8 flex justify-between items-center">
+                <div>
+                    <h2 class="text-2xl font-black tracking-tight" x-text="editMode ? 'Modificar Ficha' : 'Nueva Ficha de Cliente'"></h2>
+                    <p class="text-sky-400 text-[10px] font-bold uppercase tracking-widest mt-1">Registro Maestro de Propietarios</p>
+                </div>
+                <button @click="showModal = false" class="text-slate-400 hover:text-white transition-colors p-2 bg-white/5 rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+            </div>
+
+            <form hx-post="<?= htmlspecialchars(strval($base ?? "")) ?>/clients/save" hx-encoding="multipart/form-data" class="p-10 space-y-8">
+                <input type="hidden" name="client_id" :value="editMode ? clientData.id : ''">
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                    <div class="space-y-6">
+                        <h3 class="text-[10px] font-black text-sky-600 uppercase tracking-[0.2em] border-b border-slate-100 pb-3 flex items-center gap-2">
+                             <span class="w-1.5 h-1.5 rounded-full bg-sky-500"></span> Identificación
+                        </h3>
+                        
+                        <div>
+                            <label class="label-premium">Nombre Completo / Razón Social <span class="text-sky-500">*</span></label>
+                            <input type="text" name="full_name" required :value="editMode ? clientData.name : ''" class="input-premium">
+                        </div>
+
+                        <div>
+                            <label class="label-premium">Correo Electrónico <span class="text-sky-500">*</span></label>
+                            <input type="email" name="email" required :value="editMode ? clientData.email : ''" class="input-premium">
+                        </div>
+
+                        <div>
+                            <label class="label-premium">Teléfono de Contacto</label>
+                            <input type="text" name="phone" :value="editMode ? clientData.phone : ''" class="input-premium">
+                        </div>
+                    </div>
+
+                    <div class="space-y-6">
+                        <h3 class="text-[10px] font-black text-sky-600 uppercase tracking-[0.2em] border-b border-slate-100 pb-3 flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-sky-500"></span> Datos Fiscales
+                        </h3>
+                        
+                        <div>
+                            <label class="label-premium">Tipo de Entidad <span class="text-sky-500">*</span></label>
+                            <select name="owner_type" class="input-premium appearance-none bg-no-repeat bg-[right_1rem_center]" style="background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%2394a3b8%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E');" x-model="clientData.type">
+                                <option value="Persona Física">Persona Física</option>
+                                <option value="Persona Jurídica">Persona Jurídica</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="label-premium">Documento / CUIT <span x-show="clientData.type == 'Persona Jurídica'" class="text-sky-500">*</span></label>
+                            <input type="text" name="document_id" :required="clientData.type == 'Persona Jurídica'" :value="editMode ? clientData.doc : ''" class="input-premium font-mono">
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="label-premium">País</label>
+                                <select name="country_id" class="input-premium py-2.5 text-xs" x-model="clientData.country">
+                                    <option value="">Seleccione</option>
+                                    <?php foreach ($countries ?? [] as $c): ?><option value="<?= htmlspecialchars(strval($c->id ?? "")) ?>"><?= htmlspecialchars(strval($c->name ?? "")) ?></option><?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="label-premium">Provincia</label>
+                                <select name="province_id" class="input-premium py-2.5 text-xs" x-model="clientData.province">
+                                    <option value="">Seleccione</option>
+                                    <?php foreach ($provinces ?? [] as $p): ?><option value="<?= htmlspecialchars(strval($p->id ?? "")) ?>"><?= htmlspecialchars(strval($p->name ?? "")) ?></option><?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="pt-2">
+                            <label class="label-premium">Logo / Imagen</label>
+                            <div class="flex items-center gap-4">
+                                <input type="file" name="photo" accept="image/*" class="text-xs text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-[10px] file:font-black file:bg-sky-50 file:text-sky-600 hover:file:bg-sky-100 transition-all">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-end gap-4 pt-8 border-t border-slate-50">
+                    <button type="button" @click="showModal = false" class="btn-secondary">CANCELAR</button>
+                    <button type="submit" class="btn-primary" x-text="editMode ? 'GUARDAR CAMBIOS' : 'CREAR CLIENTE'"></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="flex flex-col md:flex-row justify-between items-center mb-10 gap-6">
+        <div>
+            <h2 class="text-3xl font-black text-slate-800 flex items-center gap-4">
+                <span class="w-2 h-10 bg-slate-800 rounded-full shadow-lg"></span>
+                Maestro de Propietarios
+            </h2>
+            <p class="text-slate-400 text-xs font-bold uppercase tracking-widest mt-2 ml-6">Base de datos centralizada de portadores de vehículos</p>
+        </div>
+        
+        <button @click="showModal = true; editMode = false; clientData = {type:'Persona Física', country: '1'};" class="btn-primary py-4 px-8 shadow-slate-200 group">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 group-hover:translate-y-[-2px] transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            <span class="tracking-widest uppercase">Registrar Propietario</span>
+        </button>
+    </div>
+
+    <div class="card-premium">
+        <div class="overflow-x-auto -mx-4 md:mx-0">
+            <table class="w-full text-left">
+                <thead>
+                    <tr class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] border-b border-slate-50">
+                        <th class="pb-6 px-4 text-center w-20">Rango</th>
+                        <th class="pb-6 px-4">Cliente / Entidad</th>
+                        <th class="pb-6 px-4">Contacto Directo</th>
+                        <th class="pb-6 px-4 text-center">Documentación</th>
+                        <th class="pb-6 px-4 text-right">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-50">
+                    <?php if (not clients): ?>
+                    <tr><td colspan="5" class="py-24 text-center text-slate-300 font-medium">No se registran clientes enrolados.</td></tr>
+                    <?php endif; ?>
+                    
+                    <?php foreach ($clients ?? [] as $c): ?>
+                    <tr class="hover:bg-slate-50/50 transition-all group">
+                        <td class="py-8 px-4 text-center">
+                            <span class="bg-slate-100 text-slate-500 px-3 py-1.5 rounded-lg font-mono font-black text-[10px] border border-slate-200 group-hover:bg-sky-500 group-hover:text-white group-hover:border-sky-400 transition-all">
+                                #<?= htmlspecialchars(strval($c->owner_number ?? "")) ?>
+                            </span>
+                        </td>
+                        <td class="py-8 px-4">
+                            <div class="flex items-center gap-5">
+                                <div class="w-12 h-12 rounded-2xl bg-slate-100 bg-cover bg-center shadow-inner border border-slate-200" style="background-image: url('<?= htmlspecialchars(strval($c->photo_url ?? "")) ?>');"></div>
+                                <div>
+                                    <div class="font-black text-slate-800 text-lg leading-tight"><?= htmlspecialchars(strval($c->full_name ?? "")) ?></div>
+                                    <div class="text-[9px] text-sky-600 font-black uppercase tracking-widest mt-1">
+                                        <?= htmlspecialchars(strval($c->owner_type ?? "")) ?>
+                                        <?php if (c.country): ?> &bull; <?= htmlspecialchars(strval($c->country->name ?? "")) ?><?php endif; ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="py-8 px-4">
+                            <div class="text-sm font-bold text-slate-600"><?= htmlspecialchars(strval($c->email ?? "")) ?></div>
+                            <div class="text-[10px] text-slate-400 font-bold mt-1"><?= htmlspecialchars(strval($c->phone or 'No registrado' ?? "")) ?></div>
+                        </td>
+                        <td class="py-8 px-4 text-center">
+                            <span class="bg-white border border-slate-200 px-4 py-1.5 rounded-xl text-slate-700 font-mono text-xs shadow-sm">
+                                <?= htmlspecialchars(strval($c->document_id or '---' ?? "")) ?>
+                            </span>
+                        </td>
+                        <td class="py-8 px-4 text-right">
+                            <div class="flex items-center justify-end gap-3">
+                                <button @click="clientData = {id: '<?= htmlspecialchars(strval($c->id ?? "")) ?>', name: '<?= htmlspecialchars(strval($c->full_name ?? "")) ?>', email: '<?= htmlspecialchars(strval($c->email ?? "")) ?>', phone: '<?= htmlspecialchars(strval($c->phone ?? "")) ?>', address: '<?= htmlspecialchars(strval($c->address ?? "")) ?>', type: '<?= htmlspecialchars(strval($c->owner_type ?? "")) ?>', doc: '<?= htmlspecialchars(strval($c->document_id ?? "")) ?>', country: '<?= htmlspecialchars(strval($c->country_id or '' ?? "")) ?>', province: '<?= htmlspecialchars(strval($c->province_id or '' ?? "")) ?>'}; editMode = true; showModal = true;" 
+                                        class="p-3 bg-slate-100 text-slate-500 hover:bg-sky-500 hover:text-white rounded-xl transition-all active:scale-90" title="Editar">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
+                                </button>
+                                <form hx-post="<?= htmlspecialchars(strval($base ?? "")) ?>/clients/<?= htmlspecialchars(strval($c->id ?? "")) ?>/delete" class="inline">
+                                    <button type="submit" class="p-3 bg-slate-100 text-red-400 hover:bg-red-500 hover:text-white rounded-xl transition-all active:scale-90" hx-confirm="CRÍTICO: ¿Seguro que desea eliminar permanentemente este cliente?">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12" /></svg>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

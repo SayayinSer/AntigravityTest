@@ -25,24 +25,32 @@ set LOGFILE=logs\startup.log
 echo [%date% %time%] === INICIO DE ARRANQUE === >> "%LOGFILE%"
 
 REM ================================================
-REM  Verificar si el servidor ya esta activo
+REM  Seleccion de Version
 REM ================================================
-echo   [..] Verificando si el sistema ya esta activo...
+echo.
+echo   [1] Iniciar Version PYTHON (FastAPI) - Puerto 8000
+echo   [2] Iniciar Version PHP (LAMP) - Puerto 8080
+echo.
+set /p OPTION="Elija la version a iniciar (1/2): "
+
+if "%OPTION%"=="2" goto START_PHP
+
+echo   [..] Verificando si el sistema Python ya esta activo...
 
 powershell -Command "try { $r = Invoke-WebRequest -Uri 'http://127.0.0.1:8000/NucleoTallerV1/login' -UseBasicParsing -TimeoutSec 2; exit 0 } catch { exit 1 }" >nul 2>&1
 
 if !errorlevel! equ 0 (
-    echo   [OK] El sistema ya esta en ejecucion en el puerto 8000.
+    echo   [OK] El sistema Python ya esta en ejecucion en el puerto 8000.
     echo   [OK] Abriendo sesion de Login...
     echo.
-    echo [%date% %time%] Sistema ya activo. Abriendo nuevo Login. >> "%LOGFILE%"
+    echo [%date% %time%] Sistema Python ya activo. Abriendo nuevo Login. >> "%LOGFILE%"
     start "" http://127.0.0.1:8000/NucleoTallerV1/login
     timeout /t 3 >nul
     exit /b 0
 )
 
-echo   [--] Sistema no detectado. Iniciando proceso de arranque...
-echo [%date% %time%] Sistema no activo. Procediendo con arranque. >> "%LOGFILE%"
+echo   [--] Sistema Python no detectado. Iniciando proceso de arranque...
+echo [%date% %time%] Sistema Python no activo. Procediendo con arranque. >> "%LOGFILE%"
 
 REM ================================================
 REM  Verificar entorno virtual (.venv)
@@ -125,10 +133,41 @@ echo [%date% %time%] Iniciando Uvicorn... >> "%LOGFILE%"
 REM Abrir navegador con retraso para que el servidor este listo
 start /b cmd /c "timeout /t 3 /nobreak >nul & start "" http://127.0.0.1:8000/NucleoTallerV1/login"
 
-REM Arrancar servidor
-python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --log-level info
+REM Arrancar servidor Python
+python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload --log-level info
 
 echo.
-echo   [!] Servidor detenido.
-echo [%date% %time%] Servidor detenido. >> "%LOGFILE%"
+echo   [!] Servidor Python detenido.
+echo [%date% %time%] Servidor Python detenido. >> "%LOGFILE%"
 pause
+exit /b 0
+
+:START_PHP
+echo.
+echo   ----------------------------------------
+echo     SISTEMA LISTO. Levantando Version PHP (LAMP)...
+echo     URL: http://127.0.0.1:8080/NucleoTallerPHP/public/
+echo   ----------------------------------------
+echo.
+echo [%date% %time%] Iniciando Servidor Embebido PHP... >> "%LOGFILE%"
+
+REM Asumimos que php está en el PATH o en la carpeta local php_bin
+set PHP_EXE=php
+if exist "%~dp0php_bin\php.exe" set PHP_EXE="%~dp0php_bin\php.exe"
+
+%PHP_EXE% -v >nul 2>&1
+if !errorlevel! neq 0 (
+    echo   [ERROR] PHP no se encuentra en el PATH ni en la carpeta local.
+    pause
+    exit /b 1
+)
+
+start /b cmd /c "timeout /t 2 /nobreak >nul & start "" http://127.0.0.1:8080/NucleoTallerPHP/public/"
+
+%PHP_EXE% -S 127.0.0.1:8080 -t NucleoTallerPHP/public
+
+echo.
+echo   [!] Servidor PHP detenido.
+echo [%date% %time%] Servidor PHP detenido. >> "%LOGFILE%"
+pause
+exit /b 0

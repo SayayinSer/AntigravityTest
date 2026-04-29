@@ -1,0 +1,126 @@
+<!-- Modal de Nuevo Turno (Rediseñado Aliso) -->
+<div x-show="showModal" x-cloak class="fixed inset-0 z-[150] flex items-center justify-center p-4">
+    <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-md" @click="showModal = false" x-transition.opacity></div>
+
+    <div class="bg-white rounded-[2.5rem] shadow-2xl relative w-full max-w-2xl overflow-hidden ring-1 ring-white/20" 
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0 scale-90 translate-y-12"
+         x-transition:enter-end="opacity-100 scale-100 translate-y-0">
+        
+        <div class="bg-slate-900 text-white p-8 flex justify-between items-center">
+            <div>
+                <h2 class="text-2xl font-black tracking-tight flex items-center gap-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-sky-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                    Programar Turno
+                </h2>
+                <p class="text-sky-400 text-[10px] font-bold uppercase tracking-widest mt-1 ml-9">Reserva de capacidad operativa</p>
+            </div>
+            <button @click="showModal = false" class="text-slate-400 hover:text-white transition-colors p-2 bg-white/5 rounded-full">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+        </div>
+
+        <form hx-post="<?= htmlspecialchars(strval($base ?? "")) ?>/appointments/save" class="p-10 space-y-8" x-data="{ autoFilled: false }">
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <!-- Información del Cliente -->
+                <div class="space-y-6">
+                    <h3 class="text-[10px] font-black text-sky-600 uppercase tracking-[0.2em] border-b border-slate-50 pb-3">Información de Contacto</h3>
+                    
+                    <div>
+                        <label class="label-premium">Email (Búsqueda por Historial)</label>
+                        <input type="email" name="client_email" id="client_email" required 
+                               hx-get="<?= htmlspecialchars(strval($base ?? "")) ?>/appointments/api/check-client"
+                               hx-trigger="blur changed delay:500ms"
+                               hx-target="#autofiller"
+                               class="input-premium bg-sky-50/30 border-sky-100 focus:ring-sky-500">
+                        <div id="autofiller" class="hidden"></div>
+                    </div>
+
+                    <div class="space-y-6">
+                        <div>
+                            <label class="label-premium">Nombre Completo <span class="text-sky-500">*</span></label>
+                            <input type="text" name="client_name" id="client_name" required class="input-premium">
+                        </div>
+                        <div>
+                            <label class="label-premium">Celular de Contacto <span class="text-sky-500">*</span></label>
+                            <input type="text" name="client_phone" id="client_phone" required class="input-premium">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detalle del Turno -->
+                <div class="space-y-6">
+                    <h3 class="text-[10px] font-black text-sky-600 uppercase tracking-[0.2em] border-b border-slate-50 pb-3">Planificación</h3>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="label-premium">Fecha</label>
+                            <input type="date" name="scheduled_date" required min="<?= htmlspecialchars(strval($today_date ?? "")) ?>" class="input-premium text-xs">
+                        </div>
+                        <div>
+                            <label class="label-premium">Hora</label>
+                            <input type="time" name="scheduled_time" required class="input-premium text-xs font-mono">
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-50 p-6 rounded-[1.5rem] border border-slate-100" x-data="{ linkType: 'existente' }">
+                        <div class="flex gap-6 mb-4">
+                            <label class="text-[10px] font-black uppercase tracking-widest flex items-center gap-2 cursor-pointer text-slate-500 hover:text-sky-600 transition-colors">
+                                <input type="radio" x-model="linkType" value="existente" class="w-4 h-4 text-sky-600 focus:ring-sky-500 border-slate-300"> 
+                                En Base
+                            </label>
+                            <label class="text-[10px] font-black uppercase tracking-widest flex items-center gap-2 cursor-pointer text-slate-500 hover:text-sky-600 transition-colors">
+                                <input type="radio" x-model="linkType" value="nuevo" class="w-4 h-4 text-sky-600 focus:ring-sky-500 border-slate-300"> 
+                                No Registrado
+                            </label>
+                        </div>
+                        
+                        <div x-show="linkType === 'existente'" x-transition>
+                            <select name="vehicle_id" class="input-premium py-2.5 text-xs">
+                                <option value="">Seleccione móvil...</option>
+                                <?php foreach ($vehicles ?? [] as $v): ?>
+                                <option value="<?= htmlspecialchars(strval($v->id ?? "")) ?>"><?= htmlspecialchars(strval($v->plate ?? "")) ?> - <?= htmlspecialchars(strval($v->brand->name ?? "")) ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <div x-show="linkType === 'nuevo'" x-cloak x-transition>
+                            <input type="text" name="plate" placeholder="EJ: AA123ZZ" class="input-premium py-2.5 text-center font-mono uppercase text-sm border-dashed">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Motivo -->
+            <div>
+                <h3 class="text-[10px] font-black text-sky-600 uppercase tracking-[0.2em] border-b border-slate-50 pb-3 mb-4">Requerimiento Técnico</h3>
+                <textarea name="reason" placeholder="Detalle el motivo del turno o síntomas del móvil..." required class="input-premium h-24 resize-none italic text-sm"></textarea>
+            </div>
+
+            <div class="flex justify-end gap-4 pt-6 border-t border-slate-50">
+                <button type="button" @click="showModal = false" class="btn-secondary">CANCELAR</button>
+                <button type="submit" class="btn-primary bg-sky-600 shadow-sky-100">CONFIRMAR TURNO</button>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<script>
+    document.body.addEventListener('htmx:afterRequest', function(evt) {
+        if (evt.detail.elt.id === 'client_email') {
+            try {
+                const response = JSON.parse(evt.detail.xhr.response);
+                if (response.found) {
+                    document.getElementById('client_name').value = response.name;
+                    document.getElementById('client_phone').value = response.phone;
+                    const inputs = [document.getElementById('client_name'), document.getElementById('client_phone')];
+                    inputs.forEach(el => {
+                        el.classList.add('ring-2', 'ring-emerald-400', 'bg-emerald-50/30');
+                        setTimeout(() => el.classList.remove('ring-2', 'ring-emerald-400', 'bg-emerald-50/30'), 1500);
+                    });
+                }
+            } catch (e) {}
+        }
+    });
+</script>

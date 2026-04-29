@@ -5,17 +5,17 @@
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div class="card-premium !bg-slate-900 text-white">
             <h4 class="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">Total Insumos</h4>
-            <div class="text-3xl font-black font-mono tracking-tighter text-sky-400">${{ parts_total }}</div>
-            <p class="text-[9px] font-bold text-slate-400 mt-1 uppercase">{{ parts_count }} ítems proyectados</p>
+            <div class="text-3xl font-black font-mono tracking-tighter text-sky-400">$<?= htmlspecialchars(strval($parts_total ?? "")) ?></div>
+            <p class="text-[9px] font-bold text-slate-400 mt-1 uppercase"><?= htmlspecialchars(strval($parts_count ?? "")) ?> ítems proyectados</p>
         </div>
         <div class="card-premium !bg-white border-slate-100">
             <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Total Tercerizados</h4>
-            <div class="text-3xl font-black font-mono tracking-tighter text-slate-800">${{ third_total }}</div>
-            <p class="text-[9px] font-bold text-slate-400 mt-1 uppercase">{{ third_count }} servicios externos</p>
+            <div class="text-3xl font-black font-mono tracking-tighter text-slate-800">$<?= htmlspecialchars(strval($third_total ?? "")) ?></div>
+            <p class="text-[9px] font-bold text-slate-400 mt-1 uppercase"><?= htmlspecialchars(strval($third_count ?? "")) ?> servicios externos</p>
         </div>
         <div class="card-premium !bg-sky-50 border-sky-100">
             <h4 class="text-[10px] font-black text-sky-400 uppercase tracking-widest mb-2">Total Órdenes</h4>
-            <div class="text-4xl font-black font-mono tracking-tighter text-sky-600">{{ orders|length }}</div>
+            <div class="text-4xl font-black font-mono tracking-tighter text-sky-600"><?= htmlspecialchars(strval(count($orders ?? []) ?? "")) ?></div>
             <p class="text-[9px] font-bold text-sky-400 mt-1 uppercase tracking-widest">En período seleccionado</p>
         </div>
     </div>
@@ -27,13 +27,13 @@
              Productividad del Personal Técnico
         </h3>
         <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
-            {% for tech in tech_stats %}
+            <?php foreach ($tech_stats ?? [] as $tech): ?>
             <div class="p-5 bg-slate-50 rounded-[1.5rem] border border-slate-100 text-center">
-                <div class="text-[10px] font-black text-slate-400 uppercase mb-2 truncate">{{ tech.name }}</div>
-                <div class="text-lg font-black text-emerald-600 font-mono">{{ tech.formatted }}</div>
+                <div class="text-[10px] font-black text-slate-400 uppercase mb-2 truncate"><?= htmlspecialchars(strval($tech->name ?? "")) ?></div>
+                <div class="text-lg font-black text-emerald-600 font-mono"><?= htmlspecialchars(strval($tech->formatted ?? "")) ?></div>
                 <div class="text-[8px] font-black text-slate-300 uppercase mt-1">Hs Laboradas</div>
             </div>
-            {% endfor %}
+            <?php endforeach; ?>
         </div>
     </div>
 
@@ -52,28 +52,28 @@
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-50">
-                    {% for order in orders %}
+                    <?php foreach ($orders ?? [] as $order): ?>
                     <tr class="hover:bg-slate-50/80 transition-colors">
                         <td class="py-6 px-6">
-                            <div class="font-black text-slate-800">#{{ order.id }}</div>
-                            <div class="text-[10px] text-slate-400 font-bold">{{ order.entry_date.strftime('%d/%m/%y') }}</div>
+                            <div class="font-black text-slate-800">#<?= htmlspecialchars(strval($order->id ?? "")) ?></div>
+                            <div class="text-[10px] text-slate-400 font-bold"><?= htmlspecialchars(strval($order->entry_date->strftime('%d/%m/%y') ?? "")) ?></div>
                         </td>
                         <td class="py-6 px-6">
-                            <div class="font-bold text-slate-700">{{ order.vehicle.brand.name }}</div>
-                            <div class="text-[10px] font-mono text-slate-400 uppercase tracking-tighter">{{ order.vehicle.model }} &bull; {{ order.vehicle.plate }}</div>
+                            <div class="font-bold text-slate-700"><?= htmlspecialchars(strval($order->vehicle->brand->name ?? "")) ?></div>
+                            <div class="text-[10px] font-mono text-slate-400 uppercase tracking-tighter"><?= htmlspecialchars(strval($order->vehicle->model ?? "")) ?> &bull; <?= htmlspecialchars(strval($order->vehicle->plate ?? "")) ?></div>
                         </td>
-                        <td class="py-6 px-6 text-sm font-bold text-slate-600">${{ "{:,.2f}".format(order.total_parts_price) }}</td>
-                        <td class="py-6 px-6 text-sm font-bold text-slate-600">${{ "{:,.2f}".format(order.total_third_party_price) }}</td>
+                        <td class="py-6 px-6 text-sm font-bold text-slate-600">$<?= htmlspecialchars(strval($"{:,->2f}"->format(order->total_parts_price) ?? "")) ?></td>
+                        <td class="py-6 px-6 text-sm font-bold text-slate-600">$<?= htmlspecialchars(strval($"{:,->2f}"->format(order->total_third_party_price) ?? "")) ?></td>
                         <td class="py-6 px-6 text-center">
-                            <span class="font-mono text-[11px] font-black text-sky-600">{{ order.work_duration }}hs</span>
+                            <span class="font-mono text-[11px] font-black text-sky-600"><?= htmlspecialchars(strval($order->work_duration ?? "")) ?>hs</span>
                         </td>
                         <td class="py-6 px-6 text-center">
-                            <span class="px-2.5 py-1 rounded-md text-[9px] font-black uppercase tracking-widest {% if order.status == 'Terminada' %}bg-slate-200 text-slate-600{% elif order.status == 'Anulada' %}bg-red-100 text-red-700{% else %}bg-sky-100 text-sky-700{% endif %}">
-                                {{ order.status }}
+                            <span class="px-2.5 py-1 rounded-md text-[9px] font-black uppercase tracking-widest <?php if (order.status == 'Terminada'): ?>bg-slate-200 text-slate-600<?php elseif (order.status == 'Anulada'): ?>bg-red-100 text-red-700<?php else: ?>bg-sky-100 text-sky-700<?php endif; ?>">
+                                <?= htmlspecialchars(strval($order->status ?? "")) ?>
                             </span>
                         </td>
                     </tr>
-                    {% else %}
+                    <?php else: ?>
                     <tr>
                         <td colspan="6" class="py-20 text-center">
                             <div class="flex flex-col items-center opacity-30">
@@ -82,7 +82,7 @@
                             </div>
                         </td>
                     </tr>
-                    {% endfor %}
+                    <?php endforeach; ?>
                 </tbody>
             </table>
         </div>

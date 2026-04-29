@@ -191,8 +191,11 @@ input:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,
     <button class="btn btn-primary" id="btnSetup" onclick="runSetup()">
       <span>⚙️</span> Configurar Todo
     </button>
-    <button class="btn btn-secondary" id="btnLaunch" onclick="launchApp()" disabled>
-      <span>🖥️</span> Iniciar Aplicación
+    <button class="btn btn-secondary" id="btnLaunch" onclick="launchApp('python')" disabled>
+      <span>🐍</span> Iniciar Python
+    </button>
+    <button class="btn btn-secondary" id="btnLaunchPHP" onclick="launchApp('php')" disabled>
+      <span>🐘</span> Iniciar PHP (LAMP)
     </button>
   </div>
 
@@ -306,23 +309,36 @@ async function runSetup() {
 
   btn.innerHTML = '<span>✅</span> Completado';
   $('btnLaunch').disabled = false;
+  $('btnLaunchPHP').disabled = false;
 }
 
-async function launchApp() {
+async function launchApp(type) {
   const cfg = getConfig();
-  $('btnLaunch').disabled = true;
-  $('btnLaunch').innerHTML = '<span>🔄</span> Iniciando...';
-  log('▶ Iniciando Uvicorn...', 'cmd');
+  cfg.type = type; // 'python' or 'php'
+  
+  const btnId = type === 'python' ? 'btnLaunch' : 'btnLaunchPHP';
+  const otherBtnId = type === 'python' ? 'btnLaunchPHP' : 'btnLaunch';
+  
+  $(btnId).disabled = true;
+  $(otherBtnId).disabled = true;
+  $(btnId).innerHTML = '<span>🔄</span> Iniciando...';
+  
+  log(`▶ Iniciando servidor ${type.toUpperCase()}...`, 'cmd');
   const res = await api('launch_app', cfg);
+  
   if (res.ok) {
     log(`✓ ${res.msg}`, 'ok');
-    log(`🌐 Abriendo http://${cfg.app_host}:${cfg.app_port}/NucleoTallerV1/login ...`, 'info');
-    setTimeout(() => { window.open(`http://${cfg.app_host}:${cfg.app_port}/NucleoTallerV1/login`, '_blank'); }, 1500);
-    $('btnLaunch').innerHTML = '<span>🟢</span> Ejecutándose';
+    const port = type === 'python' ? cfg.app_port : 8080;
+    const path = type === 'python' ? '/NucleoTallerV1/login' : '/NucleoTallerPHP/public/';
+    log(`🌐 Abriendo http://${cfg.app_host}:${port}${path} ...`, 'info');
+    setTimeout(() => { window.open(`http://${cfg.app_host}:${port}${path}`, '_blank'); }, 1500);
+    $(btnId).innerHTML = '<span>🟢</span> Ejecutándose';
+    $(otherBtnId).disabled = false;
   } else {
     log(`✗ ${res.msg}`, 'err');
-    $('btnLaunch').disabled = false;
-    $('btnLaunch').innerHTML = '<span>🖥️</span> Iniciar Aplicación';
+    $(btnId).disabled = false;
+    $(otherBtnId).disabled = false;
+    $(btnId).innerHTML = type === 'python' ? '<span>🐍</span> Iniciar Python' : '<span>🐘</span> Iniciar PHP (LAMP)';
   }
 }
 </script>
@@ -465,15 +481,27 @@ def handle_action(data):
 
     # ── Launch App ──
     elif action == 'launch_app':
-        port = data.get('app_port', '8000')
+        app_type = data.get('type', 'python')
+        port = data.get('app_port', '8000') if app_type == 'python' else '8080'
         host = data.get('app_host', '127.0.0.1')
         try:
-            subprocess.Popen(
-                f'"{python}" -m uvicorn app.main:app --host {host} --port {port} --reload',
-                cwd=PROJECT_DIR, shell=True,
-                creationflags=subprocess.CREATE_NEW_PROCESS_GROUP if os.name == 'nt' else 0
-            )
-            return {"ok": True, "msg": f"Uvicorn iniciado en http://{host}:{port}"}
+            if app_type == 'python':
+                subprocess.Popen(
+                    f'"{python}" -m uvicorn app.main:app --host {host} --port {port} --reload',
+                    cwd=PROJECT_DIR, shell=True,
+                    creationflags=subprocess.CREATE_NEW_PROCESS_GROUP if os.name == 'nt' else 0
+                )
+                return {"ok": True, "msg": f"Uvicorn (Python) iniciado en http://{host}:{port}"}
+            else:
+                php_exe = os.path.join(PROJECT_DIR, 'php_bin', 'php.exe')
+                if not os.path.exists(php_exe):
+                    php_exe = 'php'
+                subprocess.Popen(
+                    f'"{php_exe}" -S {host}:{port} -t NucleoTallerPHP/public',
+                    cwd=PROJECT_DIR, shell=True,
+                    creationflags=subprocess.CREATE_NEW_PROCESS_GROUP if os.name == 'nt' else 0
+                )
+                return {"ok": True, "msg": f"PHP Built-in Server iniciado en http://{host}:{port}"}
         except Exception as e:
             return {"ok": False, "msg": str(e)}
 

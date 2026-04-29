@@ -110,6 +110,14 @@ class WorkOrder(Base):
     parts = relationship("WOPart", back_populates="work_order", cascade="all, delete-orphan")
     third_parties = relationship("WOThirdParty", back_populates="work_order", cascade="all, delete-orphan")
 
+    @property
+    def total_parts_price(self):
+        return sum((p.quantity or 0) * (p.unit_price or 0) for p in self.parts)
+
+    @property
+    def total_third_party_price(self):
+        return sum((t.price or 0) for t in self.third_parties)
+
 class WOTask(Base):
     __tablename__ = "wo_tasks"
     id = Column(Integer, primary_key=True, index=True)

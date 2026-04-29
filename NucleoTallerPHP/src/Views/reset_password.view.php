@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recuperar Clave - Antigravity</title>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body class="bg-slate-900 min-h-screen flex items-center justify-center p-4 font-sans" style="font-family: 'Outfit', sans-serif;">
+    
+    <div class="w-full max-w-md">
+        <div class="text-center mb-10">
+            <h1 class="text-3xl font-black text-white tracking-widest uppercase">
+                <span class="text-sky-400">Reset</span> Password
+            </h1>
+            <p class="text-slate-500 font-bold text-xs uppercase mt-2 tracking-widest">Seguridad Nivel GAM</p>
+        </div>
+
+        <div class="bg-white p-10 rounded-[2.5rem] shadow-2xl border border-white/10 relative overflow-hidden">
+            <!-- Formulario de recuperación -->
+            <form hx-post="<?= htmlspecialchars(strval($base ?? "")) ?>/reset-password" hx-target="#reset-area" hx-swap="outerHTML" class="space-y-6" id="reset-area">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-[10px] font-black text-slate-400 uppercase mb-2 ml-1">Nueva Contraseña</label>
+                        <input type="password" name="password" required 
+                               class="w-full bg-slate-50 p-4 rounded-xl border-none outline-none focus:ring-2 focus:ring-sky-500 font-bold transition-all shadow-inner" 
+                               placeholder="******">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-black text-slate-400 uppercase mb-2 ml-1">Confirmar Contraseña</label>
+                        <input type="password" name="confirm_password" required 
+                               class="w-full bg-slate-50 p-4 rounded-xl border-none outline-none focus:ring-2 focus:ring-sky-500 font-bold transition-all shadow-inner" 
+                               placeholder="******">
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full bg-slate-900 text-white p-4 rounded-xl font-black text-xs uppercase tracking-widest shadow-xl shadow-slate-900/20 hover:bg-black transition-all active:scale-95">
+                    CAMBIAR CONTRASEÑA
+                </button>
+                
+                <div id="error-msg" class="text-red-500 font-bold text-[10px] uppercase text-center"></div>
+
+                <div class="pt-4 text-center">
+                    <a href="<?= htmlspecialchars(strval($base ?? "")) ?>/login" class="text-[10px] font-black text-slate-400 hover:text-sky-500 transition-colors uppercase tracking-widest">Volver al Login</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

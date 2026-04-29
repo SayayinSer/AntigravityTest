@@ -224,10 +224,19 @@ select{cursor:pointer}
           <input id="op_app_port" type="number" value="8000">
         </div>
       </div>
-       <div class="form-row">
+      <div class="form-row">
         <div class="form-group full">
           <label>Ruta del Proyecto en el Servidor</label>
           <input id="op_project_path" type="text" value="" placeholder="C:\inetpub\wwwroot\antigravity">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group full">
+          <label>Versión a Desplegar</label>
+          <select id="op_app_version">
+            <option value="python">Versión Python (FastAPI / Uvicorn)</option>
+            <option value="php">Versión PHP Nativa (LAMP / cPanel)</option>
+          </select>
         </div>
       </div>
     </div>
@@ -432,6 +441,7 @@ function getOnPremConfig() {
     webserver: $('op_webserver').value,
     app_port: $('op_app_port').value,
     project_path: $('op_project_path').value,
+    app_version: $('op_app_version').value,
     db_host: $('op_db_host').value,
     db_port: $('op_db_port').value,
     db_user: $('op_db_user').value,
@@ -631,23 +641,44 @@ def handle_action(data):
         try:
             pkg_dir = os.path.join(PROJECT_DIR, 'deploy_package')
             os.makedirs(pkg_dir, exist_ok=True)
+            app_version = data.get('app_version', 'python')
 
-            # Copy app files
-            dirs_to_copy = ['app']
-            for d in dirs_to_copy:
-                src = os.path.join(PROJECT_DIR, d)
-                dst = os.path.join(pkg_dir, d)
-                if os.path.exists(dst):
-                    shutil.rmtree(dst)
-                shutil.copytree(src, dst, ignore=shutil.ignore_patterns('__pycache__', '*.pyc'))
+            # Delete old content
+            for item in os.listdir(pkg_dir):
+                item_path = os.path.join(pkg_dir, item)
+                if os.path.isdir(item_path):
+                    shutil.rmtree(item_path)
+                else:
+                    os.remove(item_path)
 
-            # Copy essential files
-            for f in ['requirements.txt', 'backup_data.py']:
-                src = os.path.join(PROJECT_DIR, f)
+            if app_version == 'python':
+                # Copy Python app files
+                dirs_to_copy = ['app']
+                for d in dirs_to_copy:
+                    src = os.path.join(PROJECT_DIR, d)
+                    dst = os.path.join(pkg_dir, d)
+                    if os.path.exists(src):
+                        shutil.copytree(src, dst, ignore=shutil.ignore_patterns('__pycache__', '*.pyc'))
+
+                # Copy essential Python files
+                for f in ['requirements.txt', 'backup_data.py']:
+                    src = os.path.join(PROJECT_DIR, f)
+                    if os.path.exists(src):
+                        shutil.copy2(src, pkg_dir)
+            else:
+                # Copy PHP app files
+                src = os.path.join(PROJECT_DIR, 'NucleoTallerPHP')
                 if os.path.exists(src):
-                    shutil.copy2(src, pkg_dir)
+                    # Copy everything inside NucleoTallerPHP to the package dir
+                    for item in os.listdir(src):
+                        s = os.path.join(src, item)
+                        d = os.path.join(pkg_dir, item)
+                        if os.path.isdir(s):
+                            shutil.copytree(s, d)
+                        else:
+                            shutil.copy2(s, d)
 
-            return {"ok": True, "msg": f"Paquete generado en deploy_package/ ({len(os.listdir(pkg_dir))} items)"}
+            return {"ok": True, "msg": f"Paquete {app_version.upper()} generado en deploy_package/"}
         except Exception as e:
             return {"ok": False, "msg": str(e)}
 

@@ -1,0 +1,41 @@
+<!-- summary_card.html -->
+<div class="card-premium border-white/50 space-y-6">
+    <h3 class="text-xs font-black text-slate-800 uppercase tracking-[0.2em] flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-slate-900"></span> Balance de OT
+    </h3>
+    
+    <div class="space-y-4">
+        <div class="flex justify-between items-center text-sm">
+            <span class="text-slate-400 font-bold">Materiales / Repuestos</span>
+            <span class="font-mono font-black text-slate-600">$<?= htmlspecialchars(strval($total_parts ?? "")) ?></span>
+        </div>
+        <div class="flex justify-between items-center text-sm">
+            <span class="text-slate-400 font-bold">Servicios Externos</span>
+            <span class="font-mono font-black text-slate-600">$<?= htmlspecialchars(strval($total_third ?? "")) ?></span>
+        </div>
+        
+        <div class="pt-4 border-t-2 border-slate-50 flex justify-between items-end">
+            <div>
+                <p class="text-[8px] font-black text-slate-300 uppercase tracking-widest mb-1">Inversión Final</p>
+                <div class="text-3xl font-black text-slate-900 tracking-tighter">$<?= htmlspecialchars(strval($total_general ?? "")) ?></div>
+            </div>
+            
+            <div class="text-right">
+                <p class="text-[8px] font-black text-slate-300 uppercase tracking-widest mb-1">Labor Acumulada</p>
+                <div class="text-lg font-black text-sky-600 font-mono"><?= htmlspecialchars(strval($total_duration ?? "")) ?></div>
+            </div>
+        </div>
+    </div>
+    
+    <?php if (order.status == 'Terminada'): ?>
+    <div class="bg-emerald-50 border border-emerald-100 p-4 rounded-2xl flex items-center gap-3">
+        <div class="bg-emerald-500 text-white p-1.5 rounded-lg">
+             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" /></svg>
+        </div>
+        <div class="flex flex-col">
+            <span class="text-[9px] font-black text-emerald-800 uppercase tracking-widest">Orden Facturable</span>
+            <span class="text-[11px] font-bold text-emerald-600">Trabajo finalizado y auditado</span>
+        </div>
+    </div>
+    <?php endif; ?>
+</div>
