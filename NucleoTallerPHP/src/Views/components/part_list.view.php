@@ -20,28 +20,38 @@
                     <?= htmlspecialchars(strval($part->quantity ?? "")) ?>
                 </td>
                 <td class="py-5 px-2 text-center text-[10px] font-black text-slate-400 uppercase">
-                    <?= htmlspecialchars(strval($part->uom or '-' ?? "")) ?>
+                    <?= htmlspecialchars(strval($part->uom || '-' ?? "")) ?>
                 </td>
                 <td class="py-5 px-2 text-right font-mono text-xs text-slate-500">
-                    $<?= htmlspecialchars(strval($"{:,->2f}"->format(part->unit_price) ?? "")) ?>
+                    $<?= htmlspecialchars(strval(number_format($part->unit_price, 2) ?? "")) ?>
                 </td>
                 <td class="py-5 px-2 text-right font-mono font-black text-slate-900">
-                    $<?= htmlspecialchars(strval($"{:,->2f}"->format(part->quantity * part->unit_price) ?? "")) ?>
+                    $<?= htmlspecialchars(strval(number_format($part->quantity * $part->unit_price, 2) ?? "")) ?>
                 </td>
                 <td class="py-5 px-2 text-right">
-                    <?php if (not $is_closed): ?>
-                    <button hx-delete="<?= htmlspecialchars(strval($base ?? "")) ?>/part/<?= htmlspecialchars(strval($part->id ?? "")) ?>" 
+                    <?php if (!$is_closed): ?>
+                    <button hx-delete="/part/<?= htmlspecialchars(strval($part->id ?? "")) ?>" 
                             hx-confirm="¿Desea dar de baja este insumo?"
                             hx-target="closest tr" 
                             hx-swap="outerHTML"
-                            class="opacity-0 group-hover:opacity-100 p-2 text-slate-300 hover:text-red-500 transition-all active:scale-90">
+                            class="opacity-0 group-hover:opacity-100 $p-2 text-slate-300 hover:text-red-500 transition-all active:scale-90">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12" /></svg>
                     </button>
                     <?php endif; ?>
                 </td>
             </tr>
             <?php endforeach; ?>
-            <?php if (not parts): ?>
+            <?php 
+                $total_parts = 0;
+                foreach ($parts ?? [] as $part) { $total_parts += ((float)$part->quantity * (float)$part->unit_price); }
+            ?>
+            <?php if ($parts): ?>
+            <tr class="bg-slate-50/30">
+                <td colspan="4" class="py-4 px-2 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">Subtotal Materiales:</td>
+                <td class="py-4 px-2 text-right font-mono text-sm font-black text-sky-600">$<?= number_format($total_parts, 2) ?></td>
+                <td></td>
+            </tr>
+            <?php else: ?>
             <tr>
                 <td colspan="6" class="py-12 text-center text-slate-300 italic font-medium text-sm">Sin materiales registrados en esta orden.</td>
             </tr>
@@ -49,3 +59,4 @@
         </tbody>
     </table>
 </div>
+

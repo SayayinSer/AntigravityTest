@@ -1,8 +1,9 @@
-{% extends "base.html" %}
+<?php include BASE_PATH . 'src/Views/layout/header.php'; ?>
 
-{% block title %}Maestro de Clientes - Aliso Workflow{% endblock %}
 
-{% block content %}
+Maestro de Clientes - Aliso Workflow
+
+
 <div x-data="{ showModal: false, editMode: false, clientData: {} }">
     
     <!-- Modal Formulario (Rediseñado) -->
@@ -18,12 +19,12 @@
                     <h2 class="text-2xl font-black tracking-tight" x-text="editMode ? 'Modificar Ficha' : 'Nueva Ficha de Cliente'"></h2>
                     <p class="text-sky-400 text-[10px] font-bold uppercase tracking-widest mt-1">Registro Maestro de Propietarios</p>
                 </div>
-                <button @click="showModal = false" class="text-slate-400 hover:text-white transition-colors p-2 bg-white/5 rounded-full">
+                <button @click="showModal = false" class="text-slate-400 hover:text-white transition-colors $p-2 bg-white/5 rounded-full">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
                 </button>
             </div>
 
-            <form hx-post="<?= htmlspecialchars(strval($base ?? "")) ?>/clients/save" hx-encoding="multipart/form-data" class="p-10 space-y-8">
+            <form hx-post="/clients/save" hx-encoding="multipart/form-data" class="p-10 space-y-8">
                 <input type="hidden" name="client_id" :value="editMode ? clientData.id : ''">
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
@@ -128,7 +129,7 @@
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-50">
-                    <?php if (not clients): ?>
+                    <?php if (!$clients): ?>
                     <tr><td colspan="5" class="py-24 text-center text-slate-300 font-medium">No se registran clientes enrolados.</td></tr>
                     <?php endif; ?>
                     
@@ -146,28 +147,28 @@
                                     <div class="font-black text-slate-800 text-lg leading-tight"><?= htmlspecialchars(strval($c->full_name ?? "")) ?></div>
                                     <div class="text-[9px] text-sky-600 font-black uppercase tracking-widest mt-1">
                                         <?= htmlspecialchars(strval($c->owner_type ?? "")) ?>
-                                        <?php if (c.country): ?> &bull; <?= htmlspecialchars(strval($c->country->name ?? "")) ?><?php endif; ?>
+                                        <?php if (isset($c->country->name)): ?> &bull; <?= htmlspecialchars(strval($c->country->name)) ?><?php endif; ?>
                                     </div>
                                 </div>
                             </div>
                         </td>
                         <td class="py-8 px-4">
                             <div class="text-sm font-bold text-slate-600"><?= htmlspecialchars(strval($c->email ?? "")) ?></div>
-                            <div class="text-[10px] text-slate-400 font-bold mt-1"><?= htmlspecialchars(strval($c->phone or 'No registrado' ?? "")) ?></div>
+                            <div class="text-[10px] text-slate-400 font-bold mt-1"><?= htmlspecialchars(strval($c->phone || 'No registrado' ?? "")) ?></div>
                         </td>
                         <td class="py-8 px-4 text-center">
                             <span class="bg-white border border-slate-200 px-4 py-1.5 rounded-xl text-slate-700 font-mono text-xs shadow-sm">
-                                <?= htmlspecialchars(strval($c->document_id or '---' ?? "")) ?>
+                                <?= htmlspecialchars(strval($c->document_id || '---' ?? "")) ?>
                             </span>
                         </td>
                         <td class="py-8 px-4 text-right">
                             <div class="flex items-center justify-end gap-3">
-                                <button @click="clientData = {id: '<?= htmlspecialchars(strval($c->id ?? "")) ?>', name: '<?= htmlspecialchars(strval($c->full_name ?? "")) ?>', email: '<?= htmlspecialchars(strval($c->email ?? "")) ?>', phone: '<?= htmlspecialchars(strval($c->phone ?? "")) ?>', address: '<?= htmlspecialchars(strval($c->address ?? "")) ?>', type: '<?= htmlspecialchars(strval($c->owner_type ?? "")) ?>', doc: '<?= htmlspecialchars(strval($c->document_id ?? "")) ?>', country: '<?= htmlspecialchars(strval($c->country_id or '' ?? "")) ?>', province: '<?= htmlspecialchars(strval($c->province_id or '' ?? "")) ?>'}; editMode = true; showModal = true;" 
-                                        class="p-3 bg-slate-100 text-slate-500 hover:bg-sky-500 hover:text-white rounded-xl transition-all active:scale-90" title="Editar">
+                                <button @click="clientData = {id: '<?= htmlspecialchars(strval($c->id ?? "")) ?>', name: '<?= htmlspecialchars(strval($c->full_name ?? "")) ?>', email: '<?= htmlspecialchars(strval($c->email ?? "")) ?>', phone: '<?= htmlspecialchars(strval($c->phone ?? "")) ?>', address: '<?= htmlspecialchars(strval($c->address ?? "")) ?>', type: '<?= htmlspecialchars(strval($c->owner_type ?? "")) ?>', doc: '<?= htmlspecialchars(strval($c->document_id ?? "")) ?>', country: '<?= htmlspecialchars(strval($c->country_id || '' ?? "")) ?>', province: '<?= htmlspecialchars(strval($c->province_id || '' ?? "")) ?>'}; editMode = true; showModal = true;" 
+                                        class="$p-3 bg-slate-100 text-slate-500 hover:bg-sky-500 hover:text-white rounded-xl transition-all active:scale-90" title="Editar">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
                                 </button>
-                                <form hx-post="<?= htmlspecialchars(strval($base ?? "")) ?>/clients/<?= htmlspecialchars(strval($c->id ?? "")) ?>/delete" class="inline">
-                                    <button type="submit" class="p-3 bg-slate-100 text-red-400 hover:bg-red-500 hover:text-white rounded-xl transition-all active:scale-90" hx-confirm="CRÍTICO: ¿Seguro que desea eliminar permanentemente este cliente?">
+                                <form hx-post="/clients/<?= htmlspecialchars(strval($c->id ?? "")) ?>/delete" class="inline">
+                                    <button type="submit" class="$p-3 bg-slate-100 text-red-400 hover:bg-red-500 hover:text-white rounded-xl transition-all active:scale-90" hx-confirm="CRÃTICO: ¿Seguro que desea eliminar permanentemente este cliente?">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12" /></svg>
                                     </button>
                                 </form>
@@ -181,4 +182,6 @@
     </div>
 
 </div>
-{% endblock %}
+
+
+<?php include BASE_PATH . 'src/Views/layout/footer.php'; ?>

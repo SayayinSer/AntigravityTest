@@ -1,8 +1,9 @@
-{% extends "base.html" %}
+<?php include BASE_PATH . 'src/Views/layout/header.php'; ?>
 
-{% block title %}Maestro de Móviles - Aliso Workflow{% endblock %}
 
-{% block content %}
+Maestro de Móviles - Aliso Workflow
+
+
 <div x-data="{ showModal: false, vehicleData: {} }">
     
     <!-- Modal Registro (Rediseñado) -->
@@ -18,12 +19,12 @@
                     <h2 class="text-2xl font-black tracking-tight">Alta de Vehículo</h2>
                     <p class="text-sky-400 text-[10px] font-bold uppercase tracking-widest mt-1">Incorporación de Unidad al Sistema</p>
                 </div>
-                <button @click="showModal = false" class="text-slate-400 hover:text-white transition-colors p-2 bg-white/5 rounded-full">
+                <button @click="showModal = false" class="text-slate-400 hover:text-white transition-colors $p-2 bg-white/5 rounded-full">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
                 </button>
             </div>
 
-            <form hx-post="<?= htmlspecialchars(strval($base ?? "")) ?>/vehicles/save" hx-encoding="multipart/form-data" class="p-10 space-y-6">
+            <form hx-post="/vehicles/save" hx-encoding="multipart/form-data" class="p-10 space-y-6">
                 <div class="grid grid-cols-2 gap-6">
                     <div class="col-span-1">
                         <label class="label-premium">Patente / Dominio <span class="text-sky-500">*</span></label>
@@ -86,7 +87,7 @@
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <?php if (not vehicles): ?>
+        <?php if (!$vehicles): ?>
             <div class="col-span-full py-24 text-center card-premium bg-white/50 border-dashed">
                 <p class="text-slate-300 font-black uppercase tracking-widest italic font-sans text-sm">No se registran unidades cargadas en el sistema.</p>
             </div>
@@ -104,7 +105,7 @@
                 </div>
                 <div class="absolute top-4 right-4">
                     <span class="bg-white/10 backdrop-blur-md border border-white/20 text-white text-[9px] font-black px-3 py-1.5 rounded-full uppercase tracking-widest">
-                        <?php if (v.vehicle_type): ?><?= htmlspecialchars(strval($v->vehicle_type->name ?? "")) ?><?php else: ?>S/T<?php endif; ?>
+                        <?php if ($v->vehicle_type): ?><?= htmlspecialchars(strval($v->vehicle_type->name ?? "")) ?><?php else: ?>S/T<?php endif; ?>
                     </span>
                 </div>
             </div>
@@ -114,7 +115,7 @@
                 <div class="flex justify-between items-end border-b border-slate-50 pb-4">
                     <div>
                         <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest">Modelo / Línea</p>
-                        <p class="font-black text-slate-800 text-lg leading-tight uppercase"><?= htmlspecialchars(strval($v->brand->name ?? "")) ?> <span class="font-normal text-slate-400 italic"><?= htmlspecialchars(strval($v->model or '-' ?? "")) ?></span></p>
+                        <p class="font-black text-slate-800 text-lg leading-tight uppercase"><?= htmlspecialchars(strval($v->brand->name ?? "")) ?> <span class="font-normal text-slate-400 italic"><?= htmlspecialchars(strval($v->model || '-' ?? "")) ?></span></p>
                     </div>
                 </div>
                 
@@ -125,18 +126,18 @@
                     </div>
                     <div class="space-y-1 border-l border-slate-50 pl-4">
                         <p class="text-[8px] font-black text-slate-300 uppercase tracking-widest">Últ. Service</p>
-                        <p class="font-mono font-black text-slate-600 truncate"><?php if (v.last_service_date): ?><?= htmlspecialchars(strval($v->last_service_date->strftime('%d/%m/%y') ?? "")) ?><?php else: ?>---<?php endif; ?></p>
+                        <p class="font-mono font-black text-slate-600 truncate"><?= htmlspecialchars(strval($v->last_service_date)) ?></p>
                     </div>
                 </div>
             </div>
 
             <!-- Footer Acciones -->
             <div class="p-6 bg-slate-50 flex gap-3 border-t border-slate-100/50">
-                <a href="<?= htmlspecialchars(strval($base ?? "")) ?>/vehicles/<?= htmlspecialchars(strval($v->id ?? "")) ?>/history" class="flex-1 btn-secondary !px-3 !py-2 !text-[10px] justify-center cursor-pointer group">
+                <a href="/vehicles/<?= htmlspecialchars(strval($v->id ?? "")) ?>/history" class="flex-1 btn-secondary !px-3 !py-2 !text-[10px] justify-center cursor-pointer group">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-400 group-hover:text-sky-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
                     HISTORIAL
                 </a>
-                <form hx-post="<?= htmlspecialchars(strval($base ?? "")) ?>/vehicles/<?= htmlspecialchars(strval($v->id ?? "")) ?>/delete" class="flex-1">
+                <form hx-post="/vehicles/<?= htmlspecialchars(strval($v->id ?? "")) ?>/delete" class="flex-1">
                     <button type="submit" hx-confirm="CRÍTICO: ¿Desea eliminar permanentemente este móvil y toda su historia?" class="w-full btn-danger !px-3 !py-2 !text-[10px] justify-center group">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-red-400 group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
                         ELIMINAR
@@ -148,4 +149,6 @@
     </div>
 
 </div>
-{% endblock %}
+
+
+<?php include BASE_PATH . 'src/Views/layout/footer.php'; ?>

@@ -328,7 +328,7 @@ async function launchApp(type) {
   
   if (res.ok) {
     log(`✓ ${res.msg}`, 'ok');
-    const port = type === 'python' ? cfg.app_port : 8080;
+    const port = type === 'python' ? cfg.app_port : 8085;
     const path = type === 'python' ? '/NucleoTallerV1/login' : '/NucleoTallerPHP/public/';
     log(`🌐 Abriendo http://${cfg.app_host}:${port}${path} ...`, 'info');
     setTimeout(() => { window.open(`http://${cfg.app_host}:${port}${path}`, '_blank'); }, 1500);
@@ -482,7 +482,7 @@ def handle_action(data):
     # ── Launch App ──
     elif action == 'launch_app':
         app_type = data.get('type', 'python')
-        port = data.get('app_port', '8000') if app_type == 'python' else '8080'
+        port = data.get('app_port', '8000') if app_type == 'python' else '8085'
         host = data.get('app_host', '127.0.0.1')
         try:
             if app_type == 'python':

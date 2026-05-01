@@ -1,96 +1,76 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Historia Clínica - Móvil <?= htmlspecialchars(strval($vehicle->internal_code ?? "")) ?></title>
-    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-slate-50 min-h-screen text-slate-800 font-sans">
-    
-    <nav class="bg-slate-900 text-white p-6 shadow-2xl flex justify-between items-center sticky top-0 z-50">
+<?php include BASE_PATH . 'src/Views/layout/header.php'; ?>
+
+<div class="space-y-10">
+    <div class="flex justify-between items-center bg-slate-900 text-white p-10 rounded-[3rem] shadow-2xl">
         <div>
-            <h1 class="text-xl font-black tracking-tighter">HISTORIA <span class="text-sky-400">CLÍNICA</span></h1>
-            <p class="text-[10px] text-slate-400 uppercase font-bold">Unidad #<?= htmlspecialchars(strval($vehicle->internal_code ?? "")) ?> &bull; <?= htmlspecialchars(strval($vehicle->plate ?? "")) ?></p>
+            <div class="flex items-center gap-4 mb-2">
+                <span class="px-4 py-1.5 bg-sky-500 text-white rounded-full text-[10px] font-black uppercase tracking-widest">Historia Clínica</span>
+                <span class="text-slate-400 font-mono text-xs">ID: <?= $vehicle->internal_code ?></span>
+            </div>
+            <h1 class="text-4xl font-black"><?= $vehicle->brand_name ?> <?= $vehicle->model ?></h1>
+            <p class="text-sky-400 font-bold uppercase text-xs tracking-widest mt-2"><?= $vehicle->plate ?></p>
         </div>
-        <a href="<?= htmlspecialchars(strval($base ?? "")) ?>/vehicles" class="bg-slate-800 hover:bg-slate-700 px-6 py-2 rounded-xl text-xs font-black transition-all border border-slate-700 uppercase">Volver a Flota</a>
-    </nav>
-
-    <main class="container mx-auto py-12 px-4 max-w-5xl">
-        <!-- Ficha Técnica Actual -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-            <div class="bg-white p-6 rounded-[2rem] shadow-xl border border-slate-100 flex flex-col items-center">
-                <span class="text-[10px] font-black text-slate-400 uppercase mb-2">Kilometraje</span>
-                <p class="text-3xl font-black text-slate-800"><?= htmlspecialchars(strval($"{:,}"->format(vehicle->current_mileage /* filter */ default(0)) ?? "")) ?> <span class="text-sm font-light text-slate-400 uppercase">km</span></p>
-            </div>
-            <div class="bg-white p-6 rounded-[2rem] shadow-xl border border-slate-100 flex flex-col items-center">
-                <span class="text-[10px] font-black text-slate-400 uppercase mb-2">Último Service</span>
-                <p class="text-xl font-black text-slate-800"><?= htmlspecialchars(strval($vehicle->last_service_date->strftime('%d/%m/%Y') if vehicle->last_service_date else 'S/N' ?? "")) ?></p>
-            </div>
-            <div class="bg-white p-6 rounded-[2rem] shadow-xl border border-slate-100 flex flex-col items-center">
-                <span class="text-[10px] font-black text-sky-500 uppercase mb-2">Próxima Visita (Sug.)</span>
-                <p class="text-xl font-black text-sky-600"><?= htmlspecialchars(strval($vehicle->next_service_suggestion->strftime('%d/%m/%Y') if vehicle->next_service_suggestion else 'No Programada' ?? "")) ?></p>
-            </div>
+        <div class="text-right">
+            <div class="text-xs text-slate-400 font-bold uppercase tracking-widest mb-1">Kilometraje Actual</div>
+            <div class="text-3xl font-black font-mono"><?= number_format((float)$vehicle->current_mileage) ?> KM</div>
         </div>
+    </div>
 
-        <!-- Línea de Tiempo de Intervenciones -->
-        <h2 class="text-2xl font-black mb-8 text-slate-800 px-4">Historial de Intervenciones</h2>
-        
-        <div class="space-y-8 relative">
-            <div class="absolute left-8 top-0 bottom-0 w-1 bg-slate-200 rounded-full"></div>
+    <div class="space-y-8">
+        <h2 class="text-2xl font-black text-slate-800 flex items-center gap-4">
+            <span class="w-1.5 h-8 bg-sky-500 rounded-full"></span>
+            Cronología de Intervenciones
+        </h2>
 
-            <?php foreach ($vehicle.orders|sort(attribute='entry_date', reverse=True) ?? [] as $ot): ?>
-            <div class="relative pl-24 group transition-all">
-                <!-- Punto en la línea -->
-                <div class="absolute left-[29px] top-4 w-4 h-4 bg-sky-500 rounded-full border-4 border-white shadow-lg z-10 group-hover:scale-125 transition-transform"></div>
-                
-                <div class="bg-white p-8 rounded-[2.5rem] shadow-lg border border-slate-100 hover:shadow-2xl transition-all relative overflow-hidden">
-                    <div class="flex justify-between items-start mb-6">
-                        <div>
-                            <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">OT #<?= htmlspecialchars(strval($ot->id ?? "")) ?> &bull; <?= htmlspecialchars(strval($ot->entry_date->strftime('%d/%m/%Y') ?? "")) ?></span>
-                            <h3 class="text-xl font-black text-slate-800 mt-1"><?php if (ot.status == 'Terminada'): ?>Intervención Finalizada<?php else: ?>Orden en Proceso<?php endif; ?></h3>
-                        </div>
-                        <span class="px-3 py-1 bg-slate-100 rounded-full text-[10px] font-black uppercase tracking-widest text-slate-600"><?= htmlspecialchars(strval($ot->status ?? "")) ?></span>
+        <?php if (empty($orders)): ?>
+        <div class="card-premium py-20 text-center opacity-40">
+            <p class="font-black uppercase tracking-widest text-sm">No se registran órdenes de trabajo previas</p>
+        </div>
+        <?php else: ?>
+        <div class="relative space-y-8 before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-200 before:to-transparent">
+            <?php foreach ($orders as $o): ?>
+            <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
+                <div class="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-slate-100 group-hover:bg-sky-500 group-hover:text-white text-slate-400 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 transition-colors">
+                    <svg class="fill-current" viewBox="0 0 12 12" width="12" height="12"><path d="M12 10v2H0v-2h12zm0-4v2H0V6h12zm0-4v2H0V2h12z"/></svg>
+                </div>
+                <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] card-premium !p-8 animate-in slide-in-from-bottom-4">
+                    <div class="flex items-center justify-between space-x-2 mb-4">
+                        <div class="font-black text-slate-800">Orden #<?= $o->id ?></div>
+                        <time class="font-mono text-[10px] font-bold text-sky-600 bg-sky-50 px-3 py-1 rounded-lg uppercase"><?= date('d/m/Y', strtotime($o->entry_date)) ?></time>
                     </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div>
-                            <h4 class="text-[10px] font-black text-slate-400 uppercase mb-3 tracking-tighter">Diagnóstico</h4>
-                            <p class="text-sm text-slate-700 bg-slate-50 p-4 rounded-2xl italic"><?= htmlspecialchars(strval($ot->diagnosis or 'Sin diagnóstico registrado->' ?? "")) ?></p>
+                    <div class="text-slate-500 text-sm italic mb-6">"<?= $o->diagnosis ?>"</div>
+                    
+                    <div class="space-y-4">
+                        <div class="p-4 bg-slate-50 rounded-2xl">
+                            <h4 class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2">Tareas Realizadas</h4>
+                            <ul class="text-xs space-y-1">
+                                <?php foreach ($o->tasks as $t): ?>
+                                <li class="text-slate-700 flex items-center gap-2"><span class="w-1 h-1 bg-emerald-400 rounded-full"></span> <?= $t->description ?></li>
+                                <?php endforeach; ?>
+                            </ul>
                         </div>
-                        <div>
-                            <h4 class="text-[10px] font-black text-sky-500 uppercase mb-3 tracking-tighter">Solución / Reparación</h4>
-                            <p class="text-sm font-bold text-slate-800 bg-sky-50 p-4 rounded-2xl border border-sky-100"><?= htmlspecialchars(strval($ot->solution or 'Intervención en curso->->->' ?? "")) ?></p>
+                        <div class="p-4 bg-slate-50 rounded-2xl">
+                            <h4 class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2">Materiales Instalados</h4>
+                            <ul class="text-xs space-y-1">
+                                <?php foreach ($o->parts as $p): ?>
+                                <li class="text-slate-700 flex items-center gap-2"><span class="w-1 h-1 bg-sky-400 rounded-full"></span> <?= $p->description ?></li>
+                                <?php endforeach; ?>
+                            </ul>
                         </div>
                     </div>
-
-                    <!-- Resumen de Tareas y Costos -->
-                    <div class="mt-8 pt-6 border-t border-slate-50 flex flex-wrap gap-4 justify-between items-center">
-                        <div class="flex gap-4">
-                            <div class="flex flex-col">
-                                <span class="text-[9px] font-black text-slate-400 uppercase">KM Registrado</span>
-                                <span class="text-sm font-black text-slate-800"><?= htmlspecialchars(strval($"{:,}"->format(ot->recorded_mileage /* filter */ default(0)) ?? "")) ?> KM</span>
-                            </div>
-                            <div class="flex flex-col">
-                                <span class="text-[9px] font-black text-slate-400 uppercase">Tareas</span>
-                                <span class="text-sm font-black text-slate-800"><?= htmlspecialchars(strval(count($ot->tasks ?? []) ?? "")) ?> Realizadas</span>
-                            </div>
-                        </div>
-                        <a href="<?= htmlspecialchars(strval($base ?? "")) ?>/order/<?= htmlspecialchars(strval($ot->id ?? "")) ?>" class="text-[10px] font-black text-sky-500 uppercase hover:text-sky-600 transition-colors">Ver Detalles Completos &rarr;</a>
+                    
+                    <div class="mt-6 pt-6 border-t border-slate-50 flex justify-between items-center">
+                        <span class="px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest <?= $o->status == 'Terminada' ? 'bg-slate-100 text-slate-500' : 'bg-emerald-100 text-emerald-700' ?>">
+                            <?= $o->status ?>
+                        </span>
+                        <a href="/order/<?= $o->id ?>" class="text-[10px] font-black text-sky-600 uppercase tracking-widest hover:underline">Ver Detalle Completo →</a>
                     </div>
                 </div>
             </div>
-            <?php else: ?>
-            <div class="text-center py-20 text-slate-400 font-light italic">
-                Este vehículo aún no posee historial registrado.
-            </div>
             <?php endforeach; ?>
         </div>
-    </main>
+        <?php endif; ?>
+    </div>
+</div>
 
-    <footer class="py-20 text-center text-slate-400 text-[10px] tracking-widest uppercase font-light">
-        Antigravity Fleet Diagnostic Engine &bull; Historia Clínica
-    </footer>
-</body>
-</html>
+<?php include BASE_PATH . 'src/Views/layout/footer.php'; ?>

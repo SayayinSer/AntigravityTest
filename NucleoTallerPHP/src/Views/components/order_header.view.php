@@ -4,7 +4,7 @@
         <div>
             <div class="flex items-center gap-3 mb-2">
                 <span class="bg-sky-500 text-white font-black text-[10px] px-3 py-1 rounded-full shadow-lg shadow-sky-500/20">ORDEN #<?= htmlspecialchars(strval($order->id ?? "")) ?></span>
-                <span class="text-slate-400 text-[10px] font-black uppercase tracking-[0.2em]"><?= htmlspecialchars(strval($order->entry_date->strftime('%d/%m/%Y %H:%M') ?? "")) ?>hs</span>
+                <span class="text-slate-400 text-[10px] font-black uppercase tracking-[0.2em]"><?= htmlspecialchars(strval($order->entry_date->format('%d/%m/%Y %H:%M') ?? "")) ?>hs</span>
             </div>
             <h1 class="text-3xl font-black text-white tracking-tight">
                 <?= htmlspecialchars(strval($order->vehicle->brand->name ?? "")) ?> <span class="font-normal text-slate-400"><?= htmlspecialchars(strval($order->vehicle->model ?? "")) ?></span>
@@ -15,7 +15,7 @@
         <div class="flex items-center gap-6">
             <div class="text-right">
                 <p class="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-1">Diagnóstico Declarado</p>
-                <p class="text-slate-200 font-bold italic text-sm max-w-md"><?= htmlspecialchars(strval($order->diagnosis or 'Sin diagnóstico inicial' ?? "")) ?></p>
+                <p class="text-slate-200 font-bold italic text-sm max-w-md"><?= htmlspecialchars(strval($order->diagnosis || 'Sin diagnóstico inicial' ?? "")) ?></p>
             </div>
             <div class="h-12 w-px bg-white/10 hidden lg:block"></div>
             <div class="flex flex-col items-end">
@@ -27,3 +27,4 @@
         </div>
     </div>
 </div>
+

@@ -1,3 +1,4 @@
+<?php include BASE_PATH . 'src/Views/layout/header.php'; ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -20,7 +21,7 @@
 
         <div class="bg-white p-10 rounded-[2.5rem] shadow-2xl border border-white/10 relative overflow-hidden">
             <!-- Formulario de recuperación -->
-            <form hx-post="<?= htmlspecialchars(strval($base ?? "")) ?>/reset-password" hx-target="#reset-area" hx-swap="outerHTML" class="space-y-6" id="reset-area">
+            <form hx-post="/reset-password" hx-target="#reset-area" hx-swap="outerHTML" class="space-y-6" id="reset-area">
                 <div class="space-y-4">
                     <div>
                         <label class="block text-[10px] font-black text-slate-400 uppercase mb-2 ml-1">Nueva Contraseña</label>
@@ -43,7 +44,7 @@
                 <div id="error-msg" class="text-red-500 font-bold text-[10px] uppercase text-center"></div>
 
                 <div class="pt-4 text-center">
-                    <a href="<?= htmlspecialchars(strval($base ?? "")) ?>/login" class="text-[10px] font-black text-slate-400 hover:text-sky-500 transition-colors uppercase tracking-widest">Volver al Login</a>
+                    <a href="/login" class="text-[10px] font-black text-slate-400 hover:text-sky-500 transition-colors uppercase tracking-widest">Volver al Login</a>
                 </div>
             </form>
         </div>
@@ -51,3 +52,5 @@
 
 </body>
 </html>
+
+<?php include BASE_PATH . 'src/Views/layout/footer.php'; ?>

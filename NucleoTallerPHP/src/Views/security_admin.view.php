@@ -1,8 +1,9 @@
-{% extends "base.html" %}
+<?php include BASE_PATH . 'src/Views/layout/header.php'; ?>
 
-{% block title %}Seguridad Central - Aliso Workflow{% endblock %}
 
-{% block content %}
+Seguridad Central - Aliso Workflow
+
+
 <div class="space-y-12">
     
     <div class="flex flex-col md:flex-row justify-between items-center gap-6 mb-10">
@@ -15,8 +16,8 @@
         </div>
         
         <div class="flex gap-3">
-             <a href="<?= htmlspecialchars(strval($base ?? "")) ?>/admin/audit" class="btn-secondary border-amber-200 text-amber-700 bg-amber-50/30">
-                <span class="text-sm">📋</span> VER AUDITORÍA
+             <a href="/admin/audit" class="btn-secondary border-amber-200 text-amber-700 bg-amber-50/30">
+                <span class="text-sm">ðŸ“‹</span> VER AUDITORÃA
             </a>
         </div>
     </div>
@@ -32,7 +33,7 @@
                     Enrolar Operador
                 </h3>
                 
-                <form hx-post="<?= htmlspecialchars(strval($base ?? "")) ?>/admin/security/user" class="space-y-6">
+                <form hx-post="/admin/security/$user" class="space-y-6">
                     <div>
                         <label class="label-premium">Username <span class="text-sky-500">*</span></label>
                         <input type="text" name="username" required class="input-premium">
@@ -84,11 +85,11 @@
                             <tr class="hover:bg-slate-50/50 transition-all group">
                                 <td class="py-6 px-4">
                                     <div class="font-black text-slate-700"><?= htmlspecialchars(strval($u->username ?? "")) ?></div>
-                                    <div class="text-[10px] text-slate-400 font-bold mt-0.5"><?= htmlspecialchars(strval($u->email or 'sin email' ?? "")) ?></div>
+                                    <div class="text-[10px] text-slate-400 font-bold mt-0.5"><?= htmlspecialchars(strval($u->email || 'sin email' ?? "")) ?></div>
                                 </td>
                                 <td class="py-6 px-4 text-xs font-bold text-slate-600"><?= htmlspecialchars(strval($u->full_name ?? "")) ?></td>
                                 <td class="py-6 px-4">
-                                    <?php if (u.status == 'Activo'): ?>
+                                    <?php if ($u->status == 'Activo'): ?>
                                         <span class="px-2.5 py-1 bg-emerald-100 text-emerald-700 rounded-full text-[9px] font-black uppercase tracking-widest">ACTIVO</span>
                                     <?php else: ?>
                                         <span class="px-2.5 py-1 bg-red-100 text-red-700 rounded-full text-[9px] font-black uppercase tracking-widest">SUSPENDIDO</span>
@@ -96,15 +97,15 @@
                                 </td>
                                 <td class="py-6 px-4">
                                     <div class="flex flex-wrap gap-1">
-                                        <?php foreach ($u.roles ?? [] as $role): ?>
+                                        <?php foreach ($u->roles ?? [] as $role): ?>
                                         <span class="text-[8px] bg-slate-100 text-slate-500 font-black px-2 py-0.5 border border-slate-200 rounded-md"><?= htmlspecialchars(strval($role->name ?? "")) ?></span>
                                         <?php endforeach; ?>
                                     </div>
                                 </td>
                                 <td class="py-6 px-4 text-right">
-                                    <form hx-post="<?= htmlspecialchars(strval($base ?? "")) ?>/admin/user/<?= htmlspecialchars(strval($u->id ?? "")) ?>/toggle-status" class="inline">
-                                        <button type="submit" class="text-[10px] font-black uppercase <?php if (u.status == 'Activo'): ?>text-red-400 hover:text-red-600 hover:bg-red-50<?php else: ?>text-emerald-400 hover:text-emerald-600 hover:bg-emerald-50<?php endif; ?> px-3 py-2 rounded-xl transition-all">
-                                            <?php if (u.status == 'Activo'): ?>Suspender<?php else: ?>Re-Activar<?php endif; ?>
+                                    <form hx-post="/admin/$user/<?= htmlspecialchars(strval($u->id ?? "")) ?>/toggle-status" class="inline">
+                                        <button type="submit" class="text-[10px] font-black uppercase <?php if ($u->status == 'Activo'): ?>text-red-400 hover:text-red-600 hover:bg-red-50<?php else: ?>text-emerald-400 hover:text-emerald-600 hover:bg-emerald-50<?php endif; ?> px-3 py-2 rounded-xl transition-all">
+                                            <?php if ($u->status == 'Activo'): ?>Suspender<?php else: ?>Re-Activar<?php endif; ?>
                                         </button>
                                     </form>
                                 </td>
@@ -118,4 +119,6 @@
 
     </div>
 </div>
-{% endblock %}
+
+
+<?php include BASE_PATH . 'src/Views/layout/footer.php'; ?>

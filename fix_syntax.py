@@ -3,28 +3,30 @@ import re
 
 VIEWS_DIR = "d:\\aaProyectos\\Entorno01\\NucleoTallerPHP\\src\\Views"
 
-def fix_file(filepath):
+def final_cleanup(filepath):
     with open(filepath, 'r', encoding='utf-8') as f:
         content = f.read()
 
-    # Fix |length
-    content = re.sub(r'<\?php if \((.*?)\|length(.*?)\): \?>', r'<?php if (count(\1 ?? []) \2): ?>', content)
+    # Revert the if replacement mess
+    content = content.replace('<?php ? ', '<?php if ')
+    content = content.replace('<?php  ? ', '<?php if ')
     
-    # Fix python 'in' to in_array
-    content = re.sub(r'<\?php if \((.*?)\s+in\s+(.*?)\): \?>', r'<?php if (in_array(\1, \2 ?? [])): ?>', content)
+    # Fix the $""->format mess
+    content = re.sub(r'\$""->format\((.*?)\)', r'number_format(\1, 2)', content)
     
-    # Fix python formatters like "{:,}".format(val) or val|format
-    content = re.sub(r'<\?= htmlspecialchars\(strval\(\$(.*?) \/\* filter \*\/ format\([\'"](.*?)[\'"]\)(.*?)\)\) \?>', r'<?= number_format((float)($\1 ?? 0), 2) ?>', content)
-    
-    # Fallback fixes for common python idioms remaining
-    content = content.replace('.length', '')
-    content = re.sub(r'<\?php if \(\$(.*?) \/\* filter \*\/ length(.*?)\): \?>', r'<?php if (count($\1 ?? []) \2): ?>', content)
+    # Fix missing $ in common variables
+    vars_to_fix = ['apt', 'uapt', 'order', 'v', 'u', 'user', 'ot', 'p', 't', 'tk', 
+                   'today_appointments', 'upcoming_appointments', 'vehicles', 'clients', 'active_page']
+    for v in vars_to_fix:
+        # Match v only if it's not preceded by $ and not part of another word
+        content = re.sub(r'(?<![\$\w])' + v + r'(->|\b)', r'$' + v + r'\1', content)
 
-    # General brute-force cleanup for testing (turn off syntax checking for known python loops if they broke)
-    content = content.replace('is_closed', '$is_closed')
+    # Fix logic operators
+    content = content.replace(' and ', ' && ')
+    content = content.replace(' or ', ' || ')
     
-    # Just fix the specific lines
-    content = re.sub(r'\$(.*?) \/\* filter \*\/ length', r'count($\1 ?? [])', content)
+    # Fix includes
+    content = re.sub(r"\{% include '(.*?)' %\}", r"<?php include BASE_PATH . 'src/Views/\1.view.php'; ?>", content)
 
     with open(filepath, 'w', encoding='utf-8') as f:
         f.write(content)
@@ -33,5 +35,5 @@ if __name__ == '__main__':
     for root, dirs, files in os.walk(VIEWS_DIR):
         for file in files:
             if file.endswith('.php'):
-                fix_file(os.path.join(root, file))
-    print("Syntax fix applied.")
+                final_cleanup(os.path.join(root, file))
+    print("Final Cleanup Applied.")

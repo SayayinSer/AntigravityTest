@@ -21,22 +21,32 @@
                     <div class="text-xs text-slate-500 font-medium italic"><?= htmlspecialchars(strval($tp->description ?? "")) ?></div>
                 </td>
                 <td class="py-5 px-2 text-right font-mono font-black text-slate-900">
-                    $<?= htmlspecialchars(strval($"{:,->2f}"->format(tp->price) ?? "")) ?>
+                    $<?= htmlspecialchars(strval(number_format($tp->price, 2) ?? "")) ?>
                 </td>
                 <td class="py-5 px-2 text-right">
-                    <?php if (not $is_closed): ?>
-                    <button hx-delete="<?= htmlspecialchars(strval($base ?? "")) ?>/third-party/<?= htmlspecialchars(strval($tp->id ?? "")) ?>" 
+                    <?php if (!$is_closed): ?>
+                    <button hx-delete="/third-party/<?= htmlspecialchars(strval($tp->id ?? "")) ?>" 
                             hx-confirm="¿Anular el registro de este servicio externo?"
                             hx-target="closest tr" 
                             hx-swap="outerHTML"
-                            class="opacity-0 group-hover:opacity-100 p-2 text-slate-300 hover:text-red-500 transition-all active:scale-90">
+                            class="opacity-0 group-hover:opacity-100 $p-2 text-slate-300 hover:text-red-500 transition-all active:scale-90">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12" /></svg>
                     </button>
                     <?php endif; ?>
                 </td>
             </tr>
             <?php endforeach; ?>
-            <?php if (not third_parties): ?>
+            <?php 
+                $total_tp = 0;
+                foreach ($third_parties ?? [] as $tp) { $total_tp += (float)$tp->price; }
+            ?>
+            <?php if ($third_parties): ?>
+            <tr class="bg-slate-50/30">
+                <td colspan="2" class="py-4 px-2 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">Subtotal Tercerizados:</td>
+                <td class="py-4 px-2 text-right font-mono text-sm font-black text-amber-600">$<?= number_format($total_tp, 2) ?></td>
+                <td></td>
+            </tr>
+            <?php else: ?>
             <tr>
                 <td colspan="4" class="py-12 text-center text-slate-300 italic font-medium text-sm">No hay servicios tercerizados asignados.</td>
             </tr>
@@ -44,3 +54,4 @@
         </tbody>
     </table>
 </div>
+

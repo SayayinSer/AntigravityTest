@@ -71,6 +71,7 @@ class Vehicle(Base):
     last_service_date = Column(DateTime)
     next_service_suggestion = Column(DateTime)
     photo_url = Column(String(255), default="/static/img/default_vehicle.png")
+    owner_id = Column(Integer, ForeignKey("owners.id", ondelete="SET NULL"))
 
     # Auditoria
     created_at = Column(DateTime, server_default=func.now())
@@ -80,6 +81,7 @@ class Vehicle(Base):
 
     brand = relationship("Brand", back_populates="vehicles")
     vehicle_type = relationship("VehicleType", back_populates="vehicles")
+    owner = relationship("Owner", back_populates="vehicles")
     orders = relationship("WorkOrder", back_populates="vehicle")
 
 class Technician(Base):
@@ -182,6 +184,7 @@ class Owner(Base):
     
     country = relationship("Country")
     province = relationship("Province")
+    vehicles = relationship("Vehicle", back_populates="owner")
     
     # Auditoria
     created_at = Column(DateTime, server_default=func.now())

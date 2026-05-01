@@ -1,8 +1,9 @@
-{% extends "base.html" %}
+<?php include BASE_PATH . 'src/Views/layout/header.php'; ?>
 
-{% block title %}Auditoría de Sistema - Aliso Workflow{% endblock %}
 
-{% block content %}
+Auditoría de Sistema - Aliso Workflow
+
+
 <div class="space-y-10">
     
     <div class="flex flex-col md:flex-row justify-between items-center gap-6 mb-10">
@@ -15,15 +16,15 @@
         </div>
         
         <div class="flex gap-3">
-             <a href="<?= htmlspecialchars(strval($base ?? "")) ?>/admin/security" class="btn-secondary">
-                <span class="text-sm">🔒</span> VOLVER A SEGURIDAD
+             <a href="/admin/security" class="btn-secondary">
+                <span class="text-sm">ðŸ”’</span> VOLVER A SEGURIDAD
             </a>
         </div>
     </div>
 
     <!-- Filtros -->
     <div class="card-premium mb-8">
-        <form hx-get="<?= htmlspecialchars(strval($base ?? "")) ?>/admin/audit/filter" hx-target="#audit-results" class="flex flex-wrap items-end gap-6">
+        <form hx-get="/admin/audit/filter" hx-target="#audit-results" class="flex flex-wrap items-end gap-6">
             <div class="flex-grow max-w-xs">
                 <label class="label-premium">Desde</label>
                 <input type="date" name="start_date" value="<?= htmlspecialchars(strval($today ?? "")) ?>" class="input-premium">
@@ -38,7 +39,7 @@
 
     <!-- Tabla de Logs -->
     <div class="card-premium">
-        {% block results %}
+        
         <div id="audit-results" class="overflow-x-auto">
             <table class="w-full text-left">
                 <thead>
@@ -54,9 +55,9 @@
                 <tbody class="divide-y divide-slate-50">
                     <?php foreach ($logs ?? [] as $log): ?>
                     <tr class="hover:bg-slate-50 transition-colors">
-                        <td class="py-6 px-4 font-mono text-[11px] text-slate-500"><?= htmlspecialchars(strval($log->timestamp->strftime('%d/%m/%Y %H:%M:%S') ?? "")) ?></td>
+                        <td class="py-6 px-4 font-mono text-[11px] text-slate-500"><?= htmlspecialchars(strval($log->timestamp->format('%d/%m/%Y %H:%M:%S') ?? "")) ?></td>
                         <td class="py-6 px-4">
-                            <span class="font-bold text-slate-700"><?= htmlspecialchars(strval($log->user->username ?? "")) ?></span>
+                            <span class="font-bold text-slate-700"><?= htmlspecialchars(strval($log->$user->username ?? "")) ?></span>
                         </td>
                         <td class="py-6 px-4">
                             {% set action_class = 'bg-slate-100 text-slate-600' %}
@@ -69,15 +70,17 @@
                             </span>
                         </td>
                         <td class="py-6 px-4 text-[11px] font-bold text-slate-500 uppercase"><?= htmlspecialchars(strval($log->entity_name ?? "")) ?></td>
-                        <td class="py-6 px-4 text-center font-mono text-xs text-slate-400">#<?= htmlspecialchars(strval($log->entity_id or '-' ?? "")) ?></td>
-                        <td class="py-6 px-4 text-xs italic text-slate-500"><?= htmlspecialchars(strval($log->details or '-' ?? "")) ?></td>
+                        <td class="py-6 px-4 text-center font-mono text-xs text-slate-400">#<?= htmlspecialchars(strval($log->entity_id || '-' ?? "")) ?></td>
+                        <td class="py-6 px-4 text-xs italic text-slate-500"><?= htmlspecialchars(strval($log->details || '-' ?? "")) ?></td>
                     </tr>
                     <?php endforeach; ?>
                 </tbody>
             </table>
         </div>
-        {% endblock %}
+        
     </div>
 
 </div>
-{% endblock %}
+
+
+<?php include BASE_PATH . 'src/Views/layout/footer.php'; ?>

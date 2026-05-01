@@ -1,141 +1,81 @@
-{% extends "base.html" %}
+<?php include BASE_PATH . 'src/Views/layout/header.php'; ?>
 
-{% block title %}OT #<?= htmlspecialchars(strval($order->id ?? "")) ?> - Detalle Profesional{% endblock %}
+<?php
+    $is_closed = ($order->status == 'Terminada' || $order->status == 'Anulada');
+    $status_color = 'bg-sky-500';
+    if ($order->status == 'Terminada') $status_color = 'bg-slate-500';
+    elseif ($order->status == 'Anulada') $status_color = 'bg-red-500';
+?>
 
-{% block content %}
-<div x-data="{ state: '<?= htmlspecialchars(strval($order->status ?? "")) ?>' }">
-    {% include 'components/confirm_modal.html' %}
+<div x-data="{ state: '<?= $order->status ?>' }">
+    <?php include BASE_PATH . 'src/Views/components/confirm_modal.view.php'; ?>
     
-    <!-- Cabecera Reactiva (Cargada vía HTMX) -->
-    <div id="order-header" hx-get="<?= htmlspecialchars(strval($base ?? "")) ?>/order/<?= htmlspecialchars(strval($order->id ?? "")) ?>/header" hx-trigger="load, refresh-header from:body" class="mb-10">
-        <!-- Placeholder animado mientras carga -->
+    <div id="order-header" hx-get="/order/<?= $order->id ?>/header" hx-trigger="load, refresh-header from:body" class="mb-10">
         <div class="animate-pulse bg-white h-32 rounded-[2.5rem] shadow-sm"></div>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
-        
-        <!-- Columna Izquierda: Información Estática y Estado -->
         <div class="lg:col-span-1 space-y-8">
-            
-            <!-- Tarjeta Vehículo -->
             <div class="card-premium p-8">
                 <div class="flex justify-between items-start mb-6">
                     <h2 class="text-xl font-black text-slate-800">Vehículo</h2>
-                    <span class="text-[9px] font-black bg-slate-900 text-white px-3 py-1 rounded-full uppercase tracking-widest">ID: <?= htmlspecialchars(strval($order->vehicle->internal_code ?? "")) ?></span>
+                    <span class="text-[9px] font-black bg-slate-900 text-white px-3 py-1 rounded-full uppercase tracking-widest">ID: <?= $order->vehicle->internal_code ?></span>
                 </div>
-                
                 <div class="space-y-4">
                     <div class="flex justify-between items-center py-3 border-b border-slate-50">
                         <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Marca</span>
-                        <span class="font-bold text-slate-700"><?= htmlspecialchars(strval($order->vehicle->brand->name ?? "")) ?></span>
+                        <span class="font-bold text-slate-700"><?= $order->vehicle->brand->name ?></span>
                     </div>
                     <div class="flex justify-between items-center py-3 border-b border-slate-50">
                         <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Modelo</span>
-                        <span class="font-bold text-slate-700"><?= htmlspecialchars(strval($order->vehicle->model ?? "")) ?></span>
+                        <span class="font-bold text-slate-700"><?= $order->vehicle->model ?></span>
                     </div>
                     <div class="flex justify-between items-center py-3">
                         <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Patente</span>
-                        <span class="font-mono bg-amber-50 text-amber-800 px-3 py-1 rounded-lg border border-amber-100 font-bold"><?= htmlspecialchars(strval($order->vehicle->plate ?? "")) ?></span>
+                        <span class="font-mono bg-amber-50 text-amber-800 px-3 py-1 rounded-lg border border-amber-100 font-bold"><?= $order->vehicle->plate ?></span>
                     </div>
                 </div>
             </div>
 
-            <!-- Resumen Financiero (HTMX) -->
-            <div id="order-summary" hx-get="<?= htmlspecialchars(strval($base ?? "")) ?>/order/<?= htmlspecialchars(strval($order->id ?? "")) ?>/summary" hx-trigger="load, refreshSummary from:body">
+            <div id="order-summary" hx-get="/order/<?= $order->id ?>/summary" hx-trigger="load, refreshSummary from:body">
                 <div class="animate-pulse bg-slate-200 h-48 rounded-[2rem]"></div>
             </div>
 
-            <!-- Gestión de Estado -->
-            <div class="card-premium p-8" x-data="{ selectedStatus: '<?= htmlspecialchars(strval($order->status ?? "")) ?>' }" @refresh-status.window="htmx.ajax('GET', '<?= htmlspecialchars(strval($base ?? "")) ?>/order/<?= htmlspecialchars(strval($order->id ?? "")) ?>/status-only', { target: '#status-display' })">
+            <div class="card-premium p-8">
                 <h2 class="text-xl font-black text-slate-800 mb-6">Estado Operativo</h2>
-                
                 <div id="status-display" class="mb-8">
-                    {% set status_color = 'bg-sky-500' %}
-                    <?php if (order.status == 'Terminada'): ?>{% set status_color = 'bg-slate-500' %}
-                    <?php elseif (order.status == 'Anulada'): ?>{% set status_color = 'bg-red-500' %}
-                    <?php endif; ?>
                     <div class="flex items-center gap-3">
-                        <span class="w-3 h-3 rounded-full <?= htmlspecialchars(strval($status_color ?? "")) ?> shadow-lg"></span>
-                        <span class="font-black text-slate-700 uppercase tracking-widest text-sm"><?= htmlspecialchars(strval($order->status ?? "")) ?></span>
+                        <span class="w-3 h-3 rounded-full <?= $status_color ?> shadow-lg"></span>
+                        <span class="font-black text-slate-700 uppercase tracking-widest text-sm"><?= $order->status ?></span>
                     </div>
                 </div>
-                
-                {% set $is_closed = (order.status == 'Terminada' or order.status == 'Anulada') %}
-                <?php if (not $is_closed): ?>
-                <div class="space-y-6" x-data="{ currentStatus: '<?= htmlspecialchars(strval($order->status ?? "")) ?>' }">
-                    <div>
-                        <label class="label-premium">Cambiar a:</label>
-                        <select x-model="currentStatus" name="status" class="input-premium font-bold text-sm">
-                            <option value="Pendiente">Pendiente</option>
-                            <option value="En Ejecución">En Ejecución</option>
-                            <option value="Terminada">Terminada (Cerrar)</option>
-                            <option value="Anulada">Anulada</option>
-                        </select>
-                    </div>
-
-                    <!-- Campos de Cierre (Solo si es Terminada) -->
-                    <div x-show="currentStatus == 'Terminada'" x-transition class="p-6 bg-sky-50/50 rounded-[1.5rem] border border-sky-100 space-y-5">
-                        <p class="text-[10px] font-black text-sky-700 uppercase tracking-[0.2em] mb-2">Protocolo de Cierre</p>
-                        <div>
-                            <label class="label-premium text-sky-800 opacity-70">Solución Realizada</label>
-                            <textarea id="sol_input" placeholder="Detalle técnico de la reparación..." class="input-premium h-24 text-sm"></textarea>
-                        </div>
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <label class="label-premium text-sky-800 opacity-70">KM Actual</label>
-                                <input type="number" id="mil_input" value="<?= htmlspecialchars(strval($order->vehicle->current_mileage ?? "")) ?>" class="input-premium text-sm font-mono">
-                            </div>
-                            <div>
-                                <label class="label-premium text-sky-800 opacity-70">Próxima Visita</label>
-                                <input type="date" id="vis_input" class="input-premium text-xs">
-                            </div>
-                        </div>
-                    </div>
-
-                    <button type="button" 
-                            @click="
-                                let v = { status: currentStatus };
-                                if(currentStatus === 'Terminada') {
-                                    v.solution = document.getElementById('sol_input').value;
-                                    v.mileage = document.getElementById('mil_input').value;
-                                    v.next_visit = document.getElementById('vis_input').value;
-                                }
-                                htmx.ajax('POST', '<?= htmlspecialchars(strval($base ?? "")) ?>/order/<?= htmlspecialchars(strval($order->id ?? "")) ?>/status', { values: v })
-                            "
-                            :class="currentStatus === 'Terminada' ? 'btn-success' : (currentStatus === 'Anulada' ? 'btn-danger' : 'btn-primary')"
-                            class="w-full justify-center py-4 group">
-                        <span x-text="currentStatus === 'Terminada' ? 'FINALIZAR Y CERRAR ORDEN' : (currentStatus === 'Anulada' ? 'CONFIRMAR ANULACIÓN' : 'ACTUALIZAR HOJA DE RUTA')"></span>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
-                    </button>
+                <?php if (!$is_closed): ?>
+                <div class="space-y-6" x-data="{ currentStatus: '<?= $order->status ?>' }">
+                    <select x-model="currentStatus" name="status" class="input-premium font-bold text-sm">
+                        <option value="Pendiente">Pendiente</option>
+                        <option value="En Ejecución">En Ejecución</option>
+                        <option value="Terminada">Terminada (Cerrar)</option>
+                        <option value="Anulada">Anulada</option>
+                    </select>
+                    <button type="button" @click="htmx.ajax('POST', '/order/<?= $order->id ?>/status', { values: { status: currentStatus } })" class="btn-primary w-full justify-center py-4">ACTUALIZAR ESTADO</button>
                 </div>
                 <?php endif; ?>
             </div>
         </div>
 
-        <!-- Columna Derecha: Secciones Colapsables (Tareas, Materiales, Terceros) -->
         <div class="lg:col-span-2 space-y-8">
-            
-            <!-- Tareas Realizadas -->
+            <!-- Tareas -->
             <div class="bg-white rounded-[2.5rem] shadow-xl border border-slate-100 overflow-hidden" x-data="{ expanded: true }">
-                <div class="p-8 bg-white border-b border-slate-50 flex justify-between items-center cursor-pointer hover:bg-slate-50 transition-colors" @click="expanded = !expanded">
-                    <h2 class="text-2xl font-black flex items-center gap-4 text-slate-800">
-                        <span class="w-2 h-8 bg-emerald-500 rounded-full"></span>
-                        Tareas Realizadas
-                    </h2>
-                    <div class="bg-slate-100 p-2 rounded-xl transition-transform" :class="expanded ? 'rotate-180' : ''">
-                        <svg class="w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7" /></svg>
-                    </div>
+                <div class="p-8 bg-white border-b border-slate-50 flex justify-between items-center cursor-pointer" @click="expanded = !expanded">
+                    <h2 class="text-2xl font-black flex items-center gap-4 text-slate-800"><span class="w-2 h-8 bg-emerald-500 rounded-full"></span> Tareas Realizadas</h2>
                 </div>
-                
-                <div x-show="expanded" x-collapse x-cloak class="p-8">
-                    <?php if (not $is_closed): ?>
+                <div x-show="expanded" x-collapse class="p-8">
+                    <?php if (!$is_closed): ?>
                     <div class="mb-10 p-8 bg-emerald-50/20 border border-emerald-100/50 rounded-[2rem]">
-                        <form hx-post="<?= htmlspecialchars(strval($base ?? "")) ?>/order/<?= htmlspecialchars(strval($order->id ?? "")) ?>/task" hx-target="#task-list"
-                              @htmx:after-request="if($event.detail.successful) { $el.reset(); }"
-                              class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <form hx-post="/order/<?= $order->id ?>/task" hx-target="#task-list" @htmx:after-request="this.reset()" class="grid grid-cols-1 md:grid-cols-4 gap-4">
                             <div class="md:col-span-2">
                                 <label class="label-premium !text-emerald-700/50">Descripción del Trabajo</label>
-                                <input type="text" name="description" placeholder="Ej: Cambio de filtros y aceite" required class="input-premium">
+                                <input type="text" name="description" placeholder="Ej: Cambio de filtros" required class="input-premium">
                             </div>
                             <div>
                                 <label class="label-premium !text-emerald-700/50">Minutos</label>
@@ -144,133 +84,80 @@
                             <div>
                                 <label class="label-premium !text-emerald-700/50">Técnico</label>
                                 <select name="tech_id" class="input-premium">
-                                    <?php foreach ($technicians ?? [] as $tech): ?><option value="<?= htmlspecialchars(strval($tech->id ?? "")) ?>"><?= htmlspecialchars(strval($tech->name ?? "")) ?></option><?php endforeach; ?>
+                                    <?php foreach ($technicians ?? [] as $tech): ?><option value="<?= $tech->id ?>"><?= $tech->name ?></option><?php endforeach; ?>
                                 </select>
                             </div>
-                            <button type="submit" class="md:col-span-4 btn-success justify-center py-4">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
-                                REGISTRAR LABOR TÉCNICA
-                            </button>
+                            <button type="submit" class="md:col-span-4 btn-primary bg-emerald-600 justify-center py-4">REGISTRAR LABOR TÉCNICA</button>
                         </form>
                     </div>
                     <?php endif; ?>
-                    <div id="task-list">{% include 'components/task_list.html' %}</div>
+                    <div id="task-list"><?php $tasks = $order->tasks ?? []; include BASE_PATH . 'src/Views/components/task_list.view.php'; ?></div>
                 </div>
             </div>
 
-            <!-- Materiales e Insumos -->
-            <div class="bg-white rounded-[2.5rem] shadow-xl border border-slate-100 overflow-hidden" x-data="{ expanded: false }">
-                <div class="p-8 bg-white border-b border-slate-50 flex justify-between items-center cursor-pointer hover:bg-slate-50 transition-colors" @click="expanded = !expanded">
-                     <h2 class="text-2xl font-black flex items-center gap-4 text-slate-800">
-                        <span class="w-2 h-8 bg-sky-500 rounded-full"></span>
-                        Insumos y Materiales
-                    </h2>
-                    <div class="bg-slate-100 p-2 rounded-xl transition-transform" :class="expanded ? 'rotate-180' : ''">
-                        <svg class="w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7" /></svg>
-                    </div>
+            <!-- Materiales -->
+            <div class="bg-white rounded-[2.5rem] shadow-xl border border-slate-100 overflow-hidden" x-data="{ expanded: true }">
+                <div class="p-8 bg-white border-b border-slate-50 flex justify-between items-center cursor-pointer" @click="expanded = !expanded">
+                    <h2 class="text-2xl font-black flex items-center gap-4 text-slate-800"><span class="w-2 h-8 bg-sky-500 rounded-full"></span> Insumos y Materiales</h2>
                 </div>
-                
-                <div x-show="expanded" x-collapse x-cloak class="p-8">
-                    <?php if (not $is_closed): ?>
+                <div x-show="expanded" x-collapse class="p-8">
+                    <?php if (!$is_closed): ?>
                     <div class="mb-10 p-8 bg-sky-50/20 border border-sky-100/50 rounded-[2rem]">
-                        <form hx-post="<?= htmlspecialchars(strval($base ?? "")) ?>/order/<?= htmlspecialchars(strval($order->id ?? "")) ?>/part" hx-target="#part-list"
-                              @htmx:after-request="if($event.detail.successful) { $el.reset(); }"
-                              class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <form hx-post="/order/<?= $order->id ?>/part" hx-target="#part-list" @htmx:after-request="this.reset()" class="grid grid-cols-1 md:grid-cols-5 gap-4">
                             <div class="md:col-span-1">
                                 <label class="label-premium !text-sky-700/50">Artículo</label>
                                 <input type="text" name="description" placeholder="Repuesto" required class="input-premium">
                             </div>
                             <div>
                                 <label class="label-premium !text-sky-700/50">Cant.</label>
-                                <input type="number" step="0.01" name="qty" placeholder="0" required class="input-premium font-mono">
+                                <input type="number" step="0.01" name="qty" placeholder="0" required class="input-premium">
+                            </div>
+                            <div>
+                                <label class="label-premium !text-sky-700/50">UOM</label>
+                                <input type="text" name="uom" placeholder="Un/Lt" class="input-premium">
                             </div>
                             <div>
                                 <label class="label-premium !text-sky-700/50">P. Unitario</label>
-                                <input type="number" step="0.01" name="price" placeholder="$" required class="input-premium font-mono">
+                                <input type="number" step="0.01" name="price" placeholder="$" required class="input-premium">
                             </div>
-                            <div>
-                                <label class="label-premium !text-sky-700/50">U. Medida</label>
-                                <input type="text" name="uom" placeholder="Ej: Un/Lt" class="input-premium">
-                            </div>
-                            <button type="submit" class="md:col-span-4 btn-primary justify-center py-4">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>
-                                AÑADIR MATERIAL / INSUMO
-                            </button>
+                            <button type="submit" class="btn-primary justify-center py-4 self-end">AÑADIR</button>
                         </form>
                     </div>
                     <?php endif; ?>
-                    <div id="part-list">{% include 'components/part_list.html' %}</div>
+                    <div id="part-list"><?php $parts = $order->parts ?? []; include BASE_PATH . 'src/Views/components/part_list.view.php'; ?></div>
                 </div>
             </div>
 
-            <!-- Tercerizados -->
-            <div class="bg-white rounded-[2.5rem] shadow-xl border border-slate-100 overflow-hidden" x-data="{ expanded: false }">
-                <div class="p-8 bg-white border-b border-slate-50 flex justify-between items-center cursor-pointer hover:bg-slate-50 transition-colors" @click="expanded = !expanded">
-                     <h2 class="text-2xl font-black flex items-center gap-4 text-slate-800">
-                        <span class="w-2 h-8 bg-amber-500 rounded-full"></span>
-                        Servicios de Terceros
-                    </h2>
-                    <div class="bg-slate-100 p-2 rounded-xl transition-transform" :class="expanded ? 'rotate-180' : ''">
-                        <svg class="w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7" /></svg>
-                    </div>
+            <!-- Terceros -->
+            <div class="bg-white rounded-[2.5rem] shadow-xl border border-slate-100 overflow-hidden" x-data="{ expanded: true }">
+                <div class="p-8 bg-white border-b border-slate-50 flex justify-between items-center cursor-pointer" @click="expanded = !expanded">
+                    <h2 class="text-2xl font-black flex items-center gap-4 text-slate-800"><span class="w-2 h-8 bg-amber-500 rounded-full"></span> Servicios de Terceros</h2>
                 </div>
-                
-                <div x-show="expanded" x-collapse x-cloak class="p-8">
-                    <?php if (not $is_closed): ?>
+                <div x-show="expanded" x-collapse class="p-8">
+                    <?php if (!$is_closed): ?>
                     <div class="mb-10 p-8 bg-amber-50/20 border border-amber-100/50 rounded-[2rem]">
-                        <form hx-post="<?= htmlspecialchars(strval($base ?? "")) ?>/order/<?= htmlspecialchars(strval($order->id ?? "")) ?>/third-party" hx-target="#third-party-list"
-                              @htmx:after-request="if($event.detail.successful) { $el.reset(); }"
-                              class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <form hx-post="/order/<?= $order->id ?>/third-party" hx-target="#third-party-list" @htmx:after-request="this.reset()" class="grid grid-cols-1 md:grid-cols-4 gap-4">
                             <div>
                                 <label class="label-premium !text-amber-700/50">Proveedor</label>
                                 <input type="text" name="provider" placeholder="Nombre" required class="input-premium">
                             </div>
-                            <div class="md:col-span-2">
-                                <label class="label-premium !text-amber-700/50">Servicio Tercerizado</label>
+                            <div class="md:col-span-1">
+                                <label class="label-premium !text-amber-700/50">Servicio</label>
                                 <input type="text" name="description" placeholder="Ej: Rectificación" required class="input-premium">
                             </div>
                             <div>
                                 <label class="label-premium !text-amber-700/50">Costo ($)</label>
-                                <input type="number" step="0.01" name="price" placeholder="0.00" required class="input-premium font-mono">
+                                <input type="number" step="0.01" name="price" placeholder="0.00" required class="input-premium">
                             </div>
-                            <button type="submit" class="md:col-span-4 btn-warning justify-center py-4">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
-                                REGISTRAR SERVICIO EXTERNO
-                            </button>
+                            <button type="submit" class="btn-primary bg-amber-600 justify-center py-4 self-end">REGISTRAR</button>
                         </form>
                     </div>
                     <?php endif; ?>
-                    <div id="third-party-list">
-                        {% with third_parties = order.third_parties %}{% include 'components/third_party_list.html' %}{% endwith %}
-                    </div>
+                    <div id="third-party-list"><?php $third_parties = $order->third_parties ?? []; include BASE_PATH . 'src/Views/components/third_party_list.view.php'; ?></div>
                 </div>
             </div>
-            
         </div>
-    </div>
-
-    <!-- Pie de Auditoria Unificado -->
-    <div class="mt-12 pt-8 border-t border-slate-200 flex flex-col md:flex-row justify-between items-center text-[10px] text-slate-400 uppercase font-black tracking-[0.2em] px-8 gap-4">
-        <div class="flex items-center gap-4">
-            <span class="flex items-center gap-2"><span class="w-1 h-1 rounded-full bg-slate-300"></span> Creado por: <span class="text-slate-600"><?= htmlspecialchars(strval($order->created_by or 'Sistema' ?? "")) ?></span></span>
-            <span class="flex items-center gap-2"><span class="w-1 h-1 rounded-full bg-slate-300"></span> Apertura: <span class="text-slate-600"><?= htmlspecialchars(strval($order->entry_date->strftime('%d/%m/%Y %H:%M') ?? "")) ?></span></span>
-        </div>
-        <?php if (order.updated_at): ?>
-        <div class="flex items-center gap-2">
-            <span class="w-1 h-1 rounded-full bg-sky-400"></span> Última Modificación: <span class="text-slate-600"><?= htmlspecialchars(strval($order->updated_at->strftime('%d/%m/%Y %H:%M') ?? "")) ?></span>
-        </div>
-        <?php endif; ?>
     </div>
 </div>
 
-<script>
-    document.body.addEventListener('htmx:afterRequest', function(evt) {
-        if (evt.detail.xhr.status >= 400) {
-            setTimeout(() => {
-                const notify = document.getElementById('notification-area');
-                if (notify && notify.firstChild) notify.firstChild.remove();
-            }, 5000);
-        }
-    });
-</script>
-{% endblock %}
+<?php include BASE_PATH . 'src/Views/layout/footer.php'; ?>

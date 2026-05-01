@@ -2,7 +2,7 @@
 <div x-data="{ open: false, title: '', message: '', target: '', action: '' }"
      x-show="open"
      x-cloak
-     @open-confirm.window="open = true; title = $event.detail.title; message = $event.detail.message; target = $event.detail.target; action = $event.detail.action"
+     @open-confirm.window="open = true; title = $event->detail.title; message = $event->detail.message; target = $event->detail.target; action = $event->detail.action"
      class="fixed inset-0 z-[200] flex items-center justify-center p-4">
     
     <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-md" @click="open = false" x-transition.opacity></div>
@@ -24,7 +24,7 @@
                 <button type="button" 
                         @click="htmx.ajax('POST', action, { target: target }); open = false"
                         class="btn-primary w-full justify-center py-4 bg-slate-900 shadow-slate-200">
-                    SÍ, PROCEDER AHORA
+                    SÃ, PROCEDER AHORA
                 </button>
                 <button @click="open = false" class="btn-secondary w-full justify-center">
                     NO, CANCELAR
@@ -33,3 +33,4 @@
         </div>
     </div>
 </div>
+

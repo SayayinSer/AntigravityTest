@@ -1,3 +1,4 @@
+<?php include BASE_PATH . 'src/Views/layout/header.php'; ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -18,8 +19,8 @@
         
         <!-- Logo y Marca -->
         <div class="text-center mb-10">
-            <div class="inline-block bg-white p-3 rounded-3xl shadow-2xl mb-6 ring-4 ring-white/5">
-                <img src="<?= htmlspecialchars(strval($base ?? "")) ?>/static/img/logo_aliso.png" alt="ALISO" class="h-16 w-auto">
+            <div class="inline-block bg-white $p-3 rounded-3xl shadow-2xl mb-6 ring-4 ring-white/5">
+                <img src="/static/img/logo_aliso.png" alt="ALISO" class="h-16 w-auto">
             </div>
             <h1 class="text-4xl font-black tracking-tighter text-white">ALISO <span class="font-normal text-slate-500">WORKFLOW</span></h1>
             <p class="text-slate-400 text-[10px] font-black uppercase tracking-[0.4em] mt-2">Gestión Inteligente de Operaciones</p>
@@ -38,7 +39,7 @@
 
                 <div id="error-msg" class="transition-all duration-300"></div>
 
-                <form hx-post="<?= htmlspecialchars(strval($base ?? "")) ?>/login" hx-target="#error-msg" class="space-y-6">
+                <form hx-post="/login" hx-target="#error-msg" class="space-y-6">
                     <div>
                         <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">Identificador de Usuario</label>
                         <div class="relative">
@@ -56,7 +57,7 @@
                             <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
                             </span>
-                            <input type="password" name="password" required placeholder="••••••••" 
+                            <input type="password" name="password" required placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" 
                                    class="w-full bg-white/5 border border-white/10 p-4 pl-12 rounded-2xl outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all placeholder:text-slate-600">
                         </div>
                     </div>
@@ -67,7 +68,7 @@
                     </button>
                     
                     <div class="text-center pt-4">
-                        <a href="<?= htmlspecialchars(strval($base ?? "")) ?>/forgot-password" class="text-[10px] font-black text-slate-500 hover:text-sky-400 uppercase tracking-widest transition-colors">¿Olvidó su contraseña?</a>
+                        <a href="/forgot-password" class="text-[10px] font-black text-slate-500 hover:text-sky-400 uppercase tracking-widest transition-colors">¿Olvidó su contraseña?</a>
                     </div>
                 </form>
             </div>
@@ -77,7 +78,7 @@
         <div class="mt-10 text-center space-y-4">
             <p class="text-[10px] text-slate-600 font-bold uppercase tracking-[0.2em]">&copy; 2026 Aliso System &bull; Operaciones Estratégicas</p>
             <div class="flex justify-center gap-6 opacity-30 grayscale hover:grayscale-0 transition-all duration-700">
-                 <img src="<?= htmlspecialchars(strval($base ?? "")) ?>/static/img/logo_aliso.png" alt="Logo" class="h-4">
+                 <img src="/static/img/logo_aliso.png" alt="Logo" class="h-4">
             </div>
         </div>
     </div>
@@ -96,3 +97,5 @@
 
 </body>
 </html>
+
+<?php include BASE_PATH . 'src/Views/layout/footer.php'; ?>

@@ -12,14 +12,15 @@ class Database {
 
     public static function getConnection(): PDO {
         if (self::$connection === null) {
-            // Leer credenciales de entorno o hardcode local fallback
+            // Leer credenciales de entorno o hardcode local fallback (PostgreSQL para pruebas locales)
             $host = getenv('DB_HOST') ?: '127.0.0.1';
-            $port = getenv('DB_PORT') ?: '3306';
-            $dbname = getenv('DB_NAME') ?: 'nucleotaller';
-            $username = getenv('DB_USER') ?: 'root';
-            $password = getenv('DB_PASS') ?: '';
+            $port = getenv('DB_PORT') ?: '5432';
+            $dbname = getenv('DB_NAME') ?: 'antigravity_test';
+            $username = getenv('DB_USER') ?: 'postgres';
+            $password = getenv('DB_PASS') ?: '123456';
             
-            $dsn = "mysql:host={$host};port={$port};dbname={$dbname};charset=utf8mb4";
+            // Usamos pgsql para pruebas locales que corren sobre la DB de Python
+            $dsn = "pgsql:host={$host};port={$port};dbname={$dbname}";
             
             $options = [
                 PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,

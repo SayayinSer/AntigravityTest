@@ -1,9 +1,10 @@
+<?php include BASE_PATH . 'src/Views/layout/header.php'; ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Aliso - Gestión Profesional{% endblock %}</title>
+    <title>Aliso - Gestión Profesional</title>
     
     <!-- Scripts Base -->
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
@@ -55,7 +56,7 @@
 
         /* Inputs Unificados */
         .input-premium {
-            @apply w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition-all;
+            @apply w-full $p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition-all;
         }
 
         .label-premium {
@@ -74,7 +75,7 @@
         .htmx-request.htmx-indicator { opacity: 1; }
     </style>
     
-    {% block head %}{% endblock %}
+    
 </head>
 <body class="bg-slate-50 min-h-screen text-slate-800 font-sans flex flex-col">
 
@@ -82,9 +83,9 @@
     <nav class="bg-slate-900 text-white p-4 shadow-2xl sticky top-0 z-[100]">
         <div class="container mx-auto flex flex-col lg:flex-row justify-between items-center gap-4">
             <!-- Logo ALISO -->
-            <a href="<?= htmlspecialchars(strval($base ?? "")) ?>/" class="flex items-center gap-3 group">
-                <div class="bg-white p-1.5 rounded-xl shadow-inner group-hover:scale-105 transition-transform">
-                    <img src="<?= htmlspecialchars(strval($base ?? "")) ?>/static/img/logo_aliso.png" alt="ALISO" class="h-8 w-auto">
+            <a href="/" class="flex items-center gap-3 group">
+                <div class="bg-white $p-1.5 rounded-xl shadow-inner group-hover:scale-105 transition-transform">
+                    <img src="/static/img/logo_aliso.png" alt="ALISO" class="h-8 w-auto">
                 </div>
                 <div class="flex flex-col">
                     <span class="text-xl font-black tracking-tighter leading-none">ALISO</span>
@@ -94,39 +95,39 @@
 
             <!-- Navegación -->
             <div class="flex flex-wrap items-center justify-center gap-2">
-                <a href="<?= htmlspecialchars(strval($base ?? "")) ?>/appointments" class="px-4 py-2 rounded-xl text-xs font-bold transition-all <?php if (active_page == 'appointments'): ?>bg-sky-500 text-white<?php else: ?>hover:bg-white/10 text-slate-300<?php endif; ?> flex items-center gap-2">
-                    <span class="text-lg">📆</span> AGENDA
+                <a href="/appointments" class="px-4 py-2 rounded-xl text-xs font-bold transition-all <?php if ($active_page == 'appointments'): ?>bg-sky-500 text-white<?php else: ?>hover:bg-white/10 text-slate-300<?php endif; ?> flex items-center gap-2">
+                    <span class="text-lg">ðŸ“†</span> AGENDA
                 </a>
-                <a href="<?= htmlspecialchars(strval($base ?? "")) ?>/clients" class="px-4 py-2 rounded-xl text-xs font-bold transition-all <?php if (active_page == 'clients'): ?>bg-sky-500 text-white<?php else: ?>hover:bg-white/10 text-slate-300<?php endif; ?> flex items-center gap-2">
-                    <span class="text-lg">👥</span> CLIENTES
+                <a href="/clients" class="px-4 py-2 rounded-xl text-xs font-bold transition-all <?php if ($active_page == '$clients'): ?>bg-sky-500 text-white<?php else: ?>hover:bg-white/10 text-slate-300<?php endif; ?> flex items-center gap-2">
+                    <span class="text-lg">ðŸ‘¥</span> CLIENTES
                 </a>
-                <a href="<?= htmlspecialchars(strval($base ?? "")) ?>/vehicles" class="px-4 py-2 rounded-xl text-xs font-bold transition-all <?php if (active_page == 'vehicles'): ?>bg-sky-500 text-white<?php else: ?>hover:bg-white/10 text-slate-300<?php endif; ?> flex items-center gap-2">
-                    <span class="text-lg">🚗</span> MÓVILES
+                <a href="/vehicles" class="px-4 py-2 rounded-xl text-xs font-bold transition-all <?php if ($active_page == '$vehicles'): ?>bg-sky-500 text-white<?php else: ?>hover:bg-white/10 text-slate-300<?php endif; ?> flex items-center gap-2">
+                    <span class="text-lg">ðŸš—</span> MÓVILES
                 </a>
-                <a href="<?= htmlspecialchars(strval($base ?? "")) ?>/reports" class="px-4 py-2 rounded-xl text-xs font-bold transition-all <?php if (active_page == 'reports'): ?>bg-sky-500 text-white<?php else: ?>hover:bg-white/10 text-slate-300<?php endif; ?> flex items-center gap-2">
-                    <span class="text-lg">📊</span> REPORTES
+                <a href="/reports" class="px-4 py-2 rounded-xl text-xs font-bold transition-all <?php if ($active_page == 'reports'): ?>bg-sky-500 text-white<?php else: ?>hover:bg-white/10 text-slate-300<?php endif; ?> flex items-center gap-2">
+                    <span class="text-lg">ðŸ“Š</span> REPORTES
                 </a>
-                <a href="<?= htmlspecialchars(strval($base ?? "")) ?>/admin" class="px-4 py-2 rounded-xl text-xs font-bold transition-all <?php if (active_page == 'admin'): ?>bg-sky-500 text-white<?php else: ?>hover:bg-white/10 text-slate-300<?php endif; ?> flex items-center gap-2 text-slate-400">
-                    <span class="text-lg">🛠️</span> TABLAS
+                <a href="/admin" class="px-4 py-2 rounded-xl text-xs font-bold transition-all <?php if ($active_page == 'admin'): ?>bg-sky-500 text-white<?php else: ?>hover:bg-white/10 text-slate-300<?php endif; ?> flex items-center gap-2 text-slate-400">
+                    <span class="text-lg">ðŸ› ï¸</span> TABLAS
                 </a>
 
-                <?php if (in_array(user and 'OficialSeguridad', user.roles|map(attribute='name') ?? [])): ?>
-                <a href="<?= htmlspecialchars(strval($base ?? "")) ?>/admin/security" class="px-4 py-2 rounded-xl text-xs font-black shadow-lg transition-all flex items-center gap-2 <?php if (active_page == 'security'): ?>bg-amber-500 text-amber-950 scale-105 ring-2 ring-amber-300<?php else: ?>bg-amber-600/20 text-amber-500 hover:bg-amber-500 hover:text-amber-950<?php endif; ?>">
-                    🔒 SEGURIDAD
+                <?php if (in_array('OficialSeguridad', $user->roles ?? [])): ?>
+                <a href="/admin/security" class="px-4 py-2 rounded-xl text-xs font-black shadow-lg transition-all flex items-center gap-2 <?php if ($active_page == 'security'): ?>bg-amber-500 text-amber-950 scale-105 ring-2 ring-amber-300<?php else: ?>bg-amber-600/20 text-amber-500 hover:bg-amber-500 hover:text-amber-950<?php endif; ?>">
+                    ðŸ”’ SEGURIDAD
                 </a>
                 <?php endif; ?>
 
                 <div class="w-px h-6 bg-white/20 mx-2 hidden lg:block"></div>
 
                 <!-- Perfil / Salir -->
-                <?php if (user): ?>
+                <?php if ($user): ?>
                 <div class="flex items-center gap-3 bg-white/5 pl-2 pr-4 py-1 rounded-full border border-white/10">
                     <div class="w-8 h-8 bg-sky-500 text-white rounded-full flex items-center justify-center text-xs font-black shadow-lg"><?= htmlspecialchars(strval($user->username[0] ?? "")) ?></div>
                     <div class="flex flex-col">
                         <span class="text-[9px] font-black uppercase tracking-wider text-slate-400">Operador</span>
                         <span class="text-[11px] font-bold"><?= htmlspecialchars(strval($user->username ?? "")) ?></span>
                     </div>
-                    <a href="<?= htmlspecialchars(strval($base ?? "")) ?>/logout" class="ml-2 text-slate-400 hover:text-red-400 transition-colors" title="Cerrar Sesión">
+                    <a href="/logout" class="ml-2 text-slate-400 hover:text-red-400 transition-colors" title="Cerrar Sesión">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                         </svg>
@@ -142,14 +143,14 @@
 
     <!-- Contenido Principal -->
     <main class="container mx-auto py-8 px-4 flex-grow">
-        {% block content %}{% endblock %}
+        
     </main>
 
     <!-- Footer Unificado -->
     <footer class="py-12 border-t border-slate-200 bg-white">
         <div class="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-6">
             <div class="flex items-center gap-3 opacity-50">
-                <img src="<?= htmlspecialchars(strval($base ?? "")) ?>/static/img/logo_aliso.png" alt="ALISO" class="h-6 grayscale">
+                <img src="/static/img/logo_aliso.png" alt="ALISO" class="h-6 grayscale">
                 <span class="text-[10px] font-bold tracking-[0.3em] uppercase">Aliso Workflow Engine</span>
             </div>
             <div class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">
@@ -161,7 +162,9 @@
         </div>
     </footer>
 
-    {% block scripts %}{% endblock %}
+    
 
 </body>
 </html>
+
+<?php include BASE_PATH . 'src/Views/layout/footer.php'; ?>

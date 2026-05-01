@@ -16,27 +16,36 @@
                 </td>
                 <td class="py-5 px-2 font-medium text-slate-500 text-xs">
                     <div class="flex items-center gap-2">
-                         <div class="w-1.5 h-1.5 rounded-full bg-emerald-400"></div>
-                        <?= htmlspecialchars(strval($task->technician->name ?? "")) ?>
+                         <?= htmlspecialchars(strval($task->technician_name ?? "Sin asignar")) ?>
                     </div>
                 </td>
                 <td class="py-5 px-2 text-center font-mono text-xs font-black text-slate-400">
                     <?= htmlspecialchars(strval($task->duration_minutes ?? "")) ?> MIN
                 </td>
                 <td class="py-5 px-2 text-right">
-                    <?php if (not $is_closed): ?>
-                    <button hx-delete="<?= htmlspecialchars(strval($base ?? "")) ?>/task/<?= htmlspecialchars(strval($task->id ?? "")) ?>" 
+                    <?php if (!$is_closed): ?>
+                    <button hx-delete="/task/<?= htmlspecialchars(strval($task->id ?? "")) ?>" 
                             hx-confirm="¿Eliminar esta tarea permanente?"
                             hx-target="closest tr" 
                             hx-swap="outerHTML"
-                            class="opacity-0 group-hover:opacity-100 p-2 text-slate-300 hover:text-red-500 transition-all active:scale-90">
+                            class="opacity-0 group-hover:opacity-100 $p-2 text-slate-300 hover:text-red-500 transition-all active:scale-90">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12" /></svg>
                     </button>
                     <?php endif; ?>
                 </td>
             </tr>
             <?php endforeach; ?>
-            <?php if (not tasks): ?>
+            <?php 
+                $total_min = 0;
+                foreach ($tasks ?? [] as $task) { $total_min += (int)$task->duration_minutes; }
+            ?>
+            <?php if ($tasks): ?>
+            <tr class="bg-slate-50/30">
+                <td colspan="2" class="py-4 px-2 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">Tiempo Total Acumulado:</td>
+                <td class="py-4 px-2 text-center font-mono text-sm font-black text-emerald-600"><?= $total_min ?> MIN</td>
+                <td></td>
+            </tr>
+            <?php else: ?>
             <tr>
                 <td colspan="4" class="py-12 text-center text-slate-300 italic font-medium text-sm">No se registran tareas técnicas aún.</td>
             </tr>
@@ -44,3 +53,4 @@
         </tbody>
     </table>
 </div>
+

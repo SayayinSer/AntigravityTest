@@ -62,6 +62,7 @@ CREATE TABLE IF NOT EXISTS `vehicles` (
   `last_owner` VARCHAR(150),
   `last_service_date` DATETIME,
   `next_service_suggestion` DATETIME,
+  `owner_id` INT,
   `photo_url` VARCHAR(255) DEFAULT '/static/img/default_vehicle.png',
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -69,6 +70,7 @@ CREATE TABLE IF NOT EXISTS `vehicles` (
   `updated_by` INT,
   FOREIGN KEY (`brand_id`) REFERENCES `brands`(`id`) ON DELETE RESTRICT,
   FOREIGN KEY (`type_id`) REFERENCES `vehicle_types`(`id`) ON DELETE RESTRICT,
+  FOREIGN KEY (`owner_id`) REFERENCES `owners`(`id`) ON DELETE SET NULL,
   FOREIGN KEY (`created_by`) REFERENCES `users`(`id`) ON DELETE SET NULL,
   FOREIGN KEY (`updated_by`) REFERENCES `users`(`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

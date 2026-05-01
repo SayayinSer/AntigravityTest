@@ -20,7 +20,7 @@
             </button>
         </div>
 
-        <form hx-post="<?= htmlspecialchars(strval($base ?? "")) ?>/appointments/save" class="p-10 space-y-8" x-data="{ autoFilled: false }">
+        <form hx-post="/appointments/save" class="p-10 space-y-8" x-data="{ autoFilled: false }">
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
                 <!-- Información del Cliente -->
@@ -30,10 +30,10 @@
                     <div>
                         <label class="label-premium">Email (Búsqueda por Historial)</label>
                         <input type="email" name="client_email" id="client_email" required 
-                               hx-get="<?= htmlspecialchars(strval($base ?? "")) ?>/appointments/api/check-client"
-                               hx-trigger="blur changed delay:500ms"
-                               hx-target="#autofiller"
-                               class="input-premium bg-sky-50/30 border-sky-100 focus:ring-sky-500">
+                                hx-get="/appointments/api/check-client"
+                                hx-trigger="blur changed delay:500ms"
+                                hx-target="#autofiller"
+                                class="input-premium bg-sky-50/30 border-sky-100 focus:ring-sky-500">
                         <div id="autofiller" class="hidden"></div>
                     </div>
 
@@ -56,7 +56,7 @@
                     <div class="grid grid-cols-2 gap-4">
                         <div>
                             <label class="label-premium">Fecha</label>
-                            <input type="date" name="scheduled_date" required min="<?= htmlspecialchars(strval($today_date ?? "")) ?>" class="input-premium text-xs">
+                            <input type="date" name="scheduled_date" required min="<?= $today_date ?? '' ?>" class="input-premium text-xs">
                         </div>
                         <div>
                             <label class="label-premium">Hora</label>
@@ -77,10 +77,10 @@
                         </div>
                         
                         <div x-show="linkType === 'existente'" x-transition>
-                            <select name="vehicle_id" class="input-premium py-2.5 text-xs">
+                            <select name="vehicle_id" id="vehicle_id" class="input-premium py-2.5 text-xs">
                                 <option value="">Seleccione móvil...</option>
                                 <?php foreach ($vehicles ?? [] as $v): ?>
-                                <option value="<?= htmlspecialchars(strval($v->id ?? "")) ?>"><?= htmlspecialchars(strval($v->plate ?? "")) ?> - <?= htmlspecialchars(strval($v->brand->name ?? "")) ?></option>
+                                <option value="<?= $v->id ?>"><?= $v->plate ?> - <?= $v->brand->name ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -114,13 +114,28 @@
                 if (response.found) {
                     document.getElementById('client_name').value = response.name;
                     document.getElementById('client_phone').value = response.phone;
+                    
+                    // Populate vehicles
+                    const vehicleSelect = document.getElementById('vehicle_id');
+                    if (vehicleSelect && response.vehicles) {
+                        vehicleSelect.innerHTML = '<option value="">Seleccione móvil...</option>';
+                        response.vehicles.forEach(v => {
+                            const opt = document.createElement('option');
+                            opt.value = v.id;
+                            opt.textContent = `${v.plate} - ${v.brand_name}`;
+                            vehicleSelect.appendChild(opt);
+                        });
+                    }
+
                     const inputs = [document.getElementById('client_name'), document.getElementById('client_phone')];
                     inputs.forEach(el => {
                         el.classList.add('ring-2', 'ring-emerald-400', 'bg-emerald-50/30');
                         setTimeout(() => el.classList.remove('ring-2', 'ring-emerald-400', 'bg-emerald-50/30'), 1500);
                     });
                 }
-            } catch (e) {}
+            } catch (e) {
+                console.error('Error parsing client data:', e);
+            }
         }
     });
 </script>

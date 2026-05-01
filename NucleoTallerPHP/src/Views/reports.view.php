@@ -1,12 +1,13 @@
-{% extends "base.html" %}
+<?php include BASE_PATH . 'src/Views/layout/header.php'; ?>
 
-{% block title %}Reportes de Gestión - Aliso Workflow{% endblock %}
 
-{% block head %}
+Reportes de Gestión - Aliso Workflow
+
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-{% endblock %}
 
-{% block content %}
+
+
 <div class="space-y-10">
     
     <div class="flex flex-col md:flex-row justify-between items-center gap-6 mb-10">
@@ -26,7 +27,7 @@
             Parámetros del Reporte
         </h3>
         
-        <form hx-post="<?= htmlspecialchars(strval($base ?? "")) ?>/reports/generate" hx-target="#report-results" hx-indicator="#loading-report" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <form hx-post="/reports/generate" hx-target="#report-results" hx-indicator="#loading-report" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <div>
                 <label class="label-premium">Fecha Inicio</label>
                 <input type="date" name="start_date" required class="input-premium">
@@ -79,4 +80,6 @@
     </div>
 
 </div>
-{% endblock %}
+
+
+<?php include BASE_PATH . 'src/Views/layout/footer.php'; ?>
