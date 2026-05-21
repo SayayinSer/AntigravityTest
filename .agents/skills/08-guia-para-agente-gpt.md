@@ -1,0 +1,1103 @@
+# 08 - Guia para Agente GPT
+
+## Papel do documento
+operacional
+
+## Nivel de confianca predominante
+medio
+
+## Depende de
+00-indice-da-base-genexus-xpz-xml.md, 01-base-empirica-geral.md, 02-regras-operacionais-e-runtime.md, 03-risco-e-decisao-por-tipo.md, 04-webpanel-familias-e-templates.md, 05-transaction-familias-e-templates.md, 05b-procedure-relatorio-familias-e-templates.md
+
+## Usado por
+qualquer GPT que precise consumir esta base consolidada
+
+## Objetivo
+Explicar como outro agente GPT deve consultar esta base, classificar evidencias e decidir entre gerar, exigir molde proximo ou abortar.
+
+## Fontes consolidadas
+- 26-guia-para-agente-gpt.md
+
+## Origem incorporada - 26-guia-para-agente-gpt.md
+
+## Papel do documento
+operacional
+
+## Nível de confiança predominante
+médio
+
+## Depende de
+00-indice-da-base-genexus-xpz-xml.md, 01-base-empirica-geral.md, 02-regras-operacionais-e-runtime.md, 03-risco-e-decisao-por-tipo.md, 22-tipos-prontos-para-geracao-conservadora.md, 03-risco-e-decisao-por-tipo.md, 02-regras-operacionais-e-runtime.md
+
+## Usado por
+qualquer agente GPT que precise responder perguntas ou tomar decisão operacional usando esta base
+
+## Objetivo
+Explicar como um agente GPT deve consultar esta base documental e como responder com prudência.
+Padronizar quando avançar, quando exigir molde bruto comparável e quando abortar.
+
+## Ordem de consulta recomendada
+
+1. ler `00-indice-da-base-genexus-xpz-xml.md`
+2. ler `02-regras-operacionais-e-runtime.md`
+3. identificar o tipo alvo e checar `03-risco-e-decisao-por-tipo.md`
+4. usar `01-base-empirica-geral.md` como indice mestre da serie `01` e abrir o filho empirico mais aderente (`01a` a `01h`)
+5. para `WebPanel`, ler `04-webpanel-familias-e-templates.md`
+6. para `Transaction`, ler `05-transaction-familias-e-templates.md`
+7. para `Procedure` de relatorio (nome com prefixo de relatorio no acervo), ler `05b-procedure-relatorio-familias-e-templates.md`
+8. ler `07-open-points-e-checklist.md` quando a resposta depender de limites conhecidos, pendencias metodologicas ou frentes ainda abertas
+9. usar `09-inventario-e-rastreabilidade-publica.md` para sustentar rastreabilidade
+
+`06-padroes-de-objeto-e-nomenclatura.md`: leitura suplementar — indicado quando a duvida envolver nomenclatura de objetos, prefixos de tipo ou comportamento de `Folder` vs `Module` no `fullyQualifiedName`.
+
+### Fluxo curto para `Procedure` de relatorio simples
+
+1. classificar primeiro se o caso cabe em familia simples `F2` ou `F3`
+2. se couber, partir de `05b-procedure-relatorio-familias-e-templates.md` como molde sanitizado canonico primario
+3. separar explicitamente `Source`, `Rules` e layout antes de editar ou diagnosticar
+4. tentar no maximo um corretivo estrutural curto se a primeira montagem falhar
+5. escalar para XML real comparavel apenas se o caso fugir da cobertura simples, se a tentativa inicial mais esse unico corretivo curto falharem, ou se aparecer sinal de dialeto/localismo da KB
+6. registrar no handoff qual base esta sustentando a resposta: `molde sanitizado`, `XML real da KB atual`, `XML real de outra KB` ou `hipotese`
+
+## Escada de recursos para KBs pequenas ou novas
+
+Quando a KB alvo for pequena ou nova e nao houver XML local comparavel disponivel, o agente deve seguir esta escada em ordem:
+
+1. **`nexa` + moldes sanitizados desta base** — tentar direto, sem perguntar ao usuario; declarar qual molde foi usado.
+2. **Tentativa sem compromisso** — o agente tenta com base em padrao inferido ou em evidencia de KB externa inspecionada; declarar explicitamente a fonte e o nivel de confianca; se a probabilidade de acerto for avaliada como alta, apenas avisar; se for baixa, apresentar as opcoes ao usuario e aguardar decisao antes de gerar; em ambos os casos, exigir validacao na IDE antes de importar.
+3. **Pasta paralela de KB externa** — usuario indica uma pasta paralela de outra KB com `ObjetosDaKbEmXml/`; agente inspeciona o XML real dessa KB como fonte antes de gerar; registrar no handoff como `XML real de KB externa inspecionada`.
+4. **Usuario cria exemplo na KB e exporta XPZ** — usuario cria o objeto na IDE, exporta o `.xpz` e o oferece ao agente; agente estuda o XPZ exportado como evidencia direta primaria antes de gerar qualquer clone ou variacao.
+
+Regras da escada:
+- Nunca pular do nivel 1 para o 3 ou 4 sem tentar o nivel 2 quando o caso for plausivel pelo padrao empírico desta base.
+- Em qualquer nivel, registrar no handoff qual base sustenta a resposta: `molde sanitizado`, `XML real da KB atual`, `XML real de KB externa inspecionada` ou `hipotese`.
+- A opcao 4 e a mais confiavel quando nenhuma das tres anteriores for suficiente — o proprio GeneXus e o gerador do molde canonico.
+
+## Regra de precedencia sobre skills gerais
+
+- quando a tarefa for de `XML`/`XPZ` nesta base, os `.md` locais da pasta do projeto tem precedencia sobre heuristicas gerais de skill
+- isso nao revoga a postura conservadora do skill `nexa`; apenas define que a evidencia local consolidada nesta base e a fonte mais especifica desta trilha
+- se houver tensao entre fluxo GeneXus geral do skill e achado empirico local desta base, o agente deve seguir a base local para decisao de `XPZ`/`XML` e manter do skill apenas a disciplina metodologica
+- quando a base compartilhar uma capacidade operacional nova, isso nao autoriza presumir que wrappers locais da pasta paralela da KB ja a exponham; a exposicao local e decisao separada
+- se o wrapper local ainda nao expuser um parametro operacional relevante ja disponivel na base compartilhada, o agente deve tratar isso como oportunidade de atualizacao local, mencionar ao usuario e aguardar aprovacao explicita; nao deve executar a mudanca local automaticamente
+- a superficie do wrapper local tambem pode ficar temporariamente a frente, atras ou levemente desalinhada em relacao ao motor compartilhado efetivo daquela pasta paralela; quando a falha atingir apenas capability opcional de conferencia/comparacao, o agente deve reconhecer a divergencia wrapper/engine, rerodar sem o opcional, registrar o incidente e nao promover isso automaticamente a bloqueio do sync principal
+- essa tolerancia vale apenas para capability opcional isolada; se a falha atingir materializacao, contrato principal do wrapper, refresh obrigatorio do indice ou outra etapa central do fluxo oficial, continua sendo bloqueio operacional real
+- exemplos sanitizados `.example.ps1` publicados pelas skills podem servir como referencia metodologica para reconstruir wrappers locais finais, mas nao substituem o wrapper local real nem autorizam fallback automatico de execucao no fluxo normal
+- quando wrappers locais precisarem nascer do zero no setup inicial da pasta paralela da KB, preferir adaptar os exemplos sanitizados completos da base como bootstrap tecnico, em vez de improvisar wrappers curtos ou parciais
+- scripts do motor com parâmetros totalmente dinâmicos por execução (ex: `Test-GeneXusImportFileEnvelope.ps1`) não requerem wrapper local — devem ser chamados diretamente pelo caminho absoluto do motor; wrapper local só se justifica quando há parâmetros estáticos da KB a encapsular
+- scripts publicos desta raiz devem ser executados em `pwsh` com PowerShell 7.4 LTS ou superior; preferir a versao LTS mais recente disponivel; nao usar Windows PowerShell 5.1 (`powershell.exe`) como runtime desses scripts
+- validar parse de scripts PowerShell com `scripts/Test-PsScriptsParse.ps1` quando a frente editar `.ps1` ou `.example.ps1`; o workflow `.github/workflows/parse-ps-scripts.yml` executa a mesma verificacao em CI sob `pwsh` 7.4+
+- em `xpz-kb-parallel-setup`, validar `Test-*KbPowerShellRuntime.ps1` antes de qualquer outro wrapper local; se `pwsh` 7.4 LTS ou superior estiver ausente, tratar como bloqueio operacional da pasta paralela, nao como aviso informativo
+- quando a sessao ja publicar o caminho de uma skill ou de seus exemplos, usar esse caminho publicado como referencia autoritativa; nao inferir caminho alternativo por heuristica
+
+## Regra de leitura para runtime
+
+- quando a pergunta envolver `Base Table`, `Extended Table`, navegacao, `For each`, `Load`, `Refresh`, `Refresh Grid` ou risco de performance, consultar primeiro `02-regras-operacionais-e-runtime.md`
+- quando a pergunta envolver apenas estrutura XML observada, priorizar `01-base-empirica-geral.md` como indice e descer ao arquivo empirico mais aderente da serie `01`
+- quando a pergunta misturar estrutura e comportamento provavel, responder separando explicitamente `Evidência direta`, `Regra documentada`, `Inferência forte` e `Hipótese`
+- quando a pergunta envolver `sync` ou wrappers locais da pasta paralela da KB, distinguir explicitamente:
+  - capacidade ja disponivel na base compartilhada
+  - exposicao dessa capacidade no wrapper local
+  - compatibilidade real dessa exposicao com o motor compartilhado efetivo
+  - decisao local do usuario/equipe sobre atualizar ou nao o wrapper
+
+## Regra de leitura para baseline oficial conhecido
+
+- quando a pergunta envolver review, sanity, regressao, defeito herdado ou qualidade de delta em objeto legado, separar explicitamente `sanity absoluto do artefato atual` de `comparacao contra baseline oficial`
+- responder primeiro o `sanity absoluto` e so depois, se houver baseline oficial confiavel, responder a comparacao
+- usar como baseline apenas fonte oficial e rastreavel da trilha, como snapshot oficial em `ObjetosDaKbEmXml` ou export oficial comparavel da IDE; nao usar copia provisoria, delta local ou XML contaminado como baseline
+- rotular a comparacao com exatamente um destes estados: `same as official baseline`, `worse than official baseline`, `better than official baseline` ou `no official baseline compared`
+- nunca tratar `same as official baseline` como sinonimo de `bom`; isso prova apenas ausencia de piora relevante naquela dimensao comparada
+- se o artefato atual falhar em `sanity absoluto`, manter a reprovacao mesmo quando a comparacao indicar `same as official baseline` ou `better than official baseline`
+- quando o problema ja existia no baseline oficial e o delta nao piorou, descrever como risco ou defeito herdado, nao como regressao introduzida agora
+- antes de concluir `worse than official baseline`, filtrar primeiro ruido conhecido e nao funcional ja documentado pela trilha
+- se nao houver baseline oficial confiavel ou se ele nao tiver sido realmente aberto, usar `no official baseline compared` em vez de inferir comparacao por memoria, plausibilidade ou recencia
+- em revisao por blocos, comparar primeiro o `bloco primario` tocado pelo delta e so expandir para bloco adjacente quando a dependencia funcional exigir
+
+## Regra de leitura para campos derivados
+
+- nome de atributo calculado ou derivado nao prova semantica funcional
+- quando filtro, regra de negocio ou interpretacao depender de campo derivado, a formula e a cadeia imediata de chamadas prevalecem sobre nome, caption ou intuicao
+- filtro de negocio sobre campo derivado exige validar a formula antes da proposta
+- se a formula chamar `Procedure`, a leitura deve seguir pelo menos a cadeia imediata necessaria para justificar o significado funcional do campo
+
+## Regra de uso do KB Intelligence
+
+- quando o objetivo principal for triagem por indice derivado para decidir por onde comecar na KB, preferir a skill `xpz-index-triage`
+- quando uma pasta paralela de KB expuser `KbIntelligence\kb-intelligence.sqlite`, o agente deve usar o indice para triagem tecnica antes de alterar objetos GeneXus cobertos pelo indice
+- antes de confiar no indice, comparar `last_index_build_run_at` na tabela `metadata` do SQLite com `last_xpz_materialization_run_at` lido nominalmente em `kb-source-metadata.md` e exigir tambem `inventory_validation_status=OK`
+- quando o wrapper local expuser `index-metadata`, usar essa consulta para obter `last_index_build_run_at` e `inventory_validation_status`; se ela falhar, retornar vazio, nao trouxer timestamp ou nao trouxer o status semantico, tratar o indice como sem metadado valido e oferecer regeneracao/validacao antes de seguir
+- se `kb-source-metadata.md` estiver ausente ou nao expuser literalmente `last_xpz_materialization_run_at`, tratar a pasta paralela como defasada/incompatível e oferecer atualizacao via `xpz-kb-parallel-setup`; nao inferir esse horario por data do arquivo, `updated`, `generated_at`, `source_xpz` ou outro campo aproximado
+- se `last_index_build_run_at` for igual ou posterior a `last_xpz_materialization_run_at` e `inventory_validation_status` estiver `OK`, o indice esta apto para triagem inicial
+- se `AGENTS.md` ou `README.md` locais declararem timestamps, estado operacional ou observacoes de frescor, comparar esses campos com `kb-source-metadata.md`, com `index-metadata` e com o gate efetivo; se houver drift, tratar isso como memoria local desatualizada da pasta paralela e nao como detalhe irrelevante
+- quando a validacao de frescor/compatibilidade tiver sido relevante para liberar ou bloquear a resposta, declarar brevemente no handoff se o gate foi liberado (`last_index_build_run_at >= last_xpz_materialization_run_at` e `inventory_validation_status=OK`) ou qual campo/capacidade bloqueou
+- todo processamento bem-sucedido de `XPZ` exportado pela IDE que materialize XMLs oficiais em `ObjetosDaKbEmXml` deve chamar a regeneracao/validacao do indice derivado logo depois
+- antes de sugerir ou executar `sync` normal em pasta que adota `KbIntelligence`, o agente deve ter evidencia clara, na documentacao local ou no proprio wrapper local, de que o wrapper de materializacao encadeia esse refresh compulsorio do indice
+- na ausencia dessa evidencia clara, tratar a pasta paralela como compatibilidade pendente e oferecer atualizacao via `xpz-kb-parallel-setup` antes do `sync`
+- se o wrapper local de materializacao ainda nao encadear esse refresh, nao usar esse wrapper antigo para reparar metadado e regenerar indice manualmente; bloquear e oferecer atualizacao via `xpz-kb-parallel-setup`
+- nao descrever `sync` seguido de rebuild manual separado do indice como fluxo normal quando a pasta paralela adotar `KbIntelligence`
+- se o indice estiver ausente, sem metadado, mais antigo que a ultima materializacao XPZ/XML, com `inventory_validation_status` ausente ou diferente de `OK`, ou se `kb-source-metadata.md` estiver ausente, o agente nao deve consultar o acervo oficial de objetos para responder negocio, nem por varredura ampla nem por caminho pontual deduzido, nem gerar objetos para importacao na KB pela IDE; deve tratar isso como excecao operacional e oferecer ao usuario a regeneracao/validacao do indice antes de seguir
+- com gate de indice bloqueado, leitura pontual so e aceitavel para diagnostico minimo da incompatibilidade em documentacao local, estrutura, wrappers e metadados operacionais; nao montar, testar existencia, listar ou abrir caminho de XML oficial de objeto como fallback para responder a pergunta
+- o gate do indice deve ser sequencial e atomico; nao testar caminho filho antes da camada pai, por exemplo `KbIntelligence\kb-intelligence.sqlite` antes de `KbIntelligence`
+- se o wrapper local documentado de consulta do indice estiver ausente, nao listar `scripts` nem procurar wrappers alternativos, backups ou nomes parecidos; tratar como defasagem da pasta paralela e oferecer atualizacao via setup
+- a triagem operacional deve consultar `object-info`, `who-uses`, `what-uses` e `show-evidence`, ou `impact-basic` quando esse comando estiver disponivel
+- `impact-basic` e a triagem equivalente representam impacto tecnico direto baseado no indice; nao provam impacto runtime completo
+- `functional-trace-basic`, quando disponivel, pode empacotar a coleta inicial de triagem funcional, mas nao abre XML automaticamente, nao interpreta regra de negocio e nao substitui a resposta classificada do agente
+- o indice nao substitui `ObjetosDaKbEmXml`, que continua sendo a fonte normativa e somente leitura
+- se a mudanca exigir semantica GeneXus, o agente deve abrir o XML oficial e revisar o trecho relevante antes de concluir
+- quando a pergunta for funcional, o agente deve usar o indice apenas para orientar a ordem de leitura, separando explicitamente `Evidencia direta`, `Leitura adicional do XML`, `Inferencia forte` e `Hipotese`
+- ao validar artefatos do KB Intelligence, escolher o executor pelo formato do caso, nao pelo nome da fase:
+  - casos com `source`, `target` e `expected_rule` pertencem a validacao de extracao/geracao e devem rodar com `Build-KbIntelligenceIndex.ps1 -ValidationCasesPath`
+  - casos com `query` pertencem a validacao de consulta e devem rodar com `Test-KbIntelligenceQueries.ps1 -ValidationCasesPath`
+- se um caso de relacao com `expected_rule` for enviado ao validador de consultas, tratar o erro como uso de executor incompatível antes de concluir regressao real
+
+## Regra de triagem exploratoria
+
+- quando a frente exigir decidir se existe massa suficiente para abrir novo incremento, priorizar triagem exploratoria curta e auditavel antes de propor alteracao metodologica ou de codigo
+- em Windows, preferir consultas pequenas e separadas no PowerShell, em vez de one-liner longo com muitas interpolacoes, regexes e transformacoes na mesma linha
+- a ordem recomendada e: contagem bruta, agrupamento por sinal relevante, amostra curta de casos reais positivos e negativos
+- nao propor novo incremento apenas por ocorrencia textual bruta; confirmar antes se o padrao observado tem resolucao estrutural segura no acervo
+- quando a consulta falhar por sintaxe ou ficar ruidosa demais para leitura direta, simplificar a abordagem e refazer em etapas menores
+- quando a hipotese depender de fechar regra nova, contrato novo ou ampliacao metodologica, extrair antes casos reais positivos e negativos do acervo; contagem sozinha nao basta para sustentar decisao
+- quando busca, agrupamento ou regex retornarem zero de forma inesperada, validar primeiro uma ocorrencia real do XML no acervo antes de concluir ausencia de sinal ou trocar a hipotese
+
+## Regra de leitura para compatibilidade de `Source`
+
+- `Source` que parece GeneXus valido nao prova compatibilidade operacional
+- operador, funcao, conversao ou padrao string/numerico novo so pode ser aceito como pronto quando a propria trilha XPZ o sustentar por regra explicita, exemplo sanitizado ou molde documentado
+- corpus local da KB ajuda a confirmar e desempatar, mas nao substitui a base metodologica
+- se um trecho essencial do `Source` continuar sustentado apenas por plausibilidade, o agente deve reescrever para padrao documentado ou abortar a consolidacao
+- antes de empacotar, separar explicitamente duas decisoes: `XML bem-formado` e `objeto provavelmente importavel`
+- `XML bem-formado` nao dispensa gate de sanidade do `Source` quando o objeto depende de `Source` para importar com seguranca conservadora
+- o gate minimo de sanidade do `Source` deve revisar os pares estruturais realmente tocados pela mudanca, como `Sub/EndSub`, `For each/EndFor`, `Do Case/EndCase` e `If/EndIf`
+- se a mudanca inserir novo `Case` em um `Do Case` de `Source` que dependa materialmente de `parm(...)`, revisar os `Case` irmaos do mesmo bloco antes de concluir a compatibilidade
+- nessa revisao de `Do Case`, conferir se os parametros de entrada relevantes, esperados pelo padrao local do bloco, aparecem de forma coerente no novo ramo; ausencia de parametro comparavelmente esperado exige justificativa explicita
+- se o novo `Case` divergir do padrao local dos ramos irmaos sem justificativa explicita, bloquear a consolidacao em vez de aceitar branch hardcoded ou sustentado apenas por analogia fraca
+- se o trecho novo introduzir `elseif`, `iif(...)`, condicao excessivamente densa ou chamada em condicao destoando do estilo local, tratar isso como alerta consultivo e preferir reescrita para forma conservadora documentada
+- quando houver cheque automatizado leve de `Source`, interpretar o resultado de forma conservadora:
+- `xmlWellFormed=false` bloqueia qualquer conversa de empacotamento ate correcao do XML
+- `sourceSanityStatus=fail` bloqueia empacotamento ate corrigir balanceamento estrutural e fechamentos
+- `sourceSanityStatus=warn` com `probablyImportable=true` ainda exige revisao dos warnings; nao tratar como liberacao automatica
+- `sourceSanityStatus=pass` com `xmlWellFormed=true` libera apenas o proximo gate metodologico; nao prova importacao, especificacao nem build
+- ao revisar `Source` grande, a leitura deve considerar o contorno visual do bloco afetado, e comentarios estruturais humanos ja existentes podem ser preservados quando ajudam a navegacao do trecho
+- em `Procedure Source`, pares como `count/then-copy`, `exists/then-load`, `validate/then-apply` e `select-candidate/then-materialize` devem ser revisados como unidade logica quando compartilham a mesma tabela/base e identidade candidata
+- se a mudanca altera filtros de identidade, unicidade ou ambiguidade em um `for each`, buscar queries irmas no mesmo `Source` e reconciliar os criterios ou justificar explicitamente a divergencia
+- ao citar uma linha de XML GeneXus, classificar o trecho como `Source efetivo`, `Rules/parm`, `metadado XML`, `chamada no chamador` ou `assinatura no chamado`
+- para afirmar que uma `Procedure` A chama uma `Procedure` B, a evidencia deve estar no `Source` efetivo de A, na linha da chamada a B; o `parm(...)` de B prova assinatura do chamado, nao ponto de chamada
+- em cadeia de chamadas, separar sempre arquivo/linha do chamador e arquivo/linha da assinatura do chamado
+
+### Regra adicional para `Procedure` de relatorio
+
+- em relatorio simples, `Source` deve ser validado junto com a camada onde cada sintoma nasceu: `Source`, `Rules` ou layout
+- `Output_file`, `Header`, `Footer`, `For each` e `print printBlock...` pertencem ao `Source`
+- `parm(...)` pertence a `Rules`
+- `Bands`, `PrintBlock`, `ReportLabel` e `ReportAttribute` pertencem ao layout `Part c414ed00-8cc4-4f44-8820-4baf93547173`
+- se o erro mencionar `;` em regra, revisar `Rules` antes de reabrir layout
+- se o erro mencionar controle invalido, `printBlock` ou shape de relatorio, revisar layout antes de inferir defeito de envelope
+- se a solucao continuar sustentada so por plausibilidade depois de uma rodada corretiva, parar e escalar para XML real comparavel
+
+### Protocolo geral de revisao por blocos
+
+- em tipos heterogeneos cobertos por esta base, declarar o `bloco primario` antes da analise fina
+- `bloco adjacente` e apenas o bloco adicional aberto por dependencia funcional explicita com o `bloco primario`
+- nomear toda `transicao justificada` no raciocinio e no handoff
+- usar como `criterio de parada` o ponto em que a hipotese ja estiver sustentada; nao reabrir o objeto inteiro por reflexo
+- declarar o `escopo da conclusao` no menor nivel funcional que a evidencia sustenta; quando houver mais de um contexto de execucao relevante, explicitar tambem esse contexto
+
+### Regra adicional para revisao de `Procedure`
+
+- em `Procedure`, revisar por blocos funcionais; nao presumir `Source` como bloco inicial universal
+- os blocos canonicos sao `Source`, `Rules/parm`, `Variables`, `Calls and dependencies`, `Identity and container` e, quando aplicavel, `Report layout`
+- antes da analise fina, declarar qual e o bloco primario do sintoma atual
+- abrir bloco adjacente apenas quando houver dependencia funcional explicita com o bloco primario
+- nomear a transicao de bloco no raciocinio e no handoff, por exemplo: `Rules/parm -> Variables` para validar contrato de parametros
+- parar a expansao quando a hipotese ja estiver sustentada; nao reabrir a `Procedure` inteira por reflexo
+- usar `Source` como bloco inicial para filtros, fluxo procedural, navegacao, atribuicoes, condicoes e chamadas feitas no corpo
+- usar `Rules/parm` como bloco inicial para assinatura, parametros, direcao do contrato e erro claramente ligado a regra
+- usar `Variables` como bloco inicial para existencia, tipo, helper novo, coerencia de nome e colecao vs simples
+- usar `Calls and dependencies` como bloco inicial para cadeia de chamadas, objeto chamado, dependencia externa e prova de call site
+- usar `Identity and container` como bloco inicial para `parent`, `module`, `fullyQualifiedName`, origem estrutural e risco de clonagem
+- usar `Report layout` como bloco inicial apenas em `Procedure` de relatorio quando o sintoma falar de `PrintBlock`, `ReportLabel`, `ReportAttribute`, `Bands` ou shape de layout
+
+### Regra adicional para revisao de `DataProvider`
+
+- em `DataProvider`, revisar por blocos funcionais; nao presumir `Source` como bloco inicial universal
+- os blocos canonicos sao `Output structure`, `Source`, `Navigation context`, `Calls and dependencies` e `Identity and container`
+- antes da analise fina, declarar qual e o bloco primario do sintoma atual
+- abrir bloco adjacente apenas quando houver dependencia funcional explicita com o bloco primario
+- nomear a transicao de bloco no raciocinio e no handoff, por exemplo: `Output structure -> Source` para reconciliar shape prometido com montagem real
+- parar a expansao quando a hipotese ja estiver sustentada; nao reabrir o `DataProvider` inteiro por reflexo
+- usar `Output structure` como bloco inicial para colecao vs simples, grupo aninhado, nome de no, cardinalidade, coerencia do retorno e shape prometido
+- usar `Source` como bloco inicial para condicao, atribuicao, montagem, calculo, preenchimento e fluxo interno
+- usar `Navigation context` como bloco inicial para base implicita, `For each`, filtro, tabela base e ambiguidade de navegacao
+- usar `Calls and dependencies` como bloco inicial para `SDT`, `Procedure`, `BC`, `Transaction` e dependencia externa imediata
+- usar `Identity and container` como bloco inicial para `parent`, `module`, `fullyQualifiedName`, origem estrutural e risco de clonagem
+
+### Regra adicional para revisao de `DataSelector`
+
+- em `DataSelector`, revisar por blocos funcionais; nao tratar XML pequeno como leitura simples quando a pergunta for de filtro, parametro, selecao, funcao ou diagnostico fino
+- os blocos canonicos sao `Selection contract`, `Selection logic and conditions`, `Attribute and function dependencies`, `Navigation context` e `Identity and container`
+- antes da analise fina, declarar qual e o bloco primario do sintoma atual
+- abrir bloco adjacente apenas quando houver dependencia funcional explicita com o bloco primario
+- nomear a transicao de bloco no raciocinio e no handoff, por exemplo: `Selection logic and conditions -> Attribute and function dependencies` para confirmar se a referencia usada no filtro existe de verdade na KB
+- parar a expansao quando a hipotese ja estiver sustentada; nao reabrir o `DataSelector` inteiro por reflexo
+- usar `Selection contract` como bloco inicial para parametros, assinatura de entrada, variavel de controle e contrato esperado pelo seletor
+- usar `Selection logic and conditions` como bloco inicial para `Condition`, filtro, expressao, criterio de selecao e comportamento logico do seletor
+- usar `Attribute and function dependencies` como bloco inicial para atributo citado, funcao usada no filtro, referencia quebrada, nome nao resolvido e dependencia semantica concreta
+- usar `Navigation context` como bloco inicial para base implicita, contexto transacional/fisico, encaixe no modelo e coerencia da selecao com a moldura de navegacao
+- usar `Identity and container` como bloco inicial para `name`, `fullyQualifiedName`, `guid`, `parent`, `moduleGuid`, origem estrutural e risco de estar olhando o seletor errado
+- manter separado o que e contrato de parametro, o que e filtro aplicado e o que depende da existencia real de atributo ou funcao no destino; nao colapsar essas camadas cedo demais
+
+### Regra adicional para revisao de `API`
+
+- em `API`, revisar por blocos funcionais; nao presumir leitura centrada em codigo ou dependencias
+- os blocos canonicos sao `Service contract`, `Events and orchestration`, `Calls and dependencies`, `Data contract` e `Identity and container`
+- antes da analise fina, declarar qual e o bloco primario do sintoma atual
+- abrir bloco adjacente apenas quando houver dependencia funcional explicita com o bloco primario
+- nomear a transicao de bloco no raciocinio e no handoff, por exemplo: `Service contract -> Data contract` para reconciliar endpoint publicado com shape efetivo
+- parar a expansao quando a hipotese ja estiver sustentada; nao reabrir a `API` inteira por reflexo
+- usar `Service contract` como bloco inicial para metodo exposto, endpoint, assinatura externa, operacao publicada e contrato visivel ao consumidor
+- usar `Events and orchestration` como bloco inicial para `.Before/.After`, ordem de execucao, validacao interna, transformacao e fluxo procedural da camada de `API`
+- usar `Calls and dependencies` como bloco inicial para `Procedure`, `SDT`, `Domain`, `Transaction`, `EXO`, `DataProvider` e cadeia funcional externa
+- usar `Data contract` como bloco inicial para shape de entrada/saida, coerencia de tipos, estrutura de resposta e mapeamento entre contrato e dados
+- usar `Identity and container` como bloco inicial para `parent`, `module`, `fullyQualifiedName`, origem estrutural e risco de clonagem
+
+### Regra adicional para revisao de `SDT`
+
+- em `SDT`, revisar por blocos funcionais; nao tratar objeto pequeno ou declarativo como leitura monolitica quando a pergunta for de shape, tipo, serializacao ou diagnostico fino
+- os blocos canonicos sao `Structure definition`, `Item typing and dependencies`, `External serialization contract`, `Top-level type properties` e `Identity and container`
+- antes da analise fina, declarar qual e o bloco primario do sintoma atual
+- abrir bloco adjacente apenas quando houver dependencia funcional explicita com o bloco primario
+- nomear a transicao de bloco no raciocinio e no handoff, por exemplo: `Structure definition -> Item typing and dependencies` para confirmar se o item estruturalmente correto tambem aponta para o tipo certo
+- parar a expansao quando a hipotese ja estiver sustentada; nao reabrir o `SDT` inteiro por reflexo
+- usar `Structure definition` como bloco inicial para `Level`, `LevelInfo`, sequencia de `Item`, hierarquia, composicao interna, item no nivel errado e colecao vs simples
+- usar `Item typing and dependencies` como bloco inicial para `idBasedOn`, `ATTCUSTOMTYPE`, dominio base, referencia a outro `SDT` e coerencia semantica do item
+- usar `External serialization contract` como bloco inicial para `ExternalName`, `ExternalNamespace`, `idXmlName`, `idXmlNamespace`, `soaptype`, `idCollectionItemName` e metadata de serializacao/integracao
+- usar `Top-level type properties` como bloco inicial para propriedade declarada no proprio `SDT`, especialmente tipagem ou comportamento estrutural top-level
+- usar `Identity and container` como bloco inicial para `name`, `fullyQualifiedName`, `guid`, `parent`, `moduleGuid`, origem estrutural e risco de clonagem
+- manter separado o que e shape interno do `SDT`, o que e dependencia tipada de item e o que e metadata de serializacao externa; nao colapsar essas camadas cedo demais
+
+### Regra adicional para revisao de `Theme`
+
+- em `Theme`, revisar por blocos funcionais; nao tratar o objeto como XML visual pequeno autossuficiente quando a pergunta for de grafo visual, binding, simplificacao ou diagnostico fino
+- os blocos canonicos sao `Theme core definition`, `Class graph and references`, `Predefined types and style bindings`, `Visual simplification and override surface` e `Identity and container`
+- antes da analise fina, declarar qual e o bloco primario do sintoma atual
+- abrir bloco adjacente apenas quando houver dependencia funcional explicita com o bloco primario
+- nomear a transicao de bloco no raciocinio e no handoff, por exemplo: `Class graph and references -> Predefined types and style bindings` para confirmar se a classe existente esta realmente vinculada ao tipo visual normativo certo
+- parar a expansao quando a hipotese ja estiver sustentada; nao reabrir o `Theme` inteiro por reflexo
+- usar `Theme core definition` como bloco inicial para definicao-base do tema, propriedades centrais, shape do objeto e configuracao global
+- usar `Class graph and references` como bloco inicial para grafo de `ThemeClass`, referencias internas entre classes e heranca visual
+- usar `Predefined types and style bindings` como bloco inicial para `PredefinedTypes`, `Styles` e bindings normativos entre tipo visual conhecido e a pilha concreta `ThemeClass`/`ThemeColor`/`ColorPalette`/`DesignSystem`
+- usar `Visual simplification and override surface` como bloco inicial para simplificacao, override, enxugamento visual e remocao controlada de superficie somente depois que o acoplamento visual basico ja estiver sustentado
+- usar `Identity and container` como bloco inicial para `name`, `fullyQualifiedName`, `guid`, contêiner, origem estrutural e risco de clonagem
+- manter separado o que e definicao-base do tema, o que e grafo de classes, o que e binding visual normativo e o que e simplificacao/override; nao usar simplificacao como atalho para substituir leitura do binding nem do grafo de classes
+
+### Regra adicional para revisao de `ThemeClass`
+
+- em `ThemeClass`, revisar por blocos funcionais; nao tratar o objeto como XML visual pequeno, direto e trivial quando a pergunta for de heranca, marcadores de aplicabilidade, dependencia visual ou diagnostico fino
+- os blocos canonicos sao `Direct class surface`, `Inheritance and parent linkage`, `Theme applicability and internal classification`, `Visual references and external dependencies` e `Identity and container`
+- antes da analise fina, declarar qual e o bloco primario do sintoma atual
+- abrir bloco adjacente apenas quando houver dependencia funcional explicita com o bloco primario
+- nomear a transicao de bloco no raciocinio e no handoff, por exemplo: `Inheritance and parent linkage -> Direct class surface` para verificar se o problema atribuido a heranca na verdade esta na superficie declarada da classe derivada
+- parar a expansao quando a hipotese ja estiver sustentada; nao reabrir a `ThemeClass` inteira por reflexo
+- usar `Direct class surface` como bloco inicial para `Properties` top-level, propriedades visuais concretas, shape direto da classe e override local
+- usar `Inheritance and parent linkage` como bloco inicial para `parent`, `parentGuid`, `parentType`, classe base, cadeia de heranca visual, variantes derivadas e estados como `hover`
+- usar `Theme applicability and internal classification` como bloco inicial para `ThemeElementThemeTypes`, `ThemeElementInternalType`, aplicabilidade web/mobile e classificacao interna da classe tematica
+- usar `Visual references and external dependencies` como bloco inicial para referencias a cor, imagem, classe auxiliar ou outro recurso visual externo de que a classe dependa
+- usar `Identity and container` como bloco inicial para `name`, `fullyQualifiedName`, `guid`, `moduleGuid`, origem estrutural e risco de clonagem
+- manter separado o que e superficie direta da classe, o que e heranca, o que e aplicabilidade/classificacao interna e o que e dependencia visual externa; nao colapsar essas camadas cedo demais
+
+### Regra adicional para revisao de `ThemeColor`
+
+- em `ThemeColor`, revisar por blocos funcionais; nao tratar o objeto como cor trivial isolada quando a pergunta for de identidade nominal, valor, encaixe tematico, dependencia visual ou diagnostico fino
+- os blocos canonicos sao `Color identity and naming`, `Direct color value surface`, `Theme applicability and palette coupling`, `Visual references and usage dependencies` e `Identity and container`
+- antes da analise fina, declarar qual e o bloco primario do sintoma atual
+- abrir bloco adjacente apenas quando houver dependencia funcional explicita com o bloco primario
+- nomear a transicao de bloco no raciocinio e no handoff, por exemplo: `Visual references and usage dependencies -> Direct color value surface` para verificar se o consumo quebrado da cor vem da referencia ou do valor concretamente serializado
+- parar a expansao quando a hipotese ja estiver sustentada; nao reabrir `ThemeColor` inteiro por reflexo
+- usar `Color identity and naming` como bloco inicial para nome logico, identidade nominal da cor e papel tematico esperado
+- usar `Direct color value surface` como bloco inicial para `Properties` top-level, valor serializado, shape direto e definicao concreta da cor
+- usar `Theme applicability and palette coupling` como bloco inicial para relacao com `Theme`, `ColorPalette`, `DesignSystem`, escopo da cor e encaixe semantico na familia visual
+- usar `Visual references and usage dependencies` como bloco inicial para consumo por `ThemeClass`, `Theme`, estilos ou outros elementos visuais dependentes
+- usar `Identity and container` como bloco inicial para `name`, `fullyQualifiedName`, `guid`, `moduleGuid`, origem estrutural e risco de clonagem
+- manter separado o que e identidade nominal da cor, o que e valor direto, o que e encaixe tematico e o que e dependencia de uso visual; nao colapsar essas camadas cedo demais
+
+### Regra adicional para revisao de `ColorPalette`
+
+- em `ColorPalette`, revisar por blocos funcionais; nao tratar o objeto como agrupador visual trivial quando a pergunta for de identidade da paleta, composicao, acoplamento arquitetural, superficie de uso ou diagnostico fino
+- os blocos canonicos sao `Palette identity and naming`, `Palette composition and declared members`, `Theme and design-system coupling`, `Color references and usage surface` e `Identity and container`
+- antes da analise fina, declarar qual e o bloco primario do sintoma atual
+- abrir bloco adjacente apenas quando houver dependencia funcional explicita com o bloco primario
+- nomear a transicao de bloco no raciocinio e no handoff, por exemplo: `Color references and usage surface -> Palette composition and declared members` para verificar se o problema de uso visual vem do consumo da paleta ou da composicao declarada dela
+- parar a expansao quando a hipotese ja estiver sustentada; nao reabrir `ColorPalette` inteiro por reflexo
+- usar `Palette identity and naming` como bloco inicial para nome logico da paleta, identidade nominal e papel tematico esperado
+- usar `Palette composition and declared members` como bloco inicial para itens da paleta, composicao interna, shape direto e membros declarados
+- usar `Theme and design-system coupling` como bloco inicial para relacao com `Theme`, `DesignSystem`, coerencia arquitetural e encaixe na familia visual
+- usar `Color references and usage surface` como bloco inicial para relacao com `ThemeColor` e demais consumos visuais dependentes da paleta
+- usar `Identity and container` como bloco inicial para `name`, `fullyQualifiedName`, `guid`, `moduleGuid`, origem estrutural e risco de clonagem
+- manter separado o que e identidade da paleta, o que e composicao declarada, o que e acoplamento arquitetural e o que e superficie de uso; nao colapsar essas camadas cedo demais
+
+### Regra adicional para revisao de `DesignSystem`
+
+- em `DesignSystem`, revisar por blocos funcionais; nao tratar o objeto como camada visual generica quando a pergunta for de identidade do sistema, tokens, acoplamento com tema/paleta, superficie de consumo ou diagnostico fino
+- os blocos canonicos sao `System identity and naming`, `Design tokens and declared resources`, `Theme and palette coupling`, `Visual rules and consumption surface` e `Identity and container`
+- antes da analise fina, declarar qual e o bloco primario do sintoma atual
+- abrir bloco adjacente apenas quando houver dependencia funcional explicita com o bloco primario
+- nomear a transicao de bloco no raciocinio e no handoff, por exemplo: `Visual rules and consumption surface -> Design tokens and declared resources` para verificar se o efeito visual quebrado vem da regra consumida ou do token/recurso declarado na origem
+- parar a expansao quando a hipotese ja estiver sustentada; nao reabrir `DesignSystem` inteiro por reflexo
+- usar `System identity and naming` como bloco inicial para nome logico do sistema, identidade nominal e papel arquitetural esperado
+- usar `Design tokens and declared resources` como bloco inicial para tokens, recursos declarados, composicao interna e shape funcional do sistema
+- usar `Theme and palette coupling` como bloco inicial para relacao com `Theme`, `ColorPalette`, coerencia arquitetural e encaixe entre camadas visuais
+- usar `Visual rules and consumption surface` como bloco inicial para regras visuais consumidas por outras camadas e impacto funcional de uso
+- usar `Identity and container` como bloco inicial para `name`, `fullyQualifiedName`, `guid`, `moduleGuid`, origem estrutural e risco de clonagem
+- manter separado o que e identidade do sistema, o que e token/recurso declarado, o que e acoplamento com tema/paleta e o que e superficie de consumo; nao colapsar essas camadas cedo demais
+
+### Regra adicional para revisao de `PackagedModule`
+
+- em `PackagedModule`, revisar por blocos funcionais; nao tratar o objeto como contêiner trivial de instalacao quando a pergunta for de identidade do modulo, fronteira do pacote, contexto de instalacao, superficie de dependencia/consumo ou diagnostico fino
+- os blocos canonicos sao `Module identity and naming`, `Packaging boundary and declared members`, `Parent and installation context`, `Dependency and consumption surface` e `Identity and container`
+- antes da analise fina, declarar qual e o bloco primario do sintoma atual
+- abrir bloco adjacente apenas quando houver dependencia funcional explicita com o bloco primario
+- nomear a transicao de bloco no raciocinio e no handoff, por exemplo: `Dependency and consumption surface -> Packaging boundary and declared members` para verificar se a quebra percebida no consumo do modulo vem da dependencia externa ou da fronteira funcional que o pacote realmente declara
+- parar a expansao quando a hipotese ja estiver sustentada; nao reabrir `PackagedModule` inteiro por reflexo
+- usar `Module identity and naming` como bloco inicial para nome logico do modulo, identidade nominal e papel semantico esperado
+- usar `Packaging boundary and declared members` como bloco inicial para membros declarados, composicao interna, fronteira do pacote e delimitacao funcional
+- usar `Parent and installation context` como bloco inicial para relacao com instalacao, `parent`, contexto hierarquico e encaixe estrutural do modulo
+- usar `Dependency and consumption surface` como bloco inicial para dependencias do modulo e forma de consumo por outras camadas
+- usar `Identity and container` como bloco inicial para `name`, `fullyQualifiedName`, `guid`, `moduleGuid`, origem estrutural e risco de clonagem
+- manter separado o que e identidade do modulo, o que e fronteira de empacotamento, o que e contexto de instalacao e o que e superficie de dependencia/consumo; nao colapsar essas camadas cedo demais
+
+### Regra adicional para revisao de `Image`
+
+- em `Image`, revisar por blocos funcionais; nao tratar o objeto como binario isolado ou lista trivial de itens quando a pergunta for de variantes, payload, referencia externa ou diagnostico fino
+- os blocos canonicos sao `Image identity and naming`, `Image item set and declared variants`, `Binary payload and extraction fidelity`, `Theme and language references` e `Identity and container`
+- antes da analise fina, declarar qual e o bloco primario do sintoma atual
+- abrir bloco adjacente apenas quando houver dependencia funcional explicita com o bloco primario
+- nomear a transicao de bloco no raciocinio e no handoff, por exemplo: `Image item set and declared variants -> Binary payload and extraction fidelity` para verificar se a falha esta no desenho das variantes ou no conteudo binario de uma delas
+- parar a expansao quando a hipotese ja estiver sustentada; nao reabrir `Image` inteiro por reflexo
+- usar `Image identity and naming` como bloco inicial para nome logico da imagem, identidade nominal e papel semantico esperado
+- usar `Image item set and declared variants` como bloco inicial para `ImageItem`, variantes, composicao interna e shape funcional do recurso
+- usar `Binary payload and extraction fidelity` como bloco inicial para `base64Binary`, integridade do payload, preservacao do conteudo e fidelidade de extracao
+- usar `Theme and language references` como bloco inicial para `ThemeReference`, `LanguageReference` e dependencias externas de apresentacao
+- usar `Identity and container` como bloco inicial para `name`, `fullyQualifiedName`, `guid`, `moduleGuid`, origem estrutural e risco de clonagem
+- manter separado o que e identidade da imagem, o que e conjunto de variantes, o que e payload binario e o que e referencia externa de tema/idioma; nao colapsar essas camadas cedo demais
+
+### Regra adicional para revisao de `Attribute`
+
+- em `Attribute`, revisar por blocos funcionais; nao tratar o objeto como definicao escalar trivial quando a pergunta for de tipagem, referencia nominal, semantica de controle ou diagnostico fino
+- os blocos canonicos sao `Attribute core definition`, `Typing and base linkage`, `Semantic property references`, `Presentation and control semantics` e `Identity and container`
+- antes da analise fina, declarar qual e o bloco primario do sintoma atual
+- abrir bloco adjacente apenas quando houver dependencia funcional explicita com o bloco primario
+- nomear a transicao de bloco no raciocinio e no handoff, por exemplo: `Typing and base linkage -> Semantic property references` para confirmar se o atributo tipado corretamente ainda depende de outro atributo real no destino
+- parar a expansao quando a hipotese ja estiver sustentada; nao reabrir o `Attribute` inteiro por reflexo
+- usar `Attribute core definition` como bloco inicial para shape top-level, definicao-base e estrutura central do atributo
+- usar `Typing and base linkage` como bloco inicial para `idBasedOn`, dominio base, tipo declarado e coerencia do contrato tipado
+- usar `Semantic property references` como bloco inicial para `ControlItemDescription`, referencia nominal quebrada e dependencia concreta de outro atributo real
+- usar `Presentation and control semantics` como bloco inicial para propriedades funcionais de exibicao, controle e comportamento serializado do atributo
+- usar `Identity and container` como bloco inicial para `name`, `fullyQualifiedName`, `guid`, contêiner, origem estrutural e risco de clonagem
+- manter separado o que e definicao-base do atributo, o que e tipagem, o que e referencia semantica nominal e o que e semantica funcional de controle/apresentacao; nao colapsar essas camadas cedo demais
+
+### Regra adicional para revisao de `PatternSettings`
+
+- em `PatternSettings`, revisar por blocos funcionais; nao tratar o objeto como XML pequeno autossuficiente quando a pergunta for de registro do pattern, configuracao interna, contexto ou diagnostico fino
+- os blocos canonicos sao `Pattern registration and environment fit`, `Internal pattern configuration`, `Context and callable dependencies`, `Security and auxiliary references` e `Identity and container`
+- antes da analise fina, declarar qual e o bloco primario do sintoma atual
+- abrir bloco adjacente apenas quando houver dependencia funcional explicita com o bloco primario
+- nomear a transicao de bloco no raciocinio e no handoff, por exemplo: `Pattern registration and environment fit -> Context and callable dependencies` para confirmar se o problema do pattern no ambiente na verdade vem de dependencia funcional faltante
+- parar a expansao quando a hipotese ja estiver sustentada; nao reabrir o `PatternSettings` inteiro por reflexo
+- usar `Pattern registration and environment fit` como bloco inicial para pattern nao registrado, incompatibilidade do ambiente, `was not changed` e encaixe operacional do pattern
+- usar `Internal pattern configuration` como bloco inicial para `CDATA`, flags, shape declarativo e configuracao persistida do pattern
+- usar `Context and callable dependencies` como bloco inicial para `ContextVariable`, `LoadProcedure`, procedures faltantes e contexto funcional exigido pelo pattern
+- usar `Security and auxiliary references` como bloco inicial para `Security`, referencias auxiliares e dependencias complementares do pattern
+- usar `Identity and container` como bloco inicial para `name`, `fullyQualifiedName`, `guid`, contêiner, origem estrutural e risco de clonagem
+- manter separado o que e registro do pattern no ambiente, o que e configuracao interna, o que e dependencia de contexto/chamada e o que e referencia auxiliar/seguranca; nao colapsar essas camadas cedo demais
+
+### Regra adicional para revisao de `Folder`
+
+- em `Folder`, revisar por blocos funcionais; nao tratar o objeto como caso trivial apenas por ter shape minimo quando a pergunta for de parent, leitura da IDE, semantica nominal ou diagnostico fino
+- os blocos canonicos sao `Minimal structural shape`, `Parent and module context`, `IDE semantic reading`, `Identity and naming semantics` e `Identity and container`
+- antes da analise fina, declarar qual e o bloco primario do sintoma atual
+- abrir bloco adjacente apenas quando houver dependencia funcional explicita com o bloco primario
+- nomear a transicao de bloco no raciocinio e no handoff, por exemplo: `Minimal structural shape -> IDE semantic reading` para separar o tipo XML valido do rotulo exibido pela IDE
+- parar a expansao quando a hipotese ja estiver sustentada; nao reabrir o `Folder` inteiro por reflexo
+- usar `Minimal structural shape` como bloco inicial para envelope, `Object/@type`, shape minimo e serializacao basica
+- usar `Parent and module context` como bloco inicial para `parent`, `parentGuid`, `parentType`, `moduleGuid` e encaixe estrutural do agrupador
+- usar `IDE semantic reading` como bloco inicial para `Category`, leitura da IDE/importador e diferenca entre tipo XML e rotulo exibido
+- usar `Identity and naming semantics` como bloco inicial para ambiguidade nominal, expectativa sobre nome exibido e semantica do agrupador
+- usar `Identity and container` como bloco inicial para `name`, `fullyQualifiedName`, `guid`, contêiner, origem estrutural e risco de clonagem
+- manter separado o que e shape minimo XML, o que e contexto estrutural, o que e leitura semantica da IDE e o que e semantica nominal; nao colapsar essas camadas cedo demais
+
+### Regra adicional para revisao de `Domain`
+
+- em `Domain`, revisar por blocos funcionais; nao tratar o objeto como definicao tipada trivial quando a pergunta for de limites, enumeracao, papel semantico ou diagnostico fino
+- os blocos canonicos sao `Base type definition`, `Limits and scalar constraints`, `Enumerated values contract`, `Usage-facing semantic contract` e `Identity and container`
+- antes da analise fina, declarar qual e o bloco primario do sintoma atual
+- abrir bloco adjacente apenas quando houver dependencia funcional explicita com o bloco primario
+- nomear a transicao de bloco no raciocinio e no handoff, por exemplo: `Base type definition -> Enumerated values contract` para confirmar se o dominio tipado corretamente tambem fecha como enumeracao valida
+- parar a expansao quando a hipotese ja estiver sustentada; nao reabrir o `Domain` inteiro por reflexo
+- usar `Base type definition` como bloco inicial para tipo base, `ATTCUSTOMTYPE`, definicao nuclear e contrato tipado principal
+- usar `Limits and scalar constraints` como bloco inicial para tamanho, precisao, escala, flags e parametros escalares do dominio
+- usar `Enumerated values contract` como bloco inicial para `IDEnumDefinedValues`, lista de valores, descricoes e coerencia do contrato enumerado
+- usar `Usage-facing semantic contract` como bloco inicial para papel funcional do dominio no consumo por outros objetos, UI ou contrato de dados
+- usar `Identity and container` como bloco inicial para `name`, `fullyQualifiedName`, `guid`, contêiner, origem estrutural e risco de clonagem
+- manter separado o que e tipo base, o que e limite/constraint, o que e enumeracao e o que e contrato semantico de uso; nao colapsar essas camadas cedo demais
+
+### Regra adicional para revisao de `Table`
+
+- em `Table`, revisar por blocos funcionais; nao tratar o objeto como bloco fisico unico quando a pergunta for de chave, indice, reassociacao com `Transaction` ou diagnostico fino
+- os blocos canonicos sao `Primary key structure`, `Secondary indexes and embedded index members`, `Transaction coupling and physical context` e `Identity and container`
+- antes da analise fina, declarar qual e o bloco primario do sintoma atual
+- abrir bloco adjacente apenas quando houver dependencia funcional explicita com o bloco primario
+- nomear a transicao de bloco no raciocinio e no handoff, por exemplo: `Secondary indexes and embedded index members -> Transaction coupling and physical context` para separar problema de indice embutido de problema de reassociacao fisica
+- parar a expansao quando a hipotese ja estiver sustentada; nao reabrir a `Table` inteira por reflexo
+- usar `Primary key structure` como bloco inicial para chave primaria, membros da chave, ordem estrutural e coerencia do nucleo fisico principal
+- usar `Secondary indexes and embedded index members` como bloco inicial para indice, membro de indice, ordenacao, cobertura de busca e leitura de `Index` embutido
+- usar `Transaction coupling and physical context` como bloco inicial para relacao com a `Transaction` de mesmo nome, reassociacao fisica, contexto estrutural no destino e dependencia contextual da `Table`
+- usar `Identity and container` como bloco inicial para `name`, `fullyQualifiedName`, `guid`, `parentGuid`, `moduleGuid`, origem estrutural e risco de clonagem
+- tratar `Index` como estrutura embutida da `Table` nesta trilha; nao abrir um bloco top-level separado de `Index` por padrao
+- manter separado o que e chave primaria, o que e indice embutido e o que e acoplamento fisico/contextual com `Transaction`; nao colapsar essas camadas cedo demais
+
+### Regra adicional para revisao de `ExternalObject`
+
+- em `ExternalObject`, revisar por blocos funcionais; nao tratar o objeto como contrato externo monolitico quando a pergunta for de metodo, tipo, binding nativo ou diagnostico fino
+- os blocos canonicos sao `External contract surface`, `Method signatures and parameter typing`, `Platform and native binding metadata` e `Identity and container`
+- antes da analise fina, declarar qual e o bloco primario do sintoma atual
+- abrir bloco adjacente apenas quando houver dependencia funcional explicita com o bloco primario
+- nomear a transicao de bloco no raciocinio e no handoff, por exemplo: `Method signatures and parameter typing -> Platform and native binding metadata` para separar erro de assinatura de erro de binding nativo
+- parar a expansao quando a hipotese ja estiver sustentada; nao reabrir o `ExternalObject` inteiro por reflexo
+- usar `External contract surface` como bloco inicial para surface exposta, nome externo, papel funcional e metodos/propriedades publicados
+- usar `Method signatures and parameter typing` como bloco inicial para metodo, parametro, retorno, coerencia de assinatura e dependencia tipada
+- usar `Platform and native binding metadata` como bloco inicial para plataforma, assembly, biblioteca alvo, binding nativo e metadata tecnica especifica
+- usar `Identity and container` como bloco inicial para `name`, `fullyQualifiedName`, `guid`, `parent`, `moduleGuid`, origem estrutural e risco de clonagem
+- manter separado o que e surface funcional externa, o que e assinatura tipada e o que e binding nativo/plataforma; nao colapsar essas camadas cedo demais
+
+### Regra adicional para revisao de `UserControl`
+
+- em `UserControl`, revisar por blocos funcionais; nao tratar o objeto como controle visual monolitico quando a pergunta for de propriedade, evento, recurso runtime ou diagnostico fino
+- os blocos canonicos sao `Control contract surface`, `Properties and event bindings`, `Runtime resources and external dependencies` e `Identity and container`
+- antes da analise fina, declarar qual e o bloco primario do sintoma atual
+- abrir bloco adjacente apenas quando houver dependencia funcional explicita com o bloco primario
+- nomear a transicao de bloco no raciocinio e no handoff, por exemplo: `Properties and event bindings -> Runtime resources and external dependencies` para separar problema de binding de problema de recurso runtime
+- parar a expansao quando a hipotese ja estiver sustentada; nao reabrir o `UserControl` inteiro por reflexo
+- usar `Control contract surface` como bloco inicial para interface declarada, surface exposta, papel funcional e shape geral do controle
+- usar `Properties and event bindings` como bloco inicial para propriedade, evento, parametro e contrato de binding entre host e controle
+- usar `Runtime resources and external dependencies` como bloco inicial para script, asset, recurso externo, dependencia tecnica e acoplamento de execucao
+- usar `Identity and container` como bloco inicial para `name`, `fullyQualifiedName`, `guid`, `parent`, `moduleGuid`, origem estrutural e risco de clonagem
+- manter separado o que e contrato do controle, o que e binding de propriedades/eventos e o que e dependencia runtime; nao colapsar essas camadas cedo demais
+
+### Regra adicional para revisao de `SubTypeGroup`
+
+- em `SubTypeGroup`, revisar por blocos funcionais; nao tratar o objeto como agrupamento nominal monolitico quando a pergunta for de composicao, subtype, uso contextual ou diagnostico fino
+- os blocos canonicos sao `Group definition and member structure`, `Subtype mappings and role assignments`, `Contextual usage contract` e `Identity and container`
+- antes da analise fina, declarar qual e o bloco primario do sintoma atual
+- abrir bloco adjacente apenas quando houver dependencia funcional explicita com o bloco primario
+- nomear a transicao de bloco no raciocinio e no handoff, por exemplo: `Subtype mappings and role assignments -> Contextual usage contract` para separar erro de mapeamento interno de erro de uso contextual
+- parar a expansao quando a hipotese ja estiver sustentada; nao reabrir o `SubTypeGroup` inteiro por reflexo
+- usar `Group definition and member structure` como bloco inicial para composicao do grupo, membros declarados, shape estrutural e integridade do agrupamento
+- usar `Subtype mappings and role assignments` como bloco inicial para supertipo, subtipo, papel de cada membro e mapeamentos internos
+- usar `Contextual usage contract` como bloco inicial para papel do grupo no consumo por `Attribute`, `Transaction` e outros objetos do modelo
+- usar `Identity and container` como bloco inicial para `name`, `fullyQualifiedName`, `guid`, `parent`, `moduleGuid`, origem estrutural e risco de clonagem
+- manter separado o que e definicao do grupo, o que e mapeamento de subtype e o que e uso contextual; nao colapsar essas camadas cedo demais
+
+### Regra adicional para revisao de `File`
+
+- em `File`, revisar por blocos funcionais; nao tratar o objeto como recurso monolitico quando a pergunta for de payload, consumo, identidade do recurso ou diagnostico fino
+- os blocos canonicos sao `File identity and declared surface`, `Binary or textual payload fidelity`, `References and consumption context` e `Identity and container`
+- antes da analise fina, declarar qual e o bloco primario do sintoma atual
+- abrir bloco adjacente apenas quando houver dependencia funcional explicita com o bloco primario
+- nomear a transicao de bloco no raciocinio e no handoff, por exemplo: `Binary or textual payload fidelity -> References and consumption context` para separar problema de conteudo de problema de consumo
+- parar a expansao quando a hipotese ja estiver sustentada; nao reabrir o `File` inteiro por reflexo
+- usar `File identity and declared surface` como bloco inicial para nome do recurso, extensao logica, role funcional e surface declarada
+- usar `Binary or textual payload fidelity` como bloco inicial para conteudo materializado, payload, extracao, preservacao binaria/textual e fidelidade do recurso
+- usar `References and consumption context` como bloco inicial para referencias externas, quem consome o arquivo, dependencia de runtime e contexto de uso
+- usar `Identity and container` como bloco inicial para `name`, `fullyQualifiedName`, `guid`, `parent`, `moduleGuid`, origem estrutural e risco de clonagem
+- manter separado o que e identidade/surface do recurso, o que e payload e o que e contexto de consumo; nao colapsar essas camadas cedo demais
+
+### Regra adicional para revisao de `Dashboard`
+
+- em `Dashboard`, revisar por blocos funcionais; nao tratar o objeto como composicao visual monolitica quando a pergunta for de widget, binding, navegacao ou diagnostico fino
+- os blocos canonicos sao `Dashboard composition and layout`, `Widgets and data bindings`, `Navigation and interaction context` e `Identity and container`
+- antes da analise fina, declarar qual e o bloco primario do sintoma atual
+- abrir bloco adjacente apenas quando houver dependencia funcional explicita com o bloco primario
+- nomear a transicao de bloco no raciocinio e no handoff, por exemplo: `Widgets and data bindings -> Navigation and interaction context` para separar problema de dado/widget de problema de acao/interacao
+- parar a expansao quando a hipotese ja estiver sustentada; nao reabrir o `Dashboard` inteiro por reflexo
+- usar `Dashboard composition and layout` como bloco inicial para composicao, secoes, shape estrutural e organizacao visual do dashboard
+- usar `Widgets and data bindings` como bloco inicial para widget, componente, binding, fonte de dados, parametro e vinculo entre visual e dado
+- usar `Navigation and interaction context` como bloco inicial para acao, link, drill-down, interacao do usuario e encaixe funcional no fluxo
+- usar `Identity and container` como bloco inicial para `name`, `fullyQualifiedName`, `guid`, `parent`, `moduleGuid`, origem estrutural e risco de clonagem
+- manter separado o que e composicao do dashboard, o que e binding de widget e o que e navegacao/interacao; nao colapsar essas camadas cedo demais
+
+### Regra adicional para revisao de `Stencil`
+
+- em `Stencil`, revisar por blocos funcionais; nao tratar o objeto como molde estrutural monolitico quando a pergunta for de parametro, placeholder, consumo por pattern ou diagnostico fino
+- os blocos canonicos sao `Stencil definition and structural surface`, `Parameters and configurable slots`, `Pattern or generation consumption context` e `Identity and container`
+- antes da analise fina, declarar qual e o bloco primario do sintoma atual
+- abrir bloco adjacente apenas quando houver dependencia funcional explicita com o bloco primario
+- nomear a transicao de bloco no raciocinio e no handoff, por exemplo: `Parameters and configurable slots -> Pattern or generation consumption context` para separar problema de configuracao de problema de consumo do stencil
+- parar a expansao quando a hipotese ja estiver sustentada; nao reabrir o `Stencil` inteiro por reflexo
+- usar `Stencil definition and structural surface` como bloco inicial para shape do artefato, composicao declarada, estrutura-base e surface do stencil
+- usar `Parameters and configurable slots` como bloco inicial para parametro, placeholder, ponto variavel e contrato configuravel
+- usar `Pattern or generation consumption context` como bloco inicial para consumo por pattern, geracao ou fluxo dependente
+- usar `Identity and container` como bloco inicial para `name`, `fullyQualifiedName`, `guid`, `parent`, `moduleGuid`, origem estrutural e risco de clonagem
+- manter separado o que e definicao do stencil, o que e parametrizacao/configuracao e o que e contexto de consumo; nao colapsar essas camadas cedo demais
+
+### Regra adicional para revisao de `DataStore`
+
+- em `DataStore`, revisar por blocos funcionais; nao tratar o objeto como definicao de armazenamento monolitica quando a pergunta for de parametro, configuracao, conexao ou diagnostico fino
+- os blocos canonicos sao `Store definition and declared connection surface`, `Configuration parameters and runtime options`, `Model and consumption context` e `Identity and container`
+- antes da analise fina, declarar qual e o bloco primario do sintoma atual
+- abrir bloco adjacente apenas quando houver dependencia funcional explicita com o bloco primario
+- nomear a transicao de bloco no raciocinio e no handoff, por exemplo: `Configuration parameters and runtime options -> Model and consumption context` para separar problema de configuracao de problema de consumo contextual do store
+- parar a expansao quando a hipotese ja estiver sustentada; nao reabrir o `DataStore` inteiro por reflexo
+- usar `Store definition and declared connection surface` como bloco inicial para identidade declarada do store, surface de conexao e shape principal da definicao
+- usar `Configuration parameters and runtime options` como bloco inicial para parametro, flag, opcao e configuracao operacional
+- usar `Model and consumption context` como bloco inicial para encaixe no modelo, consumo por objetos dependentes e papel no runtime
+- usar `Identity and container` como bloco inicial para `name`, `fullyQualifiedName`, `guid`, `parent`, `moduleGuid`, origem estrutural e risco de clonagem
+- manter separado o que e definicao do store, o que e configuracao runtime e o que e contexto de consumo; nao colapsar essas camadas cedo demais
+
+### Regra adicional para revisao de `Generator`
+
+- em `Generator`, revisar por blocos funcionais; nao tratar o objeto como definicao unica quando a pergunta for de parametro, alvo de geracao, plataforma ou diagnostico fino
+- os blocos canonicos sao `Generator definition and declared surface`, `Generation options and technical parameters`, `Model and target-platform usage context` e `Identity and container`
+- antes da analise fina, declarar qual e o bloco primario do sintoma atual
+- abrir bloco adjacente apenas quando houver dependencia funcional explicita com o bloco primario
+- nomear a transicao de bloco no raciocinio e no handoff, por exemplo: `Generator definition and declared surface -> Generation options and technical parameters`
+- parar a expansao quando a hipotese ja estiver sustentada; nao reabrir o `Generator` inteiro por reflexo
+- usar `Generator definition and declared surface` como bloco inicial para o que o gerador declara ser, seu papel principal e sua surface estrutural
+- usar `Generation options and technical parameters` como bloco inicial para parametro, flag, opcao e comportamento tecnico de geracao
+- usar `Model and target-platform usage context` como bloco inicial para encaixe no modelo, alvo de geracao, consumo efetivo e papel no fluxo
+- usar `Identity and container` como bloco inicial para `name`, `fullyQualifiedName`, `guid`, `parent`, `moduleGuid`, origem estrutural e risco de clonagem
+- manter separado o que e surface declarada do gerador, o que e parametro tecnico e o que e contexto de uso; nao colapsar essas camadas cedo demais
+
+### Regra adicional para revisao de `Language`
+
+- em `Language`, revisar por blocos funcionais; nao tratar o objeto como definicao unica quando a pergunta for de parametro, localizacao, runtime ou diagnostico fino
+- os blocos canonicos sao `Language definition and declared surface`, `Localization parameters and technical options`, `Model and runtime usage context` e `Identity and container`
+- antes da analise fina, declarar qual e o bloco primario do sintoma atual
+- abrir bloco adjacente apenas quando houver dependencia funcional explicita com o bloco primario
+- nomear a transicao de bloco no raciocinio e no handoff, por exemplo: `Language definition and declared surface -> Localization parameters and technical options`
+- parar a expansao quando a hipotese ja estiver sustentada; nao reabrir o `Language` inteiro por reflexo
+- usar `Language definition and declared surface` como bloco inicial para o que o objeto declara ser, seu papel principal e sua surface estrutural
+- usar `Localization parameters and technical options` como bloco inicial para parametro, opcao, codigo, flag e configuracao tecnica de localizacao
+- usar `Model and runtime usage context` como bloco inicial para encaixe no modelo, consumo efetivo, vinculo com runtime e papel funcional do idioma
+- usar `Identity and container` como bloco inicial para `name`, `fullyQualifiedName`, `guid`, `parent`, `moduleGuid`, origem estrutural e risco de clonagem
+- manter separado o que e surface declarada do idioma, o que e parametro tecnico e o que e contexto de uso; nao colapsar essas camadas cedo demais
+
+### Regra adicional para revisao de `Document`
+
+- em `Document`, revisar por blocos funcionais; nao tratar o objeto como artefato unico quando a pergunta for de payload, referencia, consumo ou diagnostico fino
+- os blocos canonicos sao `Document identity and declared surface`, `Materialized content and payload fidelity`, `References and functional consumption context` e `Identity and container`
+- antes da analise fina, declarar qual e o bloco primario do sintoma atual
+- abrir bloco adjacente apenas quando houver dependencia funcional explicita com o bloco primario
+- nomear a transicao de bloco no raciocinio e no handoff, por exemplo: `Document identity and declared surface -> Materialized content and payload fidelity`
+- parar a expansao quando a hipotese ja estiver sustentada; nao reabrir o `Document` inteiro por reflexo
+- usar `Document identity and declared surface` como bloco inicial para o que o documento declara ser, nome, papel principal e surface estrutural
+- usar `Materialized content and payload fidelity` como bloco inicial para conteudo materializado, integridade do payload, preservacao de texto/bytes e fidelidade de extracao
+- usar `References and functional consumption context` como bloco inicial para quem consome o documento, vinculos externos, dependencia funcional e papel no fluxo
+- usar `Identity and container` como bloco inicial para `name`, `fullyQualifiedName`, `guid`, `parent`, `moduleGuid`, origem estrutural e risco de clonagem
+- manter separado o que e surface declarada do documento, o que e payload e o que e contexto de consumo; nao colapsar essas camadas cedo demais
+
+### Regra adicional para revisao de `DeploymentUnit`
+
+- em `DeploymentUnit`, revisar por blocos funcionais; nao tratar o objeto como unidade unica quando a pergunta for de parametro, entrega, empacotamento ou diagnostico fino
+- os blocos canonicos sao `Deployment unit definition and declared surface`, `Packaging parameters and technical options`, `Runtime or delivery context` e `Identity and container`
+- antes da analise fina, declarar qual e o bloco primario do sintoma atual
+- abrir bloco adjacente apenas quando houver dependencia funcional explicita com o bloco primario
+- nomear a transicao de bloco no raciocinio e no handoff, por exemplo: `Deployment unit definition and declared surface -> Packaging parameters and technical options`
+- parar a expansao quando a hipotese ja estiver sustentada; nao reabrir o `DeploymentUnit` inteiro por reflexo
+- usar `Deployment unit definition and declared surface` como bloco inicial para o que a unidade declara ser, seu papel principal e sua surface estrutural
+- usar `Packaging parameters and technical options` como bloco inicial para parametro, opcao, flag e configuracao tecnica de empacotamento/entrega
+- usar `Runtime or delivery context` como bloco inicial para encaixe no fluxo, destino de entrega, consumo efetivo e papel operacional
+- usar `Identity and container` como bloco inicial para `name`, `fullyQualifiedName`, `guid`, `parent`, `moduleGuid`, origem estrutural e risco de clonagem
+- manter separado o que e surface declarada da unidade, o que e parametro tecnico e o que e contexto de entrega/uso; nao colapsar essas camadas cedo demais
+
+### Regra adicional para revisao de `Panel`
+
+- em `Panel`, revisar por blocos funcionais; nao tratar XML curto como sinal automatico de revisao simples quando a pergunta for de estrutura, comportamento, pattern, parent ou diagnostico fino
+- os blocos canonicos sao `Panel structure and layout`, `Serialized behavior and configuration`, `Pattern and parent coupling`, `External dependencies` e `Identity and container`
+- antes da analise fina, declarar qual e o bloco primario do sintoma atual
+- abrir bloco adjacente apenas quando houver dependencia funcional explicita com o bloco primario
+- nomear a transicao de bloco no raciocinio e no handoff, por exemplo: `Panel structure and layout -> Pattern and parent coupling` para separar a tela aparente do contexto estrutural que a sustenta
+- parar a expansao quando a hipotese ja estiver sustentada; nao reabrir o `Panel` inteiro por reflexo
+- usar `Panel structure and layout` como bloco inicial para composicao visual, controles, shape da tela e estrutura funcional aparente
+- quando o sintoma for warning `Layout com identificador incorreto`, tratar `level id` e `layout id` como par acoplado; nao testar nem recomendar GUID avulso de layout como correcao suficiente
+- para Panel SD gerado ou clonado, preferir par `level id` + `layout id` vindo de Panel SD exportado pela IDE da mesma KB; se a regra exata de derivacao nao estiver provada, declarar risco e nao inventar GUIDs independentes
+- usar `Serialized behavior and configuration` como bloco inicial para comportamento serializado, configuracao persistida e metadado funcional nao redutivel a decoracao visual
+- usar `Pattern and parent coupling` como bloco inicial para `parent`, `parentGuid`, `parentType`, `moduleGuid`, pattern de origem e acoplamento estrutural do painel
+- usar `External dependencies` como bloco inicial para objeto externo chamado, vinculo necessario e dependencia funcional fora do proprio painel
+- usar `Identity and container` como bloco inicial para `name`, `fullyQualifiedName`, `guid`, contêiner, origem estrutural e risco de ter aberto o painel errado
+- manter separado o que e superficie funcional do painel e o que e dependencia estrutural do contexto de origem; nao colapsar essas camadas cedo demais
+
+### Regra adicional para revisao de `Transaction`
+
+- em `Transaction`, revisar por blocos funcionais; nao tratar a transacao inteira como bloco unico de leitura
+- os blocos canonicos sao `Transaction structure`, `Attributes and attribute properties`, `Rules`, `Events`, `Execution context` e `Identity and container`
+- antes da analise fina, declarar qual e o bloco primario do sintoma atual
+- abrir bloco adjacente apenas quando houver dependencia funcional explicita com o bloco primario
+- nomear a transicao de bloco no raciocinio e no handoff, por exemplo: `Rules -> Execution context` para separar efeito via edicao web de efeito via BC
+- parar a expansao quando a hipotese ja estiver sustentada; nao reabrir a `Transaction` inteira por reflexo
+- usar `Transaction structure` como bloco inicial para `Level`, chave, `DescriptionAttribute`, shape estrutural e composicao transacional
+- usar `Attributes and attribute properties` como bloco inicial para atributos, `AttributeProperties`, subtipo e contrato de dados
+- usar `Rules` como bloco inicial para regra declarativa, obrigatoriedade e efeito normativo da transacao
+- usar `Events` como bloco inicial para comportamento via interface, acao do usuario e fluxo via edicao web
+- usar `Execution context` como bloco inicial quando a duvida central for a diferenca entre via edicao web e via BC
+- usar `Identity and container` como bloco inicial para `parent`, `module`, `fullyQualifiedName`, origem estrutural e risco de clonagem
+
+### Regra adicional para revisao de `WebPanel`
+
+- em `WebPanel`, revisar por blocos funcionais; nao abrir o XML inteiro como massa unica quando a pergunta for de comportamento, filtro, evento ou diagnostico fino
+- os blocos canonicos sao `layout`, `events`, `variables`, `metadado funcional serializado`, `identidade e contêiner` e `dependencias`
+- antes da analise fina, declarar qual e o bloco primario do sintoma atual
+- abrir bloco adjacente apenas quando houver dependencia funcional explicita com o bloco primario
+- nomear a transicao de bloco no raciocinio e no handoff, por exemplo: `events -> variables` para validar contrato local
+- parar a expansao quando a hipotese ja estiver sustentada; nao reabrir o objeto inteiro por reflexo
+- tratar `metadado funcional serializado` como camada propria; ele pode viver perto do layout, mas nao deve ser lido como decoracao visual
+- usar `events` como bloco inicial para acoes do usuario, refresh, start, load, chamadas e validacao procedural
+- usar `layout` como bloco inicial para composicao visual, estrutura de grid/tab/controle e bindings visiveis
+- usar `variables` como bloco inicial para tipo, declaracao, coerencia de uso e colecao vs simples
+- usar `metadado funcional serializado` como bloco inicial para `Conditions`, `ControlWhere`, `ControlBaseTable`, `ControlOrder`, `ControlUnique`, `PATTERN_ELEMENT_CUSTOM_PROPERTIES`, `WebUserControlProperties` e marcas de pattern
+- se a leitura do layout serializado em `CDATA` vier truncada, nao remontar o layout manualmente; extrair o bloco completo por metodo estruturado ou operar por substituicao cirurgica no raw integral
+- usar `identidade e contêiner` como bloco inicial para `parent`, `module`, `fullyQualifiedName`, risco de clonagem e classificacao estrutural
+- usar `dependencias` como bloco inicial quando o sintoma nascer de `MasterPage`, pattern, user control, objeto chamado ou vinculo externo ausente
+
+### Regra adicional para revisao de `WorkWithForWeb`
+
+- em `WorkWithForWeb`, revisar por blocos funcionais; nao ler o objeto como XML pequeno autossuficiente quando a pergunta for de comportamento, filtro, navegacao, action ou diagnostico fino
+- os blocos canonicos sao `Transaction binding`, `Pattern structure and navigation`, `Actions, links and prompts`, `Attribute references and data contract` e `Identity and container`
+- antes da analise fina, declarar qual e o bloco primario do sintoma atual
+- abrir bloco adjacente apenas quando houver dependencia funcional explicita com o bloco primario
+- nomear a transicao de bloco no raciocinio e no handoff, por exemplo: `Actions, links and prompts -> Pattern structure and navigation` para validar em qual `Selection` a action realmente mora
+- parar a expansao quando a hipotese ja estiver sustentada; nao reabrir o `WorkWithForWeb` inteiro por reflexo
+- usar `Transaction binding` como bloco inicial para `parent`, `parentGuid`, `parentType`, `Transaction` associada, acoplamento estrutural e suspeita de WW ligado ao pai errado
+- usar `Pattern structure and navigation` como bloco inicial para `selection`, abas, `view`, filtros, navegacao e shape funcional interno do pattern
+- usar `Actions, links and prompts` como bloco inicial para action, botao, item de menu, `gxobject`, link, prompt e abertura explicita de outro objeto
+- usar `Attribute references and data contract` como bloco inicial para atributo exibido, filtro por atributo, coluna, aba dependente de atributo, referencia quebrada e convenio estrutural `adbb33c9-0906-4971-833c-998de27e0676-NomeDoAtributo`
+- usar `Identity and container` como bloco inicial para `name`, `fullyQualifiedName`, `guid`, `moduleGuid`, contêiner, origem estrutural e risco de confundir a instancia alvo
+- tratar `WebPanel` gerado ao redor e `WorkWithPlus` apenas como dependencias externas explicitas; eles nao sao bloco funcional interno canonico de `WorkWithForWeb`
+
+## Regra de leitura para XPZ
+
+- antes de usar `xpz-sync`, `xpz-builder` ou `xpz-doc-builder` em fluxo dependente de repositorio, confirmar que a pasta paralela da KB esta montada e validada; se nao estiver, usar `xpz-kb-parallel-setup` primeiro
+- quando a tarefa envolver montar ou serializar `XPZ`, consultar primeiro a secao `Envelope XPZ observado em export real` de `02-regras-operacionais-e-runtime.md`
+- distinguir sempre a pasta nativa da KB da pasta paralela da KB; nesta trilha, os `XPZ`, os XMLs materializados e os artefatos de importacao vivem na pasta paralela da KB, nao dentro da pasta nativa da KB
+- tratar a pasta nativa da KB como area proibida para gravacao por agentes; leitura e permitida apenas quando o fluxo operacional explicito realmente exigir
+- em setup inicial padrao de pasta paralela da KB, com pasta nativa ja informada, sem nomes alternativos e sem conflito estrutural visivel, evitar exploracao ampla do motor compartilhado e dos exemplos antes de criar a estrutura base; aprofundar exploracao so se surgir bloqueio concreto
+- quando a inspecao local da pasta contradisser contexto indireto do ambiente, da sessao ou de hooks, confiar primeiro na inspecao local e seguir com verificacao curta e objetiva; nao gastar o handoff especulando longamente sobre o conflito
+- quando a tarefa envolver gerar, ajustar, preservar ou empacotar XMLs, distinguir explicitamente as tres areas operacionais do repositorio: `ObjetosDaKbEmXml`, `ObjetosGeradosParaImportacaoNaKbNoGenexus` e `PacotesGeradosParaImportacaoNaKbNoGenexus`
+- em auditoria de pasta paralela de KB, declarar separadamente `sync/materializacao`, `indice/gate` e `empacotamento local`; nao concluir "tudo certo" so porque gate e estrutura passaram quando o fluxo de empacotamento local ainda nao foi auditado
+- na carga inicial, considerar tambem `XpzExportadosPelaIDE` como pasta de entrada padrão, `scripts` como pasta de wrappers, `Temp` como destino preferencial de artefatos efemeros de execucao, `KbIntelligence` como pasta do indice derivado, e as demais pastas como estrutura funcional padrão quando o usuario nao informar nomes alternativos
+- se alguma dessas pastas ainda nao existir, criar nesta ordem: `scripts`, `Temp`, `XpzExportadosPelaIDE`, `ObjetosDaKbEmXml`, `KbIntelligence`, `ObjetosGeradosParaImportacaoNaKbNoGenexus`, `PacotesGeradosParaImportacaoNaKbNoGenexus`
+- quando a pasta paralela ja estiver versionada em Git e o setup inicial estiver criando a estrutura do zero, tratar `.gitignore` na raiz e `.gitkeep` nas subpastas estruturais vazias como parte esperada do bootstrap
+- quando a pasta paralela ainda nao estiver versionada em Git, o agente pode oferecer inicializar versionamento Git local como passo opcional; nao deve executar `git init` sem aprovacao explicita do usuario
+- se o usuario aceitar versionamento Git local e o Git nao estiver funcional no ambiente, o agente pode oferecer instalar ou orientar a instalacao antes do bootstrap Git
+- mudar `.gitignore`, politica de versionamento ou escopo de arquivos rastreados para viabilizar `git add`/`commit` e decisao de politica do repositorio; o agente pode diagnosticar e propor opcoes, mas nao deve alterar essa politica automaticamente so para concluir o fechamento
+- se o setup inicial da pasta paralela da KB estiver sendo preparado e o caminho da pasta nativa da KB nao vier no prompt, pedir esse caminho ao usuario antes de concluir o setup
+- no setup inicial, gerar `kb-source-metadata.md` inicial em formato compativel com o motor compartilhado, preservando o campo nominal `last_xpz_materialization_run_at`
+- no setup inicial, nao salvar memoria operacional fora da propria pasta paralela da KB sem autorizacao explicita do usuario; `AGENTS.md`, `README.md` e arquivos operacionais locais sao a camada preferencial de memoria
+- no setup inicial da pasta paralela da KB, nao declarar `setup concluido`, `estrutura pronta` ou equivalente final antes de a camada minima de wrappers locais esperados em `scripts` existir para o fluxo oficial adotado
+- se a estrutura de pastas e documentos estiver pronta, mas a camada minima de wrappers locais ainda nao existir, o status correto e `estrutura parcial` ou `bootstrap incompleto`, nao `setup concluido`
+- `Test-*KbSourceSanity.ps1` e wrapper recomendado quando a pasta tambem adotar fluxo local de geracao e empacotamento; sua ausencia isolada nao impede, por si so, reconhecer a camada minima do fluxo oficial de materializacao ou de `KbIntelligence`
+- se o setup inicial registrar memoria local provisoria como `ObjetosDaKbEmXml ainda nao materializada`, `aguardando primeiro XPZ` ou equivalente, esse estado precisa ser atualizado ou neutralizado depois da primeira materializacao oficial bem-sucedida
+- se `XpzExportadosPelaIDE` ainda nao existir, perguntar onde o usuario quer salvar os `.xpz`
+- se `ObjetosDaKbEmXml` ainda nao existir, tratar a KB como ainda nao materializada e parar antes de assumir snapshot
+- se `KbIntelligence` ainda nao existir, tratar isso como ausencia da camada derivada de triagem, nao como ausencia do snapshot oficial; preparar a pasta e os wrappers locais antes de depender de `xpz-index-triage`
+- nesta trilha, `ObjetosDaKbEmXml` e snapshot oficial e somente leitura para agentes
+- nesta trilha, `KbIntelligence\kb-intelligence.sqlite` e indice derivado e regeneravel a partir de `ObjetosDaKbEmXml`
+- nesta trilha, `ObjetosGeradosParaImportacaoNaKbNoGenexus` e a area de trabalho para XMLs a importar manualmente na IDE
+- nesta trilha, cada frente ativa deve usar sua propria subpasta `NomeCurto_GUID_YYYYMMDD` dentro de `ObjetosGeradosParaImportacaoNaKbNoGenexus`
+- nesta trilha, os arquivos ativos do lote devem ficar dentro da subpasta ativa da frente, e nao soltos na raiz da area de trabalho
+- nesta trilha, `PacotesGeradosParaImportacaoNaKbNoGenexus` e a area de saida para pacotes gerados localmente
+- por padrao, `ObjetosGeradosParaImportacaoNaKbNoGenexus` e `PacotesGeradosParaImportacaoNaKbNoGenexus` nao precisam ser versionadas em Git; se houver duvida sobre rastrear ou ignorar seu conteudo, tratar isso como decisao de politica do repositorio e pedir aprovacao explicita
+- nesta trilha, a promocao para snapshot oficial ocorre apenas pelo script `.ps1` alimentado por `XPZ` exportado pela IDE
+- ao concluir o setup inicial da pasta paralela da KB, deixar explicito que a estrutura esta pronta, mas `ObjetosDaKbEmXml` ainda nao foi materializada
+- se `Test-*KbSourceSanity.ps1` for criado ou atualizado durante a frente, valida-lo diretamente antes do fechamento; `STRUCTURE_OK` e `GATE_OK` nao bastam como prova desse wrapper, porque o checklist estrutural canonico nao o trata como minimo universal
+- ao concluir o setup inicial, oferecer dois proximos passos: `A)` o usuario exporta o `.xpz` full pela IDE para `XpzExportadosPelaIDE`; `B)` o agente tenta gerar o `.xpz` full a partir da pasta nativa da KB, grava o arquivo em `XpzExportadosPelaIDE` e depois materializa os XMLs
+- ao oferecer `A)` e `B)`, declarar que `A)` e o caminho preferencial e normalmente mais rapido, enquanto `B)` tende a demorar mais por depender da trilha via `MSBuild`
+- ao orientar o caminho `A)`, preferir descricao funcional estavel como `export full da KB pela IDE` em vez de depender de rotulos exatos de menu, tela ou botao do GeneXus como se fossem universais; se citar caminho de menu, apresentá-lo depois da instrucao principal e marcado explicitamente como exemplo opcional de navegacao, nunca como passo normativo principal
+- se o usuario escolher `B)`, usar a skill `xpz-msbuild-import-export` e nao improvisar exportacao fora dessa trilha
+- quando a skill de `MSBuild` for publicada por symlink, junction ou outro reparse point, resolver referencias `../` pela pasta real da skill, nao pelo caminho launcher publicado
+- ao concluir a exportacao headless do caminho `B)`, declarar explicitamente o marco `XPZ gerado` antes de prosseguir para materializacao em `ObjetosDaKbEmXml`
+- se o pedido do usuario for apenas gerar o `.xpz`, parar no artefato gerado; so prosseguir para materializacao quando o pedido for seguir com o setup ou com a materializacao
+- em handoff de pasta paralela da KB, declarar marcos operacionais separados, sem colapsar um no outro:
+  - `setup de estrutura`: pastas e memoria local basica foram criadas ou validadas
+  - `bootstrap de wrappers`: wrappers locais minimos existem e sao compativeis com o fluxo oficial adotado
+  - `XPZ gerado`: artefato `.xpz` existe em `XpzExportadosPelaIDE` ou no destino aprovado, mas ainda nao implica materializacao
+  - `materializacao em ObjetosDaKbEmXml`: XMLs oficiais foram criados/atualizados pelo fluxo oficial a partir do `XPZ`
+  - `refresh/validacao do indice`: `KbIntelligence` foi regenerado/validado e tem `last_index_build_run_at >= last_xpz_materialization_run_at`
+  - `conferencia full`: verificacao posterior do acervo, que nao substitui nem deve sobrescrever o relatorio da materializacao principal
+- em auditoria de setup de pasta paralela que adota `KbIntelligence`, validar o contrato de `Get-*KbMetadata.ps1` pelo gate local `Test-*KbMetadataWrapper.ps1` quando ele existir; se o gate bloquear, nao classificar o wrapper de metadata como equivalente por inspecao textual
+- `XPZ` full define o insumo exportado; `FullSnapshot` define modo adicional de verificacao do acervo
+- na materializacao normal do `XPZ` em `ObjetosDaKbEmXml`, inclusive na primeira carga por `XPZ` full vindo da IDE ou por export headless via `MSBuild`, nao presumir `-FullSnapshot` como padrao implicito nem como atalho ergonomico
+- usar `-FullSnapshot` apenas quando houver pedido explicito do usuario por conferencia full, quando o wrapper especifico de conferencia full for o caminho escolhido ou quando a documentacao local exigir isso nominalmente
+- quando o resumo do sync expuser `MaterializationInterpretation`, preferir esse campo para explicar o resultado da materializacao; nao reinventar a leitura a partir de `Created`, `Updated` e `Unchanged`
+- nao afirmar `primeira carga`, `primeira materializacao` ou equivalente quando `Created = 0` e `Unchanged > 0`; sem evidencia previa adicional, isso indica apenas confirmacao de snapshot ja existente contra o insumo atual
+- se houver relatorio da primeira materializacao e outro de reprocessamento confirmatorio ou conferencia full, nao misturar os papeis no handoff; identificar explicitamente qual arquivo representa a materializacao que criou/atualizou o acervo e qual arquivo representa apenas verificacao posterior
+- se a execucao tiver primeira materializacao seguida de reprocessamento confirmatorio ou conferencia full, preferir caminhos ou nomes de relatorio separados; nao sobrescrever silenciosamente o relatorio principal da primeira materializacao com o da segunda passagem
+- so afirmar metadado especifico de `kb-source-metadata.md`, como versao do GeneXus, build, GUID da KB, usuario ou caminho `Source`, quando esse metadado tiver aparecido explicitamente na saida real do wrapper ou quando o proprio `kb-source-metadata.md` tiver sido aberto e lido nominalmente na rodada atual
+- tratar `kb-source-metadata.md` por autoridade de campo: identidade estavel da KB vem do setup/resolvedor da KB nativa local ou de XPZ completo e coerente com ela; `KMW` vem de XPZ real ou template comparavel; timestamps de materializacao pertencem ao `xpz-sync`; `last_setup_audit_run_at` pertence ao setup/auditoria
+- para reconciliar identidade estavel aprovada em `kb-source-metadata.md`, usar `Resolve-GeneXusKbIdentity.ps1` para leitura da KB nativa local e `Update-XpzKbSourceMetadataIdentity.ps1` para escrita localizada; preencher ausentes e bloquear divergencias nao vazias salvo aprovacao explicita de sobrescrita
+- tratar `metadata wrapper` diferente de `OK` como pendencia metodologica real: se houver `PENDENTE_DE_DADOS`, `PENDENTE` ou `BLOCK`, nao declarar `materializado_e_indice_validado` ate reconciliar o metadado ausente ou corrigir o wrapper; `GATE_OK` nao neutraliza essa pendencia
+- se `Source/@kb` de pacote, template ou XPZ vier preenchido com GUID diferente da KB nativa local esperada, nao substituir esse GUID por conta propria nem prosseguir com import headless; bloquear a automacao e orientar o usuario a avaliar/importar manualmente pela IDE
+- nao presumir `Objects.xml` isolado nem manifesto externo separado se isso nao estiver documentado no `02`
+- usar o envelope sanitizado documentado na base como referencia estrutural antes de pedir XML externo adicional
+- depois da bateria de importacao e da consulta ao acervo real, separar explicitamente `problema de envelope`, `problema de shape minimo` e `problema de dependencia da KB`
+- se existir export real comparavel da IDE para a mesma composicao de objetos, esse export deve prevalecer sobre envelope leve hipotetico
+- em pacote misto com `Transaction`, `WorkWithForWeb` e `Procedure`, preferir pacote embutido comparavel antes de tentar envelope por `FilePath`
+- se houver mais de um lote plausivel no workspace, o agente deve parar antes de empacotar e sinalizar contaminacao de workspace
+- o agente nao deve fechar pacote por inferencia, por recencia presumida ou por mistura implícita de frentes
+- o agente deve distinguir explicitamente `mesmo objeto` de `mesma frente`
+- reusar precedente estrutural de pacote nao autoriza herdar automaticamente a identidade nominal da frente anterior
+- quando a continuidade da frente nao estiver fechada por evidencia direta ou confirmacao explicita do usuario, o agente deve explicitar a ambiguidade antes de nomear pasta ou pacote
+- se um `XPZ` oficial vindo da KB trouxer objetos adicionais alem do foco imediato da frente, o agente deve informar o inesperado sem presumir erro; isso pode ser mudanca paralela legitima feita diretamente na IDE do GeneXus
+- o agente deve distinguir explicitamente `artefato da frente atual`, `mudanca paralela legitima vinda da KB/IDE` e `mudanca lateral indevida do proprio agente fora do escopo`
+- quando houver contexto esperado da frente, o agente pode comparar opcionalmente `foco esperado` versus `retorno oficial`, classificando `esperados que voltaram`, `esperados que nao voltaram` e `retorno oficial adicional da KB`, sem transformar a ausencia desse contexto em erro
+- frente validada tecnicamente nao implica publicacao Git; a conclusao tecnica e apenas `validado_tecnicamente` ate o usuario autorizar o fechamento
+- enquanto nao houver autorizacao explicita, o agente pode sugerir os proximos passos de Git e publicacao, mas nao pode executar `git add`, `commit` ou `push`
+- a ordem obrigatoria e: isolar lote, classificar raizes, validar `lastUpdate`, validar BOM, validar manifesto, validar `XML bem-formado`, validar sanidade minima do `Source` quando aplicavel, e so entao empacotar
+- manifesto nao implica automaticamente arquivo fisico; por padrao, ele deve ser apresentado na propria conversa
+- para `WorkWithWeb` com ruído comprovado de `Load Code` em `Selection` e/ou tabs de `View`, registrar isso como nao funcional no manifesto e nao generalizar para todo caso de `WorkWithWeb`
+- ao gerar pacote local para importacao na IDE, preferir nome no formato `NomeCurto_GUID_YYYYMMDD_nn.import_file.xml`
+- nesse formato, `NomeCurto` identifica a frente, `GUID` e `YYYYMMDD` identificam a abertura da frente, e `nn` representa apenas a rodada curta daquela frente
+- antes de gravar `NomeCurto_GUID_YYYYMMDD_nn.import_file.xml`, verificar se ja existe pacote com o mesmo prefixo `NomeCurto_GUID_YYYYMMDD` e o mesmo `nn` em `PacotesGeradosParaImportacaoNaKbNoGenexus`
+- quando a regra for deterministica e houver gate `.ps1` correspondente, executar o gate em vez de decidir por heuristica textual; para colisao de pacote, preferir `Test-*KbPackageCollision.ps1` ou o engine compartilhado `scripts\Test-XpzPackageCollision.ps1`
+- se o mesmo prefixo e o mesmo `nn` ja existirem, o gate deve abortar a gravacao; nao sobrescrever silenciosamente a rodada
+- quando houver colisao de `nn`, retornar o erro explicito e a sugestao do proximo `nn` livre emitidos pelo proprio gate, sem autoincrementar nem gravar automaticamente com o valor sugerido
+- `OBSOLETO_` nao e convencao principal de nome; usar so como contencao de risco quando dois pacotes da mesma frente puderem ser confundidos
+
+## Regra de leitura para XPZ via MSBuild
+
+- quando a frente envolver `MSBuild` headless, consultar primeiro o plano e a skill experimental correspondente antes de presumir suporte de parametros da task `Import`
+- tratar `UpdateFile` e `ImportKBInformation` como capacidades dependentes da assinatura real da task carregada, nao apenas da documentacao offline
+- se a instalacao expuser `PreviewMode`, `IncludeItems` e `ExcludeItems`, priorizar esses caminhos para inspecao controlada antes de qualquer importacao real
+- quando `IncludeItems` ou `ExcludeItems` vierem com multiplos recortes, normalizar a entrada como lista e serializar em formato de lista aceito pela task carregada; nao presumir que uma string unica separada por virgulas sera aceita como um unico item
+- se o wrapper devolver diagnostico estruturado, manter `importedItems` sempre como lista, inclusive com item unico
+- em resposta ao usuario, separar explicitamente `sucesso operacional da chamada MSBuild`, `preview sem alteracao real da KB`, `sucesso operacional com falha no pos-processamento` (MSBuild concluiu com `executionEvidence.msBuildExitCode=0` e a evidencia primaria do log bruto esta presente — `__IMPORTED_ITEM__` ou `__EXPORTED_FILE__` mais arquivo XPZ existente —, mas o pos-processamento local do wrapper falhou e o JSON saiu com `postProcessingFailed=true`), `preview apenas com falha no pos-processamento` (analogo na fase de preview: `executionEvidence.msBuildExitCode=0` sem alterar a KB, evidencia primaria preservada no log bruto, mas pos-processamento local falhou) e `confirmacao funcional pendente na IDE oficial`
+- no diagnostico JSON dos wrappers, `exitCode` e o valor classificado pelo wrapper (0/32/41/42/...) e tambem o exit code do processo; `executionEvidence.msBuildExitCode` e o local canonico do valor bruto da task MSBuild; `msBuildExitCode` top-level, quando existir, e compatibilidade transitoria e deve duplicar o valor canonico; `executionEvidence` concentra evidencia bruta de execucao e logs; `blockingReasons` deve ser lido como lista de causas acionaveis, nao como espelho do exit bruto
+- se o diagnostico JSON vier com `diagnosticDegraded=true`, declarar que a leitura estruturada ficou parcial; isso pode ocorrer mesmo com `postProcessingFailed=false` e nao reclassifica automaticamente a chamada MSBuild como falha operacional
+- antes de importacao real: alem do gate de envelope (`Test-GeneXusImportFileEnvelope.ps1`), **inventariar todos os objetos** do pacote e conciliar com o delta declarado; para `import_file.xml`, preferir `Get-GeneXusImportPackageObjectInventory.ps1 -InputPath <pacote> -AsJson` e, se houver lista esperada em texto `Tipo:Nome`, usar `-DeclaredDeltaPath`; pacotes vindos de **export MSBuild** podem trazer objetos extra nao pedidos — nao assumir que tudo no zip era intencional
+- quando o XML autoritativo ja esta na pasta paralela, **nao** exportar da KB so para obter casca de `.xpz`; preferir `import_file.xml` montado via `xpz-builder` (`Build-GeneXusImportFileEnvelope.ps1`) ou pelo fluxo de frente `New-XpzImportPackage.ps1`/`.py`; para pacote misto/complexo, preferir `-TemplatePackagePath` com pacote real comparavel, salvo pedido explicito do usuario ou confirmacao de que o envelope nao pode ser montado por outro meio documentado
+- em fluxo cotidiano pos-import ou pos-edicao, `Invoke-GeneXusKbBuildAll.ps1` sem `-ForceRebuild` e o passo correto (equivale a `Build All` da IDE, build incremental dos objetos alterados desde o ultimo build); `-ForceRebuild=true` equivale a `Rebuild All` da IDE (regenera TODOS os objetos da KB) e e bloqueado por padrao (exit 46), exigindo `-AllowWideRebuild` com confirmacao explicita do usuario pela frase exata `entendo que isto pode regerar a KB inteira e aceito o custo` — nunca passar implicitamente como `validacao completa automatica`; o mesmo gate vale para `Invoke-GeneXusKbSpecifyGenerate.ps1`
+- em MSBuild headless, wrappers oficiais podem enriquecer preventivamente o `PATH` do processo com subdirs do GeneXus 18 e registrar `observedContext.pathEnrichment`; detalhes e evidência ficam centralizados em `10-base-operacional-msbuild-headless.md`
+
+## Regra de leitura para logs de importacao
+
+- log de importacao deve ser lido por etapa e por categoria de falha
+- erro lateral da IDE nao prova falha de pacote
+- pacote aceito com falha posterior de `Source` ou `Specification` nao deve ser descrito como falha de envelope
+- se houver sucesso parcial, o agente deve dizer explicitamente que o resultado foi parcial
+- quando houver pacote corretivo apos falha parcial, relatar pacote original, objetos importados, objetos falhos e pacote corretivo minimo contendo apenas o delta necessario
+- a conclusao final deve seguir a etapa terminal relevante do log, nao a linha mais alarmante
+- quando recortes sucessivos reduzirem o ruido e o log passar a destacar referencia nao resolvida em objeto importado, tratar o caso como frente de conteudo da KB/`XPZ`, nao como defeito residual do wrapper, salvo evidencia contraria
+
+## Regra de identificação de objetos por tipo
+
+- ao mencionar, localizar ou operar sobre qualquer objeto GeneXus, sempre informar tipo e nome em conjunto — nunca so o nome
+- o tipo determina a pasta física no repositório; referenciar apenas o nome implica risco de busca na pasta errada
+- o mesmo nome pode existir em tipos distintos ao mesmo tempo na mesma KB; coincidência de nome nao prova unicidade nem identidade do objeto
+- antes de qualquer operação sobre um objeto (leitura, edição, empacotamento, referência em manifesto, sincronização XPZ), confirmar explicitamente a pasta onde o arquivo existe no repositório
+- nao inferir tipo, pasta ou identidade do objeto apenas pelo contexto da conversa, por hábito ou por analogia
+- se o tipo não for conhecido com certeza, inspecionar o repositório antes de assumir qualquer pasta
+
+## Precedencia das heuristicas
+
+- se uma heuristica do `02-regras-operacionais-e-runtime.md` apontar cautela runtime, o agente nao pode responder com linguagem otimista
+- se uma heuristica do `02-regras-operacionais-e-runtime.md` apontar `exigir molde`, isso prevalece sobre entusiasmo estrutural, frequencia amostral ou similaridade superficial
+- se uma heuristica do `02-regras-operacionais-e-runtime.md` apontar `abortar`, o agente deve abortar de forma clara, explicando o sinal estrutural e o limite metodologico
+- quando houver choque entre “parece estruturalmente simples” e “runtime sensivel”, prevalece a leitura mais conservadora
+
+## Quando responder com mais confiança
+
+- quando a pergunta for descritiva e estiver diretamente sustentada pelos XMLs ou tabelas empíricas
+- quando a resposta puder ser classificada como `Evidência direta`
+- quando o tipo alvo já estiver bem mapeado por frequência e exemplos comparáveis
+
+## Quando responder com cautela
+
+- quando a conclusão depender de frequência recorrente, mas sem teste externo
+- quando a amostra do tipo for pequena
+- quando a resposta tocar em edição segura, obrigatoriedade real, importação ou build
+- quando o tipo depender de `ATTCUSTOMTYPE`, `pattern` registrado, classe visual pai, package importado, atributo real ou objeto pai existente
+- quando a conclusao depender da semantica de atributo calculado, formula, status derivado ou procedure compartilhada ainda nao revisada
+
+## Quando recusar geração de XPZ
+
+- quando faltar molde XML completo suficientemente próximo
+- quando o tipo estiver em risco `alto` ou `muito alto` sem contexto equivalente, exceto nos fluxos ja destravados de `Transaction` e `WebPanel`
+- quando houver `pattern`, `parent` ou bloco raro ainda não compreendido
+- quando a pergunta exigir afirmar sucesso de importação/build sem evidência externa
+- quando a montagem depender de gerar bloco especial de KB (`KnowledgeBase`, `Settings` ou elemento top-level com nome da KB)
+
+## Regra de decisão entre gerar, exigir molde ou abortar
+
+### Gerar por clonagem conservadora
+
+- apenas em cenário muito controlado
+- apenas com molde do mesmo tipo e contexto estrutural comparável
+- apenas preservando `Object/@type`, `parent*`, `moduleGuid` e `Part type` recorrentes
+- para `Transaction`, usar familia estrutural inferida da propria base
+- para `WebPanel`, usar familia estrutural inferida e molde interno muito proximo
+- para `Theme`, preservar tambem o conjunto minimo de classes visuais efetivamente referenciadas entre si
+- para `API`, copiar apenas `ATTCUSTOMTYPE` comprovado e somente quando o tipo correspondente existir no alvo
+- para `WorkWithForWeb`, usar o convenio estrutural real de atributo do pattern `adbb33c9-0906-4971-833c-998de27e0676-NomeDoAtributo`
+
+### Exigir molde bruto comparável
+
+- quando o tipo estiver em cautela alta
+- quando a amostra for pequena
+- quando o objeto depender de contexto estrutural explícito
+- `Transaction` nao deve mais exigir molde externo
+- `WebPanel` deve operar por familia estrutural e molde interno proximo
+- `Attribute` ja tem shape top-level provado, mas ainda deve exigir filtro cuidadoso para nao confundir definicao real com referencia inline de `Transaction`
+- `PatternSettings` deve exigir pattern registrado e contexto equivalente; o XML sozinho nao fecha o comportamento
+- `API` deve exigir, como regra preferencial, um recorte funcional comparavel contendo tambem `Procedure`, `SDT`, `Domain` e, quando o caso pedir, `Transaction`, `Table` e `DataProvider`
+
+### Abortar
+
+- quando o molde não for comparável
+- quando a mudança exigir mexer em blocos opacos ou raros
+- quando a solicitação pressuponha algo que a base não prova
+
+## Frases que um agente deve evitar
+
+- “isso certamente importa”
+- “isso é obrigatório” sem base comparativa explícita
+- “pode gerar tranquilo”
+- “vai buildar”
+- “é seguro editar” sem qualificação de risco e nível de evidência
+- “o nome do campo deixa claro” quando o campo for calculado ou derivado
+- “o XML esta valido, entao a regra esta certa”
+- “parece GeneXus valido, entao deve importar”
+- “o corpus local tem algo parecido, entao basta”
+- “o Source esta plausivel”
+
+## Tipos em maior cautela
+
+- `Transaction`
+- `WebPanel`
+- `WorkWithForWeb`
+- `Procedure`
+- `Panel`
+- `DataProvider`
+
+## Tipos que ainda pedem molde bruto muito próximo
+
+- todos os tipos em risco `alto` ou `muito alto`, exceto os fluxos operacionais ja destravados para `Transaction` e `WebPanel`
+- `DesignSystem`, por amostra pequena
+- `SDT`, quando a estrutura pai for relevante
+- `Theme` e `PackagedModule`, mesmo sendo candidatos relativamente menos agressivos
+- `Attribute`, quando houver duvida entre definicao top-level e referencia inline dentro de `Transaction`
+- `API`, quando o caso concreto depender de `EXO`, `SDT` ou `Procedure` que nao existam comprovadamente no alvo
+- `PatternSettings`, quando o pattern correspondente nao estiver registrado no ambiente
+
+## Decisao operacional atual para Transaction e WebPanel
+
+- Evidência direta: a base contem 183 `Transaction` e 1196 `WebPanel`.
+- Inferência forte: esse volume e suficiente para que um agente GPT tente execucao controlada em vez de apenas bloquear por falta de evidencia.
+- Inferência forte: `Transaction` pode seguir por padrao estrutural inferido e molde interno da propria base.
+- Inferência forte: `WebPanel` pode seguir por familia estrutural, desde que o molde interno seja cuidadosamente escolhido.
+- Inferência forte: nao pedir mais exemplos para esses tipos deixa de ser regra geral; so faz sentido pedir novos exemplos quando o caso concreto continuar estruturalmente ambiguo.
+- Hipótese: se a importacao falhar, o caso deve voltar como insumo para evoluir a propria base documental.
+
+## Fórmula de resposta recomendada
+
+1. classificar a afirmação como `Evidência direta`, `Inferência forte` ou `Hipótese`
+2. citar o arquivo-base usado
+3. declarar a limitação
+4. recomendar próximo passo conservador
+
+## Regras de materializacao
+
+- Evidência direta: ao gerar `Transaction` ou `WebPanel`, o agente deve partir de um molde XML completo
+- Evidência direta: o agente nao deve materializar objeto final a partir de resumo textual sem XML completo
+- Regra operacional: antes de empacotar, classificar cada XML ativo como `alterado na rodada` ou `reenviado sem mudanca por dependencia obrigatoria`
+- Regra operacional: se o objeto foi realmente alterado na rodada, o `lastUpdate` deve refletir o instante real da ultima gravacao
+- Regra operacional: se o objeto entrou apenas por dependencia obrigatoria ou composicao minima do pacote, o `lastUpdate` oficial anterior deve ser preservado
+- Regra operacional: o agente deve abortar o empacotamento quando houver divergencia entre a classificacao do item e o `lastUpdate` materializado
+- Regra operacional: antes de serializar o pacote, classificar as raizes top-level em `Object`, `Attribute` ou `outro tipo`
+- Regra operacional: `Object` top-level entra em `<Objects>` e `Attribute` top-level entra em `<Attributes>`
+- Regra operacional: em pacote de `Transaction` nova, os atributos referenciados no `Level` devem entrar em `<Attributes>` quando o pacote precisar cria-los ou fornece-los ao destino; nao serializar esses atributos como `Domain` ou outro objeto em `<Objects>`
+- Regra operacional: raiz top-level nao suportada deve bloquear o empacotamento ate tratamento explicito
+- Regra operacional: XML gerado localmente deve ser salvo em UTF-8 sem BOM; se houver BOM, remover e registrar a correcao
+- Regra operacional: antes de gerar `import_file.xml` ou `.xpz`, produzir ou validar manifesto do lote, por padrao na propria conversa, com frente ou descricao curta do lote, origem do lote, quantidade total de XMLs, quantidade de `Objects`, quantidade de `Attributes`, lista ou resumo dos arquivos incluidos, `lastUpdate` aplicado ou preservado, pacote gerado, pacote anterior substituido quando houver e observacoes de risco ou pendencia
+- Regra operacional: salvar manifesto em arquivo e comportamento excepcional e contextual; so fazer isso em incidente de processo envolvendo `ObjetosDaKbEmXml`, substituicao de pacote com rastreabilidade local util, pedido explicito do usuario ou necessidade real de retomada futura fora da conversa imediata
+- Regra operacional: ao nomear o pacote local, preferir `NomeCurto_GUID_YYYYMMDD_nn.import_file.xml`, evitando nome so com assunto, nome so com data/hora, descricao longa de conversa ou sobrescrita recorrente do mesmo nome
+- Regra operacional: antes de gravar `NomeCurto_GUID_YYYYMMDD_nn.import_file.xml`, verificar colisao do mesmo prefixo de frente `NomeCurto_GUID_YYYYMMDD` com o mesmo `nn` em `PacotesGeradosParaImportacaoNaKbNoGenexus`
+- Regra operacional: se houver colisao do mesmo prefixo de frente com o mesmo `nn`, abortar a gravacao; nao sobrescrever silenciosamente a rodada
+- Regra operacional: em caso de colisao, retornar erro explicito com sugestao do proximo `nn` livre para aquela frente, sem autoincrementar nem gravar automaticamente com o valor sugerido
+- Evidência direta: identidade estrutural de objeto sob `Folder` ou `Module` deve ser decidida por exemplar comparavel da mesma KB, conferindo em conjunto `fullyQualifiedName`, `name`, `parent`, `parentGuid`, `parentType` e `moduleGuid`
+- Regra operacional: nome de `Folder` nao deve ser promovido para `fullyQualifiedName` por analogia; primeiro classificar o conteiner por `parentType`, depois seguir o padrao do exemplar comparavel
+- Evidência direta: compatibilidade de `Source` deve ser decidida primeiro pela propria trilha XPZ, usando regra explicita, exemplo sanitizado ou molde documentado, mesmo quando a KB ainda tiver corpus pequeno
+- Regra operacional: corpus local da KB pode confirmar ou desempatar um trecho de `Source`, mas nao substitui a base metodologica nem autoriza consolidar sintaxe apenas plausivel
+- Inferência forte: para `WebPanel`, os anexos completos de `04-webpanel-familias-e-templates.md` ja podem servir como molde sanitizado documentado
+- Inferência forte: para `Transaction`, `05-transaction-familias-e-templates.md` ja contem moldes sanitizados completos para as familias `F1`, `F2`, `F5` e `F6`
+- Inferência forte: para `Procedure`, `DataProvider`, `DataSelector`, `Panel`, `API`, `WorkWithForWeb`, `SDT`, `Domain`, `Theme`, `PackagedModule`, `DesignSystem`, `ColorPalette`, `ThemeClass`, `ThemeColor`, `Image`, `Table`, `Document`, `ExternalObject`, `UserControl`, `Module`, `SubTypeGroup`, `PatternSettings`, `DataStore`, `Dashboard`, `DeploymentUnit`, `Generator`, `Language`, `Folder`, `Stencil` e `File`, a serie `01` agora distribui moldes sanitizados completos representativos em `01e` ate `01h`
+- Inferência forte: para `Procedure` de relatorio simples, `05b-procedure-relatorio-familias-e-templates.md` passa a ser a referencia primaria de molde sanitizado canonico para familias `F2` e `F3`, mas somente nos blocos marcados como `molde pronto`
+- Regra operacional: em `Procedure` de relatorio simples, nao exigir XML real da KB como primeiro passo quando o molde sanitizado canonico desta trilha ja cobrir o shape necessario
+- Regra operacional: depois de uma tentativa inicial e no maximo um corretivo estrutural curto, bloquear nova iteracao por analogia e escalar para XML real comparavel
+- Hipótese: para `Transaction` das familias `F3` e `F4`, continua prudente buscar molde bruto comparavel adicional se a densidade estrutural real do alvo ultrapassar o que os anexos atuais sustentam
+- Evidência direta: a consulta ao acervo real mostrou que `Transaction` materializa atributos dentro do proprio `<Level>` e usa variaveis de contexto como `sdt:Context`, `sdt:TransactionContext` e `sdt:TransactionContext.Attribute`
+- Evidência direta: a consulta ao acervo real mostrou que `Theme` simples valido preserva classes como `TableDetail`, `TableSection` e `TextBlockGroupCaption`, alem de suas referencias internas
+- Evidência direta: a consulta ao acervo real mostrou que `PatternSettings` embute configuracao em `CDATA` com `Pattern="..."` e referencias a procedures e contextos do pattern
+- Evidência direta: a consulta ao export full trouxe exemplo real de `Attribute` top-level com raiz `<Attribute ... name="...">`, e tambem revelou referencias inline `<Attribute key="...">Nome</Attribute>` dentro de `Transaction`
+
+### Transaction
+
+- localizar um molde XML completo do mesmo `Object/@type` e da familia estrutural mais proxima
+- preservar `Object/@type`, `guid`, `parent*`, `moduleGuid`, `Part type` e ordem das `Part`
+- editar somente nomes, descricoes e trechos internos sustentados pelo molde usado
+- preservar tambem os `<Attribute ...>` dentro de `<Level>` com nome interno preenchido, `guid`, `key` e `isNullable` quando existirem
+- antes de empacotar `Transaction` nova, validar coerencia cruzada obrigatoria entre `Level` e `<Attributes>`
+- cada `Level/Attribute@guid` deve existir em `<Attributes>/Attribute@guid`
+- cada `Level/Attribute` por nome deve existir em `<Attributes>/Attribute@name`
+- `DescriptionAttribute`, quando presente, deve apontar para atributo existente no mesmo `Level` e tambem presente em `<Attributes>`
+- se qualquer item acima falhar, abortar antes do pacote final com mensagem objetiva
+- pacote minimo canonico para `Transaction` nova:
+  - `<Objects>` = `Transaction`
+  - `<Attributes>` = atributos da `Transaction`, no minimo PK e atributo de descricao/exibicao quando usados pelo shape escolhido
+  - `<Dependencies>` = apenas o que o shape realmente exigir
+- `TransactionOrObject`, quando aparecer em export comparavel, pode coexistir como auxiliar em `<Objects>`, mas nao substitui a obrigatoriedade de `<Attributes>`
+- erros como `Cannot convert Domain to Attribute`, `Attribute 'X' in 'Transaction Y' does not exist` e `DescriptionAttribute ... could not be found in level attributes` devem ser tratados como falha de construcao do pacote, nao como detalhe a validar depois
+- verificar explicitamente se existe `WorkWithForWeb` associado e se a mudanca impacta atributos exibidos, filtros, abas ou navegacao do pattern web
+- abortar se a mudanca exigir inventar atributo inexistente na KB ou tipo de contexto nao existente
+
+### API
+
+- copiar somente um molde XML completo do mesmo tipo e com contexto comparavel
+- tratar `API` nesta base como caso unico real observado na KB, e nao como familia ampla ja generalizavel
+- validar antes se cada `ATTCUSTOMTYPE` apontado no molde existe no alvo como `EXO`, `SDT` ou tipo base suportado
+- preferir ler e gerar `API` dentro de uma familia funcional combinada, e nao como objeto solto, quando o caso real ja vier acoplado a `Procedure`, `SDT`, `Domain`, `Transaction`, `Table` ou `DataProvider`
+- abortar se a API depender de procedures, `EXO` ou `SDT` inexistentes no destino
+
+### Theme
+
+- preservar `PredefinedTypes`, `Styles`, classes visuais base e referencias internas entre classes
+- nao podar classes so porque parecem "sobrando"; classes como `TableDetail`, `TableSection` e `TextBlockGroupCaption` podem ser exigidas por outras referencias do proprio tema
+- tratar `Theme` preferencialmente em conjunto com `ThemeClass`; para analise mais completa da camada visual, considerar junto tambem `DesignSystem`, `ColorPalette` e `ThemeColor`
+- abortar se a edicao quebrar o grafo minimo de classes referenciadas
+
+### PatternSettings
+
+- tratar o objeto como configuracao de pattern, nao como objeto autocontido
+- validar se o pattern citado por GUID esta registrado no ambiente de destino
+- abortar se o caso exigir inferir ou inventar contexto de pattern, procedures de suporte ou variaveis de contexto
+
+### Attribute
+
+- distinguir sempre dois formatos diferentes: `Attribute` top-level real e referencia inline de `Transaction`
+- ao extrair ou usar corpus de `Attribute`, aceitar apenas raiz `<Attribute ... name="...">` com `Part` e `Properties`
+- nao reutilizar nos curtos `<Attribute key="True|False" guid="...">Nome</Attribute>` como se fossem objeto `Attribute` completo
+- ao gerar `Attribute` isolado, partir apenas de molde real top-level comparavel
+- validar propriedades nominais que apontem para atributos reais da KB, como `ControlItemDescription`
+- se `ControlItemDescription`, `idBasedOn` ou referencia equivalente apontarem para atributo inexistente no destino, abortar em vez de tratar isso como problema de envelope
+- se houver opcao, preferir `Attribute` real semanticamente fechado, sem `ControlItemDescription`, porque esse perfil ja demonstrou importacao bem-sucedida
+
+### WorkWithForWeb
+
+- tratar o objeto como instancia de pattern por `Transaction`, nao como XML independente simples
+- usar referencias de atributo no formato estrutural real `adbb33c9-0906-4971-833c-998de27e0676-NomeDoAtributo`
+- nao substituir esse prefixo por GUID de `Attribute` top-level nem por GUID inline do `Level` da `Transaction`
+- se a frente introduzir atributos novos usados em `selection`, filtros, abas ou navegacao, tratar o pacote como caso misto `Transaction + WorkWithForWeb + Attribute`
+- ao inserir ou alterar action, localizar estruturalmente a `Selection` alvo no XML interno antes de editar `<actions>`; nao usar substituicao textual ampla em tags repetidas
+- validar que a action nova ficou exatamente uma vez no `Selection` correto; duplicidade ou action em escopo ambiguo bloqueia o pacote ate reinspecao
+- se o objetivo incluir a camada fisica, lembrar que `Table` e `Index` seguem outra trilha: `Table` e top-level proprio e `Index` aparece embutido em `Table`
+
+### Table e Index
+
+- tratar `Table` como objeto top-level da camada fisica e `Index` como estrutura interna da `Table`
+- quando a pergunta envolver `Index`, consultar primeiro um molde comparavel de `Table`, nao um suposto corpus de `Index` isolado
+- preservar bloco de chave, `<Indexes>`, `Index/@Type`, `Index/@Source` e ordem dos `Member`
+- nesta KB, tratar prefixo `I` como indice automatico do GeneXus e prefixo `U` como indice manual criado por humano
+- se um indice `I...` tiver nome descritivo, assumir primeiro que houve apenas renomeacao editorial do nome, sem mudanca de campos ou ordem
+- ler indices automaticos de auditoria como casos de FK automatica renomeada, nao como familia especial separada
+- tratar indice `User` como tuning manual empirico para ordenacao/performance, especialmente quando a ordenacao real divergir dos indices automaticos disponiveis
+- nao supor que toda `Table` precise de indice `User`; a ausencia de `U...` pode ser a decisao correta quando o volume esperado nao compensa custo extra
+- fora de evidencia comparavel forte, preferir a hipotese conservadora `PK + poucos Automatic Duplicate` antes de inventar `User` adicional
+- nao usar casos excepcionais locais sem `Automatic Duplicate`, como `OperacaoFiscal`, `Pais` e `TipoDocumento`, como molde preferencial para novas inferencias
+- preferir pacotes comparaveis com `Transaction` junto quando a pergunta depender da ponte logica -> fisica
+- abortar se o caso exigir inventar indice novo, chave fisica nova ou tratar `Index` como top-level sem evidencia externa adicional
+
+### WebPanel
+
+- identificar primeiro a familia estrutural usando `04-webpanel-familias-e-templates.md`
+- selecionar um molde interno da mesma familia; quando houver anexo sanitizado completo, ele pode ser a fonte final do prototipo
+- preservar `layout`, `events`, `variables`, `Part type`, controles e bindings do molde-base
+- abortar se a familia nao estiver clara ou se o alvo exigir `grid`, `tab`, componente customizado ou contexto de `parent` ausente no molde escolhido
+
+## Regras de serializacao XPZ
+
+- o objeto clonado deve continuar como XML bem-formado com raiz unica `<Object>`
+- blocos `Source` e `InnerHtml` que vierem em `CDATA` devem permanecer em `CDATA`
+- o agente deve incluir o objeto em `<Objects>` seguindo o envelope XPZ observado documentado em `02-regras-operacionais-e-runtime.md`
+- em pacote misto com `Transaction`, `WorkWithForWeb` e atributos novos, `Transaction` e `WorkWithForWeb` ficam em `<Objects>` e os atributos top-level ficam em `<Attributes>`
+- se houver `WorkWithForWeb` no pacote misto, preservar tambem a referencia de `Pattern` no bloco `Dependencies`
+- ao gerar ou alterar XML de objeto GeneXus, obter o horario local no momento da gravacao e preencher `lastUpdate` com o instante real correspondente
+- `lastUpdate` nao e detalhe cosmetico; ele deve ser conferido no arquivo salvo depois de cada gravacao local
+- se o objeto mudou, `lastUpdate` deve ser regravado com o instante real da ultima escrita
+- se o objeto nao mudou e entrou apenas para dependencia, preservar o `lastUpdate` oficial
+- nao concluir XML ou pacote enquanto o `lastUpdate` do arquivo final nao tiver sido relido e confirmado
+- nao concluir XML GeneXus grande apenas porque a escrita terminou; reler cabecalho, cauda e trecho funcional afetado, validar XML bem-formado, fechamento da raiz e `CDATA` antes de empacotar
+- para ler XML/XPZ grande sem despejar `CDATA` inteiro na conversa, preferir `scripts\Extract-XpzObject.ps1`, `scripts\Get-GeneXusObjectSummary.ps1` e, para `Panel`, `scripts\Compare-GeneXusPanelShape.ps1`
+- se heredoc, here-string ou mecanismo equivalente terminar por EOF antes do delimitador esperado, tratar o arquivo como truncado/corrompido e regenerar por metodo controlado
+- em PowerShell, se houver interpolacao com chamada de metodo dentro de here-string, usar subexpressao `$()` ou evitar here-string para essa composicao; `$variavel.Metodo()` pode sair literal
+- em clonagem conservadora de `WebPanel` que deveria preservar bindings, comparar antes do pacote os bindings serializados relevantes do original e do clone; no minimo, `fieldSpecifier` deve bater em contagem e nomes
+- se houver export real comparavel da IDE para a mesma composicao, preferir repetir o shape desse export em vez de improvisar `Dependencies` ou `ObjectsIdentityMapping`
+- para pacote misto com `Transaction`, `WorkWithForWeb` e `Procedure`, preferir objetos embutidos em `<Objects>` quando esse for o formato validado pelo molde real
+- quando o formato exigir UTC com `Z`, converter corretamente a partir do horario local real; nao reaproveitar timestamp antigo nem de rodada anterior
+- o agente deve tratar `ObjectsIdentityMapping` como mapeamento de contexto; nao repetir ali cada objeto exportado nem inventar pares `Object` -> `ObjectIdentity` 1:1
+- quando o objeto depender de `parentGuid` ou `moduleGuid` externos relevantes, o agente deve preferir manter no `ObjectsIdentityMapping` a identidade correspondente com o mesmo `Guid`
+- o agente deve preservar sempre preenchidos, no formato normal, `Source/Version/@name`, `Object/@name` e `ObjectIdentity/@Name`
+- o agente deve garantir tambem que `Source/@kb` e `Source/Version/@guid` sejam GUIDs sintaticamente validos; placeholders textuais ja falharam em parse real nesta trilha
+- GUID sintaticamente valido nao basta para import headless por agente: quando houver identidade local esperada, `Source/@kb` tambem precisa corresponder a KB nativa local; divergencia é indicio de pacote de outra KB e deve ser encaminhada para importacao manual pela IDE
+- ao clonar/criar objeto a partir de XML existente, procurar residuos do objeto molde em `Object/@name`, `fullyQualifiedName`, `guid`, propriedade `Name`, `Description`, `Source`, `Rules/parm`, chamadas internas, dependencias e `ObjectsIdentityMapping`
+- cada residuo do objeto molde deve ser classificado como intencional, dependencia necessaria ou erro de clonagem; ocorrencia sem classificacao bloqueia o pacote
+- o agente nao deve gerar `KnowledgeBase`, `Settings` nem elemento top-level com nome da KB ao montar `.xpz` normal de objetos
+- se a serializacao depender de bloco especial de KB, o agente deve tratar isso como export especial e recusar a montagem normal de objetos
+- o agente pode usar a pasta local `from-anywhere-to-GeneXus` apenas como confirmacao secundaria de envelope minimo; nao deve copiar dela valores hardcoded como `Build=0`, `SampleKB`, `BusinessLogic`, `root`, `parentGuid` fixo ou `moduleGuid` fixo
+- antes de empacotar, validar parse XML, presenca de todos os `Part type` recorrentes e coerencia entre objeto clonado e molde-base
+- o agente nao deve afirmar “sem erro de importacao”; deve afirmar apenas que seguiu a especificacao mais conservadora disponivel
+- ha evidência direta de importacao bem-sucedida para um caso minimo de `Procedure`; isso ajuda a validar o envelope normal, mas nao autoriza generalizacao irrestrita para todos os tipos
+
+## Regras de fonte
+
+- Fonte valida: XML bruto de objeto
+- Fonte valida: envelope XPZ observado documentado em `02-regras-operacionais-e-runtime.md`
+- Fonte valida: exemplos sanitizados completos de `04-webpanel-familias-e-templates.md`, quando usados como molde de `WebPanel`
+- Fonte valida: molde sanitizado canonico completo de `05b-procedure-relatorio-familias-e-templates.md`, quando o caso for `Procedure` de relatorio simples dentro da cobertura `F2` ou `F3` e o bloco usado estiver marcado como `molde pronto`
+- Fonte invalida: markdown apenas descritivo desta base, inclusive alias, tabelas e sinteses sem bloco `molde pronto`
+- Fonte invalida: reconstrucoes livres baseadas em tabelas, frequencias ou descricoes
+- Inferência forte: esta base documental ja explica o envelope XPZ observado e ja contem moldes sanitizados completos para `WebPanel`
+- Inferência forte: esta base documental ja contem moldes sanitizados completos tambem para `Transaction` em familias representativas
+- Inferência forte: esta base documental ja contem moldes sanitizados completos tambem para `Procedure`, `DataProvider`, `DataSelector`, `Panel`, `API`, `WorkWithForWeb`, `SDT`, `Domain`, `Theme`, `PackagedModule`, `DesignSystem`, `ColorPalette`, `ThemeClass`, `ThemeColor`, `Image`, `Table`, `Document`, `ExternalObject`, `UserControl`, `Module`, `SubTypeGroup`, `PatternSettings`, `DataStore`, `Dashboard`, `DeploymentUnit`, `Generator`, `Language`, `Folder`, `Stencil` e `File` em perfis representativos
+- Regra operacional: quando `Procedure` de relatorio simples estiver coberta por molde canonico da trilha, rotular a resposta como baseada em `molde sanitizado`; quando houver escalada, rotular explicitamente `XML real da KB atual`, `XML real de outra KB` ou `hipotese`
+- Hipótese: no caso de `WorkWithForWeb`, os anexos ajudam a prototipar, mas ainda nao eliminam a necessidade de cautela extra quando o caso concreto depender fortemente de `pattern` gerado e contexto do objeto pai
+- Hipótese: nem todos os tipos da base chegaram nesse mesmo nivel de cobertura; para varios deles ainda prevalece a orientacao por familia + molde bruto comparavel
+
+## Risco de inferência inconsciente em investigações
+
+Complemento ao sistema de níveis de confiança de `02-regras-operacionais-e-runtime.md`.
+
+O risco mais difícil de detectar não é o agente que sabe que está especulando e não sinaliza.
+É o agente que acredita estar reportando observação direta quando está, na prática, consolidando
+por contexto — e por isso não percebe que deveria qualificar.
+
+Três padrões concretos identificados empiricamente (2026-05-10):
+
+- **Inferência por proximidade estrutural**: atribuir propriedade de uma linha a outra linha
+  vizinha da mesma família, sem query literal da linha específica. Exemplo: concluir que o
+  `EntityTypeNamespace` de um tipo é K2BTools porque os tipos vizinhos na mesma tabela têm
+  esse namespace, sem ler o campo da linha alvo diretamente.
+
+- **COUNT sem granularidade reportado como narrativa sobre elementos**: transformar um total
+  agregado por critério textual em afirmação sobre elementos individuais sem verificar se
+  todos têm o mesmo nome/tipo. Exemplo: "37 registros de FormDesigner" quando o COUNT mistura
+  dois nomes distintos (`FormDesigner`=1, `FormDesignerPart`=36).
+
+- **Consolidação de evidências de contexto sem preservar origem**: agrupar itens do mesmo
+  provider/contexto em um único bloco e, ao redigir, deixar a proximidade sugerir vínculo
+  que não foi provado. Exemplo: listar GUIDs de um provider junto ao trecho sobre um tipo
+  específico sem declarar explicitamente a qual tipo cada GUID pertence.
+
+Regra operacional: ao revisar ou registrar achados de investigação — próprios ou de outro
+agente — verificar explicitamente se cada afirmação tem fonte direta rastreável (linha lida,
+query executada, coluna nominada) ou se é inferência por consolidação de contexto. Em caso
+de dúvida, qualificar como `Inferência forte` ou `Hipótese` antes de registrar como fato.

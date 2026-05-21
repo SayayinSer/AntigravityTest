@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ExportFile>
+  <KMW>
+    <MajorVersion>4</MajorVersion>
+    <MinorVersion>0</MinorVersion>
+    <Build>158023</Build>
+  </KMW>
+  <Source kb="afa47377-41d5-4ae8-9755-6f53150aa361" username="FACTORIAGX\Sergio" UNCPath="\\localhost\D$\Models\77Lab\AngularV1">
+    <Version guid="afa47377-41d5-4ae8-9755-6f53150aa361" name="77Lab" />
+  </Source>
+  <Objects>
+<Object parentGuid="afa47377-41d5-4ae8-9755-6f53150aa361" user="FACTORIAGX\Sergio" versionDate="0001-01-01T00:00:00.0000000" lastUpdate="2026-05-05T19:40:00.0000000Z" checksum="" fullyQualifiedName="ZonaInsert" moduleGuid="afa47377-41d5-4ae8-9755-6f53150aa361" guid="3a44c314-c273-43a6-b757-e322b1759810" name="ZonaInsert" type="84a12143-3242-4a54-939e-64d054572011" description="Zona Insert">
+  <Part type="9b0a32a3-de6d-4be1-a4dd-1b85d3741534">
+    <Source><![CDATA[&Zona.Save()
+if &Zona.Success()
+    commit
+else
+    &Messages = &Zona.GetMessages()
+    rollback
+endif]]></Source>
+  </Part>
+  <Part type="c44bd5ff-f918-415b-98e6-aca44fed84fa">
+    <Source><![CDATA[parm(in:&Zona, out:&Messages);]]></Source>
+  </Part>
+</Object>
+<Object parentGuid="afa47377-41d5-4ae8-9755-6f53150aa361" user="FACTORIAGX\Sergio" versionDate="0001-01-01T00:00:00.0000000" lastUpdate="2026-05-05T19:40:00.0000000Z" checksum="" fullyQualifiedName="ZonaUpdate" moduleGuid="afa47377-41d5-4ae8-9755-6f53150aa361" guid="408dceb0-73bb-409f-91a8-09b8e79a9652" name="ZonaUpdate" type="84a12143-3242-4a54-939e-64d054572011" description="Zona Update">
+  <Part type="9b0a32a3-de6d-4be1-a4dd-1b85d3741534">
+    <Source><![CDATA[&ZonaBC.Load(&Zona.ZonaCodigo)
+&ZonaBC.ZonaNombre = &Zona.ZonaNombre
+&ZonaBC.Save()
+if &ZonaBC.Success()
+    commit
+else
+    &Messages = &ZonaBC.GetMessages()
+    rollback
+endif]]></Source>
+  </Part>
+  <Part type="c44bd5ff-f918-415b-98e6-aca44fed84fa">
+    <Source><![CDATA[parm(in:&Zona, out:&Messages);]]></Source>
+  </Part>
+</Object>
+<Object parentGuid="afa47377-41d5-4ae8-9755-6f53150aa361" user="FACTORIAGX\Sergio" versionDate="0001-01-01T00:00:00.0000000" lastUpdate="2026-05-05T19:40:00.0000000Z" checksum="" fullyQualifiedName="ZonaDelete" moduleGuid="afa47377-41d5-4ae8-9755-6f53150aa361" guid="f03d2a5f-0975-4c0f-bc5d-f5d735d86699" name="ZonaDelete" type="84a12143-3242-4a54-939e-64d054572011" description="Zona Delete">
+  <Part type="9b0a32a3-de6d-4be1-a4dd-1b85d3741534">
+    <Source><![CDATA[&Zona.Load(&ZonaCodigo)
+&Zona.Delete()
+if &Zona.Success()
+    commit
+else
+    &Messages = &Zona.GetMessages()
+    rollback
+endif]]></Source>
+  </Part>
+  <Part type="c44bd5ff-f918-415b-98e6-aca44fed84fa">
+    <Source><![CDATA[parm(in:&ZonaCodigo, out:&Messages);]]></Source>
+  </Part>
+</Object>
+<Object parentGuid="afa47377-41d5-4ae8-9755-6f53150aa361" user="FACTORIAGX\Sergio" versionDate="0001-01-01T00:00:00.0000000" lastUpdate="2026-05-05T19:40:00.0000000Z" checksum="" fullyQualifiedName="ZonaGetByKey" moduleGuid="afa47377-41d5-4ae8-9755-6f53150aa361" guid="d3436968-045c-46d4-b5d1-353c46019d76" name="ZonaGetByKey" type="84a12143-3242-4a54-939e-64d054572011" description="Zona Get By Key">
+  <Part type="9b0a32a3-de6d-4be1-a4dd-1b85d3741534">
+    <Source><![CDATA[&Zona.Load(&ZonaCodigo)
+if not &Zona.Success()
+    &Messages = &Zona.GetMessages()
+endif]]></Source>
+  </Part>
+  <Part type="c44bd5ff-f918-415b-98e6-aca44fed84fa">
+    <Source><![CDATA[parm(in:&ZonaCodigo, out:&Zona, out:&Messages);]]></Source>
+  </Part>
+</Object>
+<Object parentGuid="afa47377-41d5-4ae8-9755-6f53150aa361" user="FACTORIAGX\Sergio" versionDate="0001-01-01T00:00:00.0000000" lastUpdate="2026-05-05T19:40:00.0000000Z" checksum="" fullyQualifiedName="ZonaGetAll" moduleGuid="afa47377-41d5-4ae8-9755-6f53150aa361" guid="db5b4a96-4c9f-4ab0-8354-e7d8ccfa08c4" name="ZonaGetAll" type="84a12143-3242-4a54-939e-64d054572011" description="Zona Get All">
+  <Part type="9b0a32a3-de6d-4be1-a4dd-1b85d3741534">
+    <Source><![CDATA[for each order ZonaNombre
+    &Zonas.Add(Zona)
+endfor]]></Source>
+  </Part>
+  <Part type="c44bd5ff-f918-415b-98e6-aca44fed84fa">
+    <Source><![CDATA[parm(out:&Zonas);]]></Source>
+  </Part>
+</Object>
+<Object parentGuid="afa47377-41d5-4ae8-9755-6f53150aa361" user="FACTORIAGX\Sergio" versionDate="0001-01-01T00:00:00.0000000" lastUpdate="2026-05-05T19:40:00.0000000Z" checksum="" fullyQualifiedName="ZonaApi" moduleGuid="afa47377-41d5-4ae8-9755-6f53150aa361" guid="fce250f2-32f4-4ef3-8926-807f7f10431e" name="ZonaApi" type="dcd3395a-7fcd-400a-867f-94a50d242555" description="Zona API CRUD">
+  <Part type="d24a58ad-57ba-41b7-9e6e-eaca3543c778">
+    <Source><![CDATA[Service Zonas
+{
+    [RestMethod: POST]
+    [Path: "/"]
+    Insert(in:&Zona, out:&Messages) => ZonaInsert(&Zona, &Messages);
+
+    [RestMethod: PUT]
+    [Path: "/{ZonaCodigo}"]
+    Update(in:&Zona, out:&Messages) => ZonaUpdate(&Zona, &Messages);
+
+    [RestMethod: DELETE]
+    [Path: "/{ZonaCodigo}"]
+    Delete(in:&ZonaCodigo, out:&Messages) => ZonaDelete(&ZonaCodigo, &Messages);
+
+    [RestMethod: GET]
+    [Path: "/{ZonaCodigo}"]
+    GetByKey(in:&ZonaCodigo, out:&Zona, out:&Messages) => ZonaGetByKey(&ZonaCodigo, &Zona, &Messages);
+
+    [RestMethod: GET]
+    [Path: "/"]
+    GetAll(out:&Zonas) => ZonaGetAll(&Zonas);
+}]]></Source>
+  </Part>
+</Object>
+<Object parentGuid="afa47377-41d5-4ae8-9755-6f53150aa361" user="FACTORIAGX\Sergio" versionDate="0001-01-01T00:00:00.0000000" lastUpdate="2026-05-05T19:40:00.0000000Z" checksum="" fullyQualifiedName="InitConceptosCaja" moduleGuid="afa47377-41d5-4ae8-9755-6f53150aa361" guid="c0b9a42a-2570-429b-80c4-ad52be36f77d" name="InitConceptosCaja" type="84a12143-3242-4a54-939e-64d054572011" description="Init Conceptos de Caja">
+  <Part type="9b0a32a3-de6d-4be1-a4dd-1b85d3741534">
+    <Source><![CDATA[new
+    ConceptoCajaNombre = "Gasto de Movilidad"
+endnew
+new
+    ConceptoCajaNombre = "Pago de servicios"
+endnew
+new
+    ConceptoCajaNombre = "Cobro de Deuda"
+endnew
+commit]]></Source>
+  </Part>
+</Object>
+  </Objects>
+</ExportFile>

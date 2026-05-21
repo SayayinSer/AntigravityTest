@@ -1,0 +1,14 @@
+{
+  "GeneXus": {
+    "InstallationPath": "C:\\Genexus18\\GX18U14"
+  },
+  "Server": {
+    "HttpPort": 5000,
+    "McpStdio": true,
+    "SessionIdleTimeoutMinutes": 10,
+    "WorkerIdleTimeoutMinutes": 5
+  },
+  "Environment": {
+    "KBPath": "D:\\Models\\77Lab\\AngularV1"
+  }
+}

@@ -1,0 +1,11 @@
+<Project DefaultTargets="Rebuild" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(GX_PROGRAM_DIR)\Genexus.Tasks.targets" />
+  <PropertyGroup>
+    <KBPath Condition="'$(KBPath)' == ''">C:\Models\MyKB</KBPath>
+  </PropertyGroup>
+  <Target Name="Rebuild">
+    <OpenKnowledgeBase Directory="$(KBPath)" />
+    <RebuildAll />
+    <CloseKnowledgeBase />
+  </Target>
+</Project>

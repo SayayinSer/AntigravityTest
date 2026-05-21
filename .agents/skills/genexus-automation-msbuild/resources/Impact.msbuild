@@ -1,0 +1,11 @@
+<Project DefaultTargets="Impact" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(GX_PROGRAM_DIR)\Genexus.Tasks.targets" />
+  <PropertyGroup>
+    <KBPath Condition="'$(KBPath)' == ''">C:\Models\MyKB</KBPath>
+  </PropertyGroup>
+  <Target Name="Impact">
+    <OpenKnowledgeBase Directory="$(KBPath)" />
+    <ImpactDatabase ExecuteReorganization="false" />
+    <CloseKnowledgeBase />
+  </Target>
+</Project>

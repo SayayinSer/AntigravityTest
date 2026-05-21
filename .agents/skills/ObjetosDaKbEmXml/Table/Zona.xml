@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Object parentGuid="afa47377-41d5-4ae8-9755-6f53150aa361" user="FACTORIAGX\Sergio" versionDate="0001-01-01T00:00:00.0000000" lastUpdate="2026-05-05T17:24:26.0000000Z" checksum="8bbbd3028b9b7c1ee87a986f9ce948ee" fullyQualifiedName="Zona" moduleGuid="afa47377-41d5-4ae8-9755-6f53150aa361" guid="d610322a-0d7b-4926-866e-8583e2ca8e22" name="Zona" type="857ca50e-7905-0000-0007-c5d9ff2975ec" description="Zona">
+  <Part type="00000000-0000-0000-0002-000000000004">
+    <Key>
+      <Item guid="d34e81c8-dbb2-4dc7-bb3a-bd033f286b7d">ZonaCodigo</Item>
+    </Key>
+    <Properties />
+  </Part>
+  <Part type="a5c0e770-560d-0001-0001-7fe71c260de3">
+    <Indexes>
+      <TableIndex>
+        <Index Type="Unique" Source="Automatic" parentGuid="00000000-0000-0000-0000-000000000000" user="FACTORIAGX\Sergio" versionDate="0001-01-01T00:00:00.0000000" lastUpdate="2026-05-05T17:24:26.0000000Z" checksum="e57e8c1e15e8ea21624a7869311a62a6" fullyQualifiedName="IZona" moduleGuid="00000000-0000-0000-0000-000000000000" guid="0a59d154-0970-4486-ac6e-72f3406e4a0f" name="IZona" type="9e750647-3679-0000-0100-2529de263960" description="IZona">
+          <Part type="62cfa789-c127-0001-0100-77676175e433">
+            <Members>
+              <Member Order="Ascending">ZonaCodigo</Member>
+            </Members>
+            <Properties />
+          </Part>
+          <Properties>
+            <Property>
+              <Name>Name</Name>
+              <Value>IZona</Value>
+            </Property>
+          </Properties>
+        </Index>
+      </TableIndex>
+    </Indexes>
+    <Properties />
+  </Part>
+  <Properties>
+    <Property>
+      <Name>Name</Name>
+      <Value>Zona</Value>
+    </Property>
+  </Properties>
+</Object>

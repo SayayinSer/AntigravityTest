@@ -1,0 +1,517 @@
+{
+  "description": "Validation cases for KB Intelligence Phase 5 semantic relation increments using the KBExemplo parallel KB.",
+  "cases": [
+    {
+      "id": "phase5-case-1-transaction-attcustomtype-resolves-sdt-context",
+      "source": "Transaction:OrdemDeProducao",
+      "target": "SDT:ContextoDeSessao",
+      "expected_rule": "attcustomtype_resolved_object",
+      "should_exist": true,
+      "expectation": "ATTCUSTOMTYPE sdt:ContextoDeSessao in Transaction must resolve to SDT:ContextoDeSessao"
+    },
+    {
+      "id": "phase5-case-2-procedure-attcustomtype-resolves-sdt-context",
+      "source": "Procedure:ExportWWRegistroAjustado",
+      "target": "SDT:ContextoDeSessao",
+      "expected_rule": "attcustomtype_resolved_object",
+      "should_exist": true,
+      "expectation": "ATTCUSTOMTYPE sdt:ContextoDeSessao in Procedure must resolve to SDT:ContextoDeSessao"
+    },
+    {
+      "id": "phase5-case-3-literal-customtype-is-preserved",
+      "source": "Transaction:OrdemDeProducao",
+      "target": "CustomType:sdt:ContextoDeSessao",
+      "expected_rule": "attcustomtype_property",
+      "should_exist": true,
+      "expectation": "Resolved ATTCUSTOMTYPE relation must not replace the literal CustomType relation"
+    },
+    {
+      "id": "phase5-case-4-builtin-bas-boolean-does-not-resolve-domain",
+      "source": "Transaction:OrdemDeProducao",
+      "target": "Domain:Boolean",
+      "expected_rule": "attcustomtype_resolved_object",
+      "should_exist": false,
+      "expectation": "Built-in bas:Boolean must not be forced to Domain:Boolean"
+    },
+    {
+      "id": "phase5-case-5-unknown-sdt-does-not-resolve",
+      "source": "Transaction:OrdemDeProducao",
+      "target": "SDT:TipoInexistenteParaNaoIndexar",
+      "expected_rule": "attcustomtype_resolved_object",
+      "should_exist": false,
+      "expectation": "Unknown CustomType target must not create a resolved relation"
+    },
+    {
+      "id": "phase5-case-6-attribute-idbasedon-resolves-domain-data",
+      "source": "Attribute:OrdemDeProducaoData",
+      "target": "Domain:Data",
+      "expected_rule": "attribute_idbasedon_domain",
+      "should_exist": true,
+      "expectation": "Attribute idBasedOn Domain:Data must resolve to Domain:Data when the Domain object exists"
+    },
+    {
+      "id": "phase5-case-7-attribute-idbasedon-resolves-domain-cancelado",
+      "source": "Attribute:OrdemDeProducaoCancelado",
+      "target": "Domain:StatusCancelado",
+      "expected_rule": "attribute_idbasedon_domain",
+      "should_exist": true,
+      "expectation": "Attribute idBasedOn Domain:StatusCancelado must resolve to Domain:StatusCancelado when the Domain object exists"
+    },
+    {
+      "id": "phase5-case-8-external-gx-domain-does-not-resolve",
+      "source": "Attribute:EmpresaCoordenadas",
+      "target": "Domain:Geolocation, GeneXus",
+      "expected_rule": "attribute_idbasedon_domain",
+      "should_exist": false,
+      "expectation": "External GeneXus domains must not create resolved Domain relations when absent from the local inventory"
+    },
+    {
+      "id": "phase5-case-9-attribute-without-idbasedon-does-not-resolve-domain",
+      "source": "Attribute:OrdemDeProducaoItensCanceladoContagem",
+      "target": "Domain:ItensContagem",
+      "expected_rule": "attribute_idbasedon_domain",
+      "should_exist": false,
+      "expectation": "Attribute without idBasedOn must not create an Attribute to Domain relation"
+    },
+    {
+      "id": "phase5-case-10-transaction-level-key-attribute",
+      "source": "Transaction:OrdemDeProducao",
+      "target": "Attribute:OrdemDeProducaoEmpresaId",
+      "expected_rule": "transaction_level_attribute",
+      "should_exist": true,
+      "expectation": "Transaction Level Attribute element for a key attribute must create a Transaction to Attribute relation"
+    },
+    {
+      "id": "phase5-case-11-transaction-level-non-key-attribute",
+      "source": "Transaction:OrdemDeProducao",
+      "target": "Attribute:OrdemDeProducaoData",
+      "expected_rule": "transaction_level_attribute",
+      "should_exist": true,
+      "expectation": "Transaction Level Attribute element for a non-key attribute must create a Transaction to Attribute relation"
+    },
+    {
+      "id": "phase5-case-12-transaction-does-not-link-unlisted-attribute",
+      "source": "Transaction:OrdemDeProducao",
+      "target": "Attribute:MovimentoDeEstoqueId",
+      "expected_rule": "transaction_level_attribute",
+      "should_exist": false,
+      "expectation": "Existing Attribute absent from the Transaction Level must not create a Transaction to Attribute relation"
+    },
+    {
+      "id": "phase5-case-13-transaction-does-not-link-missing-attribute",
+      "source": "Transaction:OrdemDeProducao",
+      "target": "Attribute:ObjetoInexistenteParaNaoIndexar",
+      "expected_rule": "transaction_level_attribute",
+      "should_exist": false,
+      "expectation": "Transaction Level extraction must not create a relation to an unresolved Attribute"
+    },
+    {
+      "id": "phase5-case-14-table-key-attribute-abate-ordem-empresa",
+      "source": "Table:OrdemDeProducao",
+      "target": "Attribute:OrdemDeProducaoEmpresaId",
+      "expected_rule": "table_key_attribute",
+      "should_exist": true,
+      "expectation": "Table Key Item element must create a Table to Attribute relation for a primary key attribute"
+    },
+    {
+      "id": "phase5-case-15-table-key-attribute-abate-ordem-id",
+      "source": "Table:OrdemDeProducao",
+      "target": "Attribute:OrdemDeProducaoId",
+      "expected_rule": "table_key_attribute",
+      "should_exist": true,
+      "expectation": "Second Table Key Item element must create a Table to Attribute relation for a composite primary key"
+    },
+    {
+      "id": "phase5-case-16-table-index-member-does-not-create-key-relation",
+      "source": "Table:OrdemDeProducao",
+      "target": "Attribute:OrdemDeProducaoData",
+      "expected_rule": "table_key_attribute",
+      "should_exist": false,
+      "expectation": "Index member not declared inside Table Key must not create a table_key_attribute relation"
+    },
+    {
+      "id": "phase5-case-17-table-does-not-link-missing-key-attribute",
+      "source": "Table:OrdemDeProducao",
+      "target": "Attribute:ObjetoInexistenteParaNaoIndexar",
+      "expected_rule": "table_key_attribute",
+      "should_exist": false,
+      "expectation": "Table Key extraction must not create a relation to an unresolved Attribute"
+    },
+    {
+      "id": "phase5-case-18-transaction-level-type-resolves-table-abate-ordem",
+      "source": "Transaction:OrdemDeProducao",
+      "target": "Table:OrdemDeProducao",
+      "expected_rule": "transaction_level_table",
+      "should_exist": true,
+      "expectation": "Transaction Level Type must create a Transaction to Table relation when the Table object exists"
+    },
+    {
+      "id": "phase5-case-19-transaction-level-type-resolves-table-animal",
+      "source": "Transaction:ItemDeEstoque",
+      "target": "Table:ItemDeEstoque",
+      "expected_rule": "transaction_level_table",
+      "should_exist": true,
+      "expectation": "Transaction Level Type extraction must work across different Transaction objects"
+    },
+    {
+      "id": "phase5-case-20-transaction-level-type-missing-table-does-not-resolve",
+      "source": "Transaction:ItemParaExpedicao",
+      "target": "Table:ItemParaExpedicao",
+      "expected_rule": "transaction_level_table",
+      "should_exist": false,
+      "expectation": "Transaction Level Type must not create a relation when the Table object is absent from the local inventory"
+    },
+    {
+      "id": "phase5-case-21-transaction-does-not-link-unlisted-table",
+      "source": "Transaction:OrdemDeProducao",
+      "target": "Table:ItemDeEstoque",
+      "expected_rule": "transaction_level_table",
+      "should_exist": false,
+      "expectation": "Existing Table not declared as a Level Type in the Transaction must not create a relation"
+    },
+    {
+      "id": "phase5-case-22-table-index-member-attribute-abate-ordem-data",
+      "source": "Table:OrdemDeProducao",
+      "target": "Attribute:OrdemDeProducaoData",
+      "expected_rule": "table_index_member_attribute",
+      "should_exist": true,
+      "expectation": "Table Index Member element must create a Table to Attribute relation for indexed attributes"
+    },
+    {
+      "id": "phase5-case-23-table-index-member-attribute-abate-ordem-lote",
+      "source": "Table:OrdemDeProducao",
+      "target": "Attribute:OrdemDeProducaoLoteDoDia",
+      "expected_rule": "table_index_member_attribute",
+      "should_exist": true,
+      "expectation": "Table Index Member extraction must cover user-defined composite index members"
+    },
+    {
+      "id": "phase5-case-24-table-key-member-is-also-index-member",
+      "source": "Table:OrdemDeProducao",
+      "target": "Attribute:OrdemDeProducaoId",
+      "expected_rule": "table_index_member_attribute",
+      "should_exist": true,
+      "expectation": "Primary key attributes may also appear as index members under the separate index member rule"
+    },
+    {
+      "id": "phase5-case-25-table-does-not-link-unlisted-index-member",
+      "source": "Table:OrdemDeProducao",
+      "target": "Attribute:MovimentoDeEstoqueId",
+      "expected_rule": "table_index_member_attribute",
+      "should_exist": false,
+      "expectation": "Existing Attribute absent from the Table indexes must not create a table_index_member_attribute relation"
+    },
+    {
+      "id": "phase5-case-26-sdt-item-attcustomtype-resolves-sdt-country-continent",
+      "source": "SDT:SvcExternoPaisAgrupadoPorContinente",
+      "target": "SDT:SvcExternoContinente",
+      "expected_rule": "sdt_item_attcustomtype_resolved_sdt",
+      "should_exist": true,
+      "expectation": "SDT Item ATTCUSTOMTYPE with sdt: prefix must create an SDT to SDT relation when the target exists"
+    },
+    {
+      "id": "phase5-case-27-sdt-item-attcustomtype-resolves-sdt-cte",
+      "source": "SDT:DocTransporteCteProc",
+      "target": "SDT:DocTransporteTCTe",
+      "expected_rule": "sdt_item_attcustomtype_resolved_sdt",
+      "should_exist": true,
+      "expectation": "SDT Item ATTCUSTOMTYPE extraction must work across different SDT families"
+    },
+    {
+      "id": "phase5-case-28-sdt-bas-type-does-not-resolve-sdt",
+      "source": "SDT:ContextoDeSessao",
+      "target": "SDT:ContextoDeSessao",
+      "expected_rule": "sdt_item_attcustomtype_resolved_sdt",
+      "should_exist": false,
+      "expectation": "SDT Item ATTCUSTOMTYPE with bas: prefix must not create an SDT to SDT relation"
+    },
+    {
+      "id": "phase5-case-29-sdt-does-not-link-unlisted-sdt",
+      "source": "SDT:DocTransporteCteProc",
+      "target": "SDT:ContextoDeSessao",
+      "expected_rule": "sdt_item_attcustomtype_resolved_sdt",
+      "should_exist": false,
+      "expectation": "Existing SDT not declared as an SDT Item ATTCUSTOMTYPE target must not create a relation"
+    },
+    {
+      "id": "phase5-case-30-procedure-for-each-explicit-table-animal",
+      "source": "Procedure:procItensContagemDePeriodo",
+      "target": "Table:ItemDeEstoque",
+      "expected_rule": "source_for_each_explicit_table",
+      "should_exist": true,
+      "expectation": "Procedure Source with explicit for each ItemDeEstoque must create a Procedure to Table relation when Table:ItemDeEstoque exists"
+    },
+    {
+      "id": "phase5-case-31-webpanel-for-each-explicit-table-volume",
+      "source": "WebPanel:wcMovimentosEstoqueComReferencia",
+      "target": "Table:MovimentoDeEstoque",
+      "expected_rule": "source_for_each_explicit_table",
+      "should_exist": true,
+      "expectation": "WebPanel Source with explicit for each MovimentoDeEstoque must create a WebPanel to Table relation when Table:MovimentoDeEstoque exists"
+    },
+    {
+      "id": "phase5-case-32-for-each-transaction-without-local-table-does-not-resolve",
+      "source": "Procedure:procImportaPedidosDoLote",
+      "target": "Table:ItemRetornoExpedicao",
+      "expected_rule": "source_for_each_explicit_table",
+      "should_exist": false,
+      "expectation": "Explicit for each ItemRetornoExpedicao must not create a Table relation when Table:ItemRetornoExpedicao is absent from the local inventory"
+    },
+    {
+      "id": "phase5-case-33-qualified-for-each-target-stays-out-of-scope",
+      "source": "Procedure:procItemValorPelaCompra",
+      "target": "Table:ItensDoPedidoCompra",
+      "expected_rule": "source_for_each_explicit_table",
+      "should_exist": false,
+      "expectation": "Qualified targets such as for each ItensDoPedidoCompra.Faixas must stay out of this explicit table increment"
+    },
+    {
+      "id": "phase5-case-34-qualified-for-each-prefix-resolves-table",
+      "source": "Procedure:procItemValorPelaCompra",
+      "target": "Table:ItensDoPedidoCompra",
+      "expected_rule": "source_for_each_qualified_table_prefix",
+      "should_exist": true,
+      "expectation": "Qualified Source target for each ItensDoPedidoCompra.Faixas must create a relation to the table prefix when Table:ItensDoPedidoCompra exists"
+    },
+    {
+      "id": "phase5-case-35-qualified-for-each-prefix-resolves-second-table",
+      "source": "Procedure:procFormaDePagamentoPrazoMedio",
+      "target": "Table:CondicaoDeCobranca",
+      "expected_rule": "source_for_each_qualified_table_prefix",
+      "should_exist": true,
+      "expectation": "Qualified Source target for each CondicaoDeCobranca.Parcelas must create a relation to the table prefix when Table:CondicaoDeCobranca exists"
+    },
+    {
+      "id": "phase5-case-36-qualified-for-each-member-is-not-table-target",
+      "source": "Procedure:procItemValorPelaCompra",
+      "target": "Table:Faixas",
+      "expected_rule": "source_for_each_qualified_table_prefix",
+      "should_exist": false,
+      "expectation": "Qualified Source target must not create a Table relation to the member name after the dot"
+    },
+    {
+      "id": "phase5-case-37-procedure-bc-load-resolves-transaction",
+      "source": "Procedure:procAjustaPedidoCompraIdDeItens",
+      "target": "Transaction:ItemDeEstoque",
+      "expected_rule": "source_bc_load_transaction",
+      "should_exist": true,
+      "expectation": "Procedure Source &itemDeEstoque.Load(...) must create a relation to Transaction:ItemDeEstoque when variable ATTCUSTOMTYPE is bc:ItemDeEstoque"
+    },
+    {
+      "id": "phase5-case-38-webpanel-bc-load-resolves-transaction",
+      "source": "WebPanel:WCOrdemDeProducaoItem",
+      "target": "Transaction:OrdemDeProducao",
+      "expected_rule": "source_bc_load_transaction",
+      "should_exist": true,
+      "expectation": "WebPanel Source &ordemDeProducao.Load(...) must create a relation to Transaction:OrdemDeProducao when variable ATTCUSTOMTYPE is bc:OrdemDeProducao"
+    },
+    {
+      "id": "phase5-case-39-bc-load-resolves-transaction-without-table",
+      "source": "Procedure:procLoteMudaDataDePedidos",
+      "target": "Transaction:ItemRetornoExpedicao",
+      "expected_rule": "source_bc_load_transaction",
+      "should_exist": true,
+      "expectation": "BC Load must resolve to Transaction when the BC Transaction exists even if no local Table relation exists"
+    },
+    {
+      "id": "phase5-case-40-bc-load-does-not-infer-gam-external-type",
+      "source": "Procedure:GAM_CheckUserActivationMethod",
+      "target": "Transaction:User",
+      "expected_rule": "source_bc_load_transaction",
+      "should_exist": false,
+      "expectation": "Load receiver without resolvable local bc: Transaction variable type must not create a relation by receiver name"
+    },
+    {
+      "id": "phase5-case-41-procedure-bc-save-resolves-transaction",
+      "source": "Procedure:procAjustaPedidoCompraIdDeItens",
+      "target": "Transaction:ItemDeEstoque",
+      "expected_rule": "source_bc_save_transaction",
+      "should_exist": true,
+      "expectation": "Procedure Source &itemDeEstoque.Save() must create a relation to Transaction:ItemDeEstoque when variable ATTCUSTOMTYPE is bc:ItemDeEstoque"
+    },
+    {
+      "id": "phase5-case-42-webpanel-bc-save-resolves-transaction",
+      "source": "WebPanel:wpExpedicaoSaida",
+      "target": "Transaction:OrdemDeVenda",
+      "expected_rule": "source_bc_save_transaction",
+      "should_exist": true,
+      "expectation": "WebPanel Source &ordemDeVenda.Save() must create a relation to Transaction:OrdemDeVenda when variable ATTCUSTOMTYPE is bc:OrdemDeVenda"
+    },
+    {
+      "id": "phase5-case-43-bc-save-does-not-infer-external-document",
+      "source": "Procedure:ExportWWRegistroAjustado",
+      "target": "Transaction:ExcelDocument",
+      "expected_rule": "source_bc_save_transaction",
+      "should_exist": false,
+      "expectation": "Save receiver without resolvable local bc: Transaction variable type must not create a relation by receiver name"
+    },
+    {
+      "id": "phase5-case-44-procedure-bc-delete-resolves-transaction",
+      "source": "Procedure:procExcluiMovimentoDiarioSemControle",
+      "target": "Transaction:MovimentoDiarioDeEstoque",
+      "expected_rule": "source_bc_delete_transaction",
+      "should_exist": true,
+      "expectation": "Procedure Source &MovimentoDiarioDeEstoque.Delete() must create a relation to Transaction:MovimentoDiarioDeEstoque when variable ATTCUSTOMTYPE is bc:MovimentoDiarioDeEstoque"
+    },
+    {
+      "id": "phase5-case-45-procedure-bc-delete-resolves-second-transaction",
+      "source": "Procedure:procCrudContatosPessoa",
+      "target": "Transaction:PessoaContatos",
+      "expected_rule": "source_bc_delete_transaction",
+      "should_exist": true,
+      "expectation": "Procedure Source &pessoaContato.Delete() must create a relation to Transaction:PessoaContatos when variable ATTCUSTOMTYPE is bc:PessoaContatos"
+    },
+    {
+      "id": "phase5-case-46-bc-delete-does-not-infer-file-external-type",
+      "source": "Procedure:procDownloadArquivo",
+      "target": "Transaction:File",
+      "expected_rule": "source_bc_delete_transaction",
+      "should_exist": false,
+      "expectation": "Delete receiver without resolvable local bc: Transaction variable type must not create a relation by receiver name"
+    },
+    {
+      "id": "phase5-case-47-webpanel-bc-check-resolves-transaction",
+      "source": "WebPanel:wpDetalheLancamento",
+      "target": "Transaction:LancamentoFinanceiro",
+      "expected_rule": "source_bc_check_transaction",
+      "should_exist": true,
+      "expectation": "WebPanel Source &lancamento.Check() must create a relation to Transaction:LancamentoFinanceiro when variable ATTCUSTOMTYPE is bc:LancamentoFinanceiro"
+    },
+    {
+      "id": "phase5-case-48-procedure-bc-check-resolves-transaction",
+      "source": "Procedure:procAtualizaParcelasDaFatura",
+      "target": "Transaction:DuplicataFatura",
+      "expected_rule": "source_bc_check_transaction",
+      "should_exist": true,
+      "expectation": "Procedure Source &duplicataFatura.Check() must create a relation to Transaction:DuplicataFatura when variable ATTCUSTOMTYPE is bc:DuplicataFatura"
+    },
+    {
+      "id": "phase5-case-49-bc-check-does-not-infer-gam-external-type",
+      "source": "WebPanel:wpEntradaAplicacao",
+      "target": "Transaction:GAMApplication",
+      "expected_rule": "source_bc_check_transaction",
+      "should_exist": false,
+      "expectation": "Check receiver without resolvable local bc: Transaction variable type must not create a relation by receiver name"
+    },
+    {
+      "id": "phase5-case-50-procedure-simple-bc-update-resolves-transaction",
+      "source": "Procedure:procCancelaMovimentoEstoque",
+      "target": "Transaction:MovimentoDeEstoque",
+      "expected_rule": "source_simple_bc_update_transaction",
+      "should_exist": true,
+      "expectation": "Procedure Source &MovimentoDeEstoque.Update() must create a relation to Transaction:MovimentoDeEstoque when variable ATTCUSTOMTYPE is bc:MovimentoDeEstoque and AttCollection is not true"
+    },
+    {
+      "id": "phase5-case-51-procedure-simple-bc-insert-resolves-transaction",
+      "source": "Procedure:procGeraOrdemVendaDoNaoExpedido",
+      "target": "Transaction:OrdemDeVenda",
+      "expected_rule": "source_simple_bc_insert_transaction",
+      "should_exist": true,
+      "expectation": "Procedure Source &novaOrdemDeVenda.Insert() must create a relation to Transaction:OrdemDeVenda when variable ATTCUSTOMTYPE is bc:OrdemDeVenda and AttCollection is not true"
+    },
+    {
+      "id": "phase5-case-52-simple-bc-insert-does-not-index-collection-variable",
+      "source": "Procedure:procCarregaBandeiraPagamento",
+      "target": "Transaction:BandeiraCartao",
+      "expected_rule": "source_simple_bc_insert_transaction",
+      "should_exist": false,
+      "expectation": "Insert receiver with AttCollection=True must stay out of the simple BC Insert increment"
+    },
+    {
+      "id": "phase5-case-53-procedure-attcustomtype-resolves-external-object",
+      "source": "Procedure:procBuscaCoordenadasEndereco",
+      "target": "ExternalObject:LocalizacaoEnderecoFinder",
+      "expected_rule": "attcustomtype_resolved_object",
+      "should_exist": true,
+      "expectation": "ATTCUSTOMTYPE exo:LocalizacaoEnderecoFinder in Procedure must resolve to ExternalObject:LocalizacaoEnderecoFinder when the object exists locally"
+    },
+    {
+      "id": "phase5-case-54-procedure-attcustomtype-resolves-second-external-object",
+      "source": "Procedure:procExtraiArquivosCompactados",
+      "target": "ExternalObject:ArquivoCompactado",
+      "expected_rule": "attcustomtype_resolved_object",
+      "should_exist": true,
+      "expectation": "ATTCUSTOMTYPE exo:ArquivoCompactado in Procedure must resolve to ExternalObject:ArquivoCompactado when the object exists locally"
+    },
+    {
+      "id": "phase5-case-55-external-gam-type-does-not-resolve-without-local-object",
+      "source": "Procedure:GAM_CheckUserActivationMethod",
+      "target": "ExternalObject:GAMApplication",
+      "expected_rule": "attcustomtype_resolved_object",
+      "should_exist": false,
+      "expectation": "ATTCUSTOMTYPE exo:GAMApplication, GeneXusSecurity must not resolve when no matching local ExternalObject exists"
+    },
+    {
+      "id": "phase5-case-56-api-attcustomtype-resolves-sdt-produto",
+      "source": "API:apiIntegracaoVendas",
+      "target": "SDT:sdtItemDadosBasicos",
+      "expected_rule": "attcustomtype_resolved_object",
+      "should_exist": true,
+      "expectation": "ATTCUSTOMTYPE sdt:sdtItemDadosBasicos in API must resolve to the local SDT object"
+    },
+    {
+      "id": "phase5-case-57-dataselector-attcustomtype-resolves-sdt-parametros",
+      "source": "DataSelector:dsRelatoriosFaturasViaLancamentos",
+      "target": "SDT:sdtFaturaParametros",
+      "expected_rule": "attcustomtype_resolved_object",
+      "should_exist": true,
+      "expectation": "ATTCUSTOMTYPE sdt:sdtFaturaParametros in DataSelector must resolve to the local SDT object"
+    },
+    {
+      "id": "phase5-case-58-api-external-sdt-does-not-resolve-without-local-object",
+      "source": "API:apiIntegracaoVendas",
+      "target": "SDT:Messages, GeneXus.Common",
+      "expected_rule": "attcustomtype_resolved_object",
+      "should_exist": false,
+      "expectation": "ATTCUSTOMTYPE sdt:Messages, GeneXus.Common must not resolve when no matching local SDT exists"
+    },
+    {
+      "id": "phase5-case-59-domain-attcustomtype-resolves-sdt-bcb-serie",
+      "source": "Domain:SvcExternoArrayOfSerieVO",
+      "target": "SDT:sdtSvcExternoWSSerieVO",
+      "expected_rule": "attcustomtype_resolved_object",
+      "should_exist": true,
+      "expectation": "ATTCUSTOMTYPE sdt:sdtSvcExternoWSSerieVO in Domain must resolve to the local SDT object"
+    },
+    {
+      "id": "phase5-case-60-domain-attcustomtype-resolves-sdt-country-continent",
+      "source": "Domain:SvcExternoArrayOfContinente",
+      "target": "SDT:SvcExternoContinente",
+      "expected_rule": "attcustomtype_resolved_object",
+      "should_exist": true,
+      "expectation": "ATTCUSTOMTYPE sdt:SvcExternoContinente in Domain must resolve to the local SDT object"
+    },
+    {
+      "id": "phase5-case-61-domain-external-sdt-does-not-resolve-without-local-object",
+      "source": "Domain:KBE_APIs",
+      "target": "SDT:Messages, GeneXus.Common",
+      "expected_rule": "attcustomtype_resolved_object",
+      "should_exist": false,
+      "expectation": "ATTCUSTOMTYPE sdt:Messages, GeneXus.Common in Domain must not resolve when no matching local SDT exists"
+    },
+    {
+      "id": "phase5-case-62-sdt-top-level-attcustomtype-resolves-self",
+      "source": "SDT:GrupoDeAcoesItem",
+      "target": "SDT:GrupoDeAcoesItem",
+      "expected_rule": "attcustomtype_resolved_object",
+      "should_exist": true,
+      "expectation": "Top-level ATTCUSTOMTYPE sdt:GrupoDeAcoesItem in SDT must resolve to the local SDT object"
+    },
+    {
+      "id": "phase5-case-63-sdt-top-level-attcustomtype-resolves-second-sdt",
+      "source": "SDT:SvcExternoPaisAgrupadoPorContinente",
+      "target": "SDT:SvcExternoContinente",
+      "expected_rule": "attcustomtype_resolved_object",
+      "should_exist": true,
+      "expectation": "Top-level ATTCUSTOMTYPE in SDT must resolve to another local SDT object when present"
+    },
+    {
+      "id": "phase5-case-64-sdt-top-level-bas-does-not-resolve-sdt",
+      "source": "SDT:ContextoDeSessao",
+      "target": "SDT:ContextoDeSessao",
+      "expected_rule": "attcustomtype_resolved_object",
+      "should_exist": false,
+      "expectation": "Top-level ATTCUSTOMTYPE with bas: prefix in SDT must not create a resolved SDT relation"
+    }
+  ]
+}

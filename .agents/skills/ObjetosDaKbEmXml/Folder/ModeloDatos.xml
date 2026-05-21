@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Object parentGuid="afa47377-41d5-4ae8-9755-6f53150aa361" user="FACTORIAGX\Sergio" versionDate="0001-01-01T00:00:00.0000000" lastUpdate="2026-05-05T17:22:38.0000000Z" checksum="8cebfe36c762eaba1a31d9f3e924f883" fullyQualifiedName="ModeloDatos" moduleGuid="afa47377-41d5-4ae8-9755-6f53150aa361" guid="739a892b-5720-447c-ae75-b9c7ebe36275" name="ModeloDatos" type="00000000-0000-0000-0000-000000000008" description="Modelo Datos">
+  <Properties>
+    <Property>
+      <Name>Name</Name>
+      <Value>ModeloDatos</Value>
+    </Property>
+    <Property>
+      <Name>IsDefault</Name>
+      <Value>False</Value>
+    </Property>
+  </Properties>
+</Object>

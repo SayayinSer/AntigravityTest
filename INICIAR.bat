@@ -29,7 +29,7 @@ REM  Seleccion de Version
 REM ================================================
 echo.
 echo   [1] Iniciar Version PYTHON (FastAPI) - Puerto 8000
-echo   [2] Iniciar Version PHP (LAMP) - Puerto 8080
+echo   [2] Iniciar Version PHP (LAMP) - Puerto 8085
 echo.
 set /p OPTION="Elija la version a iniciar (1/2): "
 
@@ -162,9 +162,9 @@ if !errorlevel! neq 0 (
     exit /b 1
 )
 
-start /b cmd /c "timeout /t 2 /nobreak >nul & start "" http://127.0.0.1:8080/NucleoTallerPHP/public/"
+start /b cmd /c "timeout /t 2 /nobreak >nul & start "" http://127.0.0.1:8085/NucleoTallerPHP/public/"
 
-%PHP_EXE% -S 127.0.0.1:8080 -t NucleoTallerPHP/public
+%PHP_EXE% -S 127.0.0.1:8085 -t NucleoTallerPHP/public
 
 echo.
 echo   [!] Servidor PHP detenido.

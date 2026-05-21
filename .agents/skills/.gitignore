@@ -1,0 +1,20 @@
+__pycache__/
+*.pyc
+.env
+.idea/
+.vscode/
+*.db
+*.log
+instance/
+venv/
+env/
+.venv/
+credentials.json
+.agents/skills/*/credentials.json
+
+# GeneXus Temp folders
+Temp/
+PacotesGeradosParaImportacaoNaKbNoGenexus/
+ObjetosGeradosParaImportacaoNaKbNoGenexus/
+
+_backups/

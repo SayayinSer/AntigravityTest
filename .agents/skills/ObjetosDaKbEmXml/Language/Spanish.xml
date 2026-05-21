@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Object parentGuid="00000000-0000-0000-0000-000000000000" user="GeneXus" versionDate="0001-01-01T00:00:00.0000000" lastUpdate="2026-05-05T17:20:24.0000000Z" checksum="bd8872af57eafb550c3bd20c52048474" fullyQualifiedName="Spanish" moduleGuid="00000000-0000-0000-0000-000000000000" guid="6ec49ef5-e1eb-459c-aefd-331de0d9fa8c" name="Spanish" type="88313f43-5eb2-0000-0028-e8d9f5bf9588" description="Spanish">
+  <Part type="c23f3bb5-1e43-4c6b-b219-4717979df76a">
+    <Properties>
+      <Property>
+        <Name>IsDefault</Name>
+        <Value>False</Value>
+      </Property>
+    </Properties>
+  </Part>
+  <Part type="babf62c5-0111-49e9-a1c3-cc004d90900a">
+    <Properties />
+  </Part>
+  <Properties>
+    <Property>
+      <Name>Name</Name>
+      <Value>Spanish</Value>
+    </Property>
+    <Property>
+      <Name>ISOLangCode</Name>
+      <Value>ES</Value>
+    </Property>
+    <Property>
+      <Name>ISOCountryCode</Name>
+      <Value>ES</Value>
+    </Property>
+    <Property>
+      <Name>Codepage</Name>
+      <Value>1252</Value>
+    </Property>
+    <Property>
+      <Name>LangDateFormat</Name>
+      <Value>SPA</Value>
+    </Property>
+    <Property>
+      <Name>LangTimeFormat</Name>
+      <Value>24</Value>
+    </Property>
+    <Property>
+      <Name>LangDecimalPoint</Name>
+      <Value>,</Value>
+    </Property>
+    <Property>
+      <Name>IsDefault</Name>
+      <Value>False</Value>
+    </Property>
+  </Properties>
+</Object>

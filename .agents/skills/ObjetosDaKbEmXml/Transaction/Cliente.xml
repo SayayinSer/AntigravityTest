@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Object parentGuid="739a892b-5720-447c-ae75-b9c7ebe36275" user="FACTORIAGX\Sergio" versionDate="0001-01-01T00:00:00.0000000" lastUpdate="2026-05-05T17:24:57.0000000Z" checksum="8f332d123d5de38261c7557a07057c35" fullyQualifiedName="Cliente" moduleGuid="afa47377-41d5-4ae8-9755-6f53150aa361" guid="d564fc13-50e1-4ad1-b900-b9a3b0c1a07d" name="Cliente" type="1db606f2-af09-4cf9-a3b5-b481519d28f6" description="Cliente" parent="ModeloDatos" parentType="00000000-0000-0000-0000-000000000008">
+  <Part type="264be5fb-1b28-4b25-a598-6ca900dd059f">
+    <Level Name="Cliente" Type="Cliente" Description="Cliente" Guid="d564fc13-50e1-4ad1-b900-b9a3b0c1a07d">
+      <Properties />
+      <Attribute key="True" guid="d77533e4-4947-4d59-8905-fce0306319b8">ClienteCodigo</Attribute>
+      <Attribute key="False" guid="565a4574-bcad-413d-a895-42478bea6eca">ClienteNombre</Attribute>
+      <Attribute key="False" guid="73c743ef-0c15-4c0d-9c55-fb27c1a6ae3d">CategoriaCodigo</Attribute>
+      <Attribute key="False" guid="2a098e36-7e34-4d4b-a0fc-fa8cc83aca4e">CategoriaNombre</Attribute>
+      <Attribute key="False" guid="d34e81c8-dbb2-4dc7-bb3a-bd033f286b7d">ZonaCodigo</Attribute>
+      <Attribute key="False" guid="737b96b8-db77-4c17-95e3-0e53190f6dca">ZonaNombre</Attribute>
+    </Level>
+    <Properties>
+      <Property>
+        <Name>IsDefault</Name>
+        <Value>False</Value>
+      </Property>
+    </Properties>
+  </Part>
+  <Part type="d24a58ad-57ba-41b7-9e6e-eaca3543c778">
+    <Properties>
+      <Property>
+        <Name>IsDefault</Name>
+        <Value>True</Value>
+      </Property>
+      <Property>
+        <Name>Defaults</Name>
+        <Value>gx:TrnDefaultWebForm.dkt</Value>
+      </Property>
+    </Properties>
+  </Part>
+  <Part type="4c28dfb9-f83b-46f0-9cf3-f7e090b525d5">
+    <Properties>
+      <Property>
+        <Name>IsDefault</Name>
+        <Value>True</Value>
+      </Property>
+      <Property>
+        <Name>Defaults</Name>
+        <Value>gx:TrnDefaultWinForm.dkt</Value>
+      </Property>
+    </Properties>
+  </Part>
+  <Part type="9b0a32a3-de6d-4be1-a4dd-1b85d3741534">
+    <Properties />
+  </Part>
+  <Part type="c44bd5ff-f918-415b-98e6-aca44fed84fa">
+    <Properties />
+  </Part>
+  <Part type="e4c4ade7-53f0-4a56-bdfd-843735b66f47">
+    <Properties />
+  </Part>
+  <Part type="ad3ca970-19d0-44e1-a7b7-db05556e820c">
+    <Help>
+      <HelpItem>
+        <Language>88313f43-5eb2-0000-0028-e8d9f5bf9588-Spanish</Language>
+        <Content />
+      </HelpItem>
+    </Help>
+    <Properties>
+      <Property>
+        <Name>IsDefault</Name>
+        <Value>False</Value>
+      </Property>
+    </Properties>
+  </Part>
+  <Part type="babf62c5-0111-49e9-a1c3-cc004d90900a">
+    <Properties />
+  </Part>
+  <Properties>
+    <Property>
+      <Name>Name</Name>
+      <Value>Cliente</Value>
+    </Property>
+    <Property>
+      <Name>IsDefault</Name>
+      <Value>False</Value>
+    </Property>
+  </Properties>
+</Object>

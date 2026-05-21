@@ -1,0 +1,12 @@
+<Project DefaultTargets="DeleteObjects" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="C:\Program Files (x86)\GeneXus\GeneXus18\Genexus.Tasks.targets"/>
+  <Target Name="DeleteObjects">
+    <OpenKnowledgeBase Directory="D:\Models\77Lab\AngularV1"/>
+    <DeleteObject Object="DataProvider:Zona_DP"/>
+    <DeleteObject Object="DataProvider:ZonaLista_DP"/>
+    <DeleteObject Object="Procedure:Zona_Insertar"/>
+    <DeleteObject Object="Procedure:Zona_Modificar"/>
+    <DeleteObject Object="Procedure:Zona_Borrar"/>
+    <CloseKnowledgeBase/>
+  </Target>
+</Project>

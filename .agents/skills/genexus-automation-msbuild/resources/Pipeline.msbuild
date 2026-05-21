@@ -1,0 +1,19 @@
+<Project DefaultTargets="RunPipeline" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(GX_PROGRAM_DIR)\Genexus.Tasks.targets" />
+  <PropertyGroup>
+    <KBPath Condition="'$(KBPath)' == ''">C:\Models\MyKB</KBPath>
+    <XPZPath Condition="'$(XPZPath)' == ''">C:\Envio_XPZ\package.xpz</XPZPath>
+  </PropertyGroup>
+  <Target Name="RunPipeline">
+    <Message Text="--- Starting GeneXus Pipeline ---" Importance="high" />
+    <OpenKnowledgeBase Directory="$(KBPath)" />
+    <Message Text="Step 1: Importing XPZ..." Importance="high" />
+    <Import File="$(XPZPath)" />
+    <Message Text="Step 2: Impact Analysis &amp; Reorganization..." Importance="high" />
+    <!-- ImpactDatabase is not a valid task in GX18, BuildAll will trigger reorganization if needed -->
+    <Message Text="Step 3: Building All..." Importance="high" />
+    <BuildAll />
+    <CloseKnowledgeBase />
+    <Message Text="--- Pipeline Completed Successfully ---" Importance="high" />
+  </Target>
+</Project>

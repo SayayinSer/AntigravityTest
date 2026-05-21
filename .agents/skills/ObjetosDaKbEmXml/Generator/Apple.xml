@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Object parentGuid="00000000-0000-0000-0000-000000000000" user="FACTORIAGX\Sergio" versionDate="0001-01-01T00:00:00.0000000" lastUpdate="2026-05-05T17:21:24.0000000Z" checksum="553566f4a975eff7f467c91c16371dbd" fullyQualifiedName="Apple" moduleGuid="00000000-0000-0000-0000-000000000000" guid="9c6c4a6c-eeb0-4488-8813-f4e128640a94" name="Apple" type="ecececec-dfe0-4a57-ae8f-c6e31b0dcbc0" description="Apple">
+  <Properties>
+    <Property>
+      <Name>IsUser</Name>
+      <Value>True</Value>
+    </Property>
+    <Property>
+      <Name>DefaultType</Name>
+      <Value>31</Value>
+    </Property>
+    <Property>
+      <Name>Name</Name>
+      <Value>Apple</Value>
+    </Property>
+    <Property>
+      <Name>IsDefault</Name>
+      <Value>False</Value>
+    </Property>
+  </Properties>
+</Object>

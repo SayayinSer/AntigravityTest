@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Object parentGuid="afa47377-41d5-4ae8-9755-6f53150aa361" user="GeneXus" versionDate="0001-01-01T00:00:00.0000000" lastUpdate="2011-08-15T15:48:10.0000000Z" checksum="1bae9a6f6da99a7ec6560662b186cde8" fullyQualifiedName="selectRow" moduleGuid="afa47377-41d5-4ae8-9755-6f53150aa361" guid="3914535b-0c03-44c5-9538-906a99cdd2bc" name="selectRow" type="9fb193d9-64a4-4d30-b129-ff7c76830f7e" description="select Row">
+  <Part type="36f350de-f768-425f-ac20-773749f331bf">
+    <Images>
+      <ImageItem>
+        <Image name="selectRow.png" description="select Row.png">
+          <Data>
+            <base64Binary>
+iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAK8AAACvABQqw0mAAAABh0RVh0U29mdHdhcmUAQWRv
+YmUgRmlyZXdvcmtzT7MfTgAAAcRJREFUOI2lk7trlFEQxX9zv+vuohFRFC3sDIJCYvCBzdooNgEhCIIa0ylsQBG1sbaJFqZIEcGsgpjCRgnW/gUR90V8EAtR
+NBBZNm50H9/jfmORBytZZWWnnJlzOHNmRlSVbsJ0hQbs/zQ/KaRnQHds8vZkLvY9fwcgnY7wKJee9qMvw6oR1tuJanwgc2zuQ0cKpt6cvl4PF4dd7AAP35WL
+1pjvGxRkc0MHgejy4Zn5tdzj/Lm+H835UhAtIWIBPinJgdvp98vQYmI2f+FE1S+Xlv1yaSp//shqWpaaC89qQY1QUwTOBmGcHFwDryuYfD2SqtQ/1hphxQD0
+JHfXdvX0Hq82Fs5Um9/GYo0AwYi5cufk22zreBbgc2XWDyOZhMRVUOp+eUszMIXQNWwjdAgWEV7dH5z7A7zBg9EX/ROqXBMBxQGCYFDwBdv74Gzu6z8JAEam
++ydcvEICgIIx5tbTS4XxdhtqewdDDw+NO8cNVcUYKb7MFAfagdc9sCJbgW1AIgZP4d7Rm/v3JrcnTi3OVu7KqOzzIAE4IAICoBqp/hRVxYokgdQqoedAgF9g
+N0MUeSs1BeIWkmak6nd8yn+Lrr/xN4yjzwehHQW9AAAAAElFTkSuQmCC
+</base64Binary>
+          </Data>
+        </Image>
+        <Properties>
+          <Property>
+            <Name>Name</Name>
+            <Value>selectRow.png</Value>
+          </Property>
+          <Property>
+            <Name>Description</Name>
+            <Value>select Row.png</Value>
+          </Property>
+          <Property>
+            <Name>IsExternalImage</Name>
+            <Value>False</Value>
+          </Property>
+          <Property>
+            <Name>ThemeReference</Name>
+            <Value>NULL</Value>
+          </Property>
+          <Property>
+            <Name>LanguageReference</Name>
+            <Value>NULL</Value>
+          </Property>
+          <Property>
+            <Name>ImageOriginalFullPath</Name>
+            <Value>C:\Users\claudia\Downloads\Img_Pesobook_theme\selectRow.png</Value>
+          </Property>
+        </Properties>
+      </ImageItem>
+    </Images>
+    <Properties>
+      <Property>
+        <Name>IsDefault</Name>
+        <Value>False</Value>
+      </Property>
+    </Properties>
+  </Part>
+  <Part type="babf62c5-0111-49e9-a1c3-cc004d90900a">
+    <Properties>
+      <Property>
+        <Name>IsDefault</Name>
+        <Value>True</Value>
+      </Property>
+    </Properties>
+  </Part>
+  <Properties>
+    <Property>
+      <Name>Name</Name>
+      <Value>selectRow</Value>
+    </Property>
+    <Property>
+      <Name>IsDefault</Name>
+      <Value>False</Value>
+    </Property>
+  </Properties>
+</Object>

@@ -1,0 +1,260 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ExportFile>
+  <KMW>
+    <MajorVersion>4</MajorVersion>
+    <MinorVersion>0</MinorVersion>
+    <Build>158023</Build>
+  </KMW>
+  <Source kb="afa47377-41d5-4ae8-9755-6f53150aa361" username="FACTORIAGX\Sergio" UNCPath="\\localhost\D$\Models\77Lab\AngularV1">
+    <Version guid="afa47377-41d5-4ae8-9755-6f53150aa361" name="77Lab" />
+  </Source>
+  <Objects>
+<Object parentGuid="afa47377-41d5-4ae8-9755-6f53150aa361" user="FACTORIAGX\\Sergio" versionDate="0001-01-01T00:00:00.0000000" lastUpdate="2026-05-05T19:00:00.0000000Z" checksum="" fullyQualifiedName="Importe" moduleGuid="afa47377-41d5-4ae8-9755-6f53150aa361" guid="70b021d7-f404-4447-97d5-f81d113f8d8f" name="Importe" type="00972a17-9975-449e-aab1-d26165d51393" description="Importe">
+  <Part type="babf62c5-0111-49e9-a1c3-cc004d90900a">
+    <Properties />
+  </Part>
+  <Properties>
+    <Property>
+      <Name>Name</Name>
+      <Value>Importe</Value>
+    </Property>
+    <Property>
+      <Name>ATTCUSTOMTYPE</Name>
+      <Value>bas:Numeric</Value>
+    </Property>
+    <Property>
+      <Name>Length</Name>
+      <Value>14</Value>
+    </Property>
+    <Property>
+      <Name>Decimals</Name>
+      <Value>2</Value>
+    </Property>
+  </Properties>
+</Object>
+<Object parentGuid="afa47377-41d5-4ae8-9755-6f53150aa361" user="FACTORIAGX\\Sergio" versionDate="0001-01-01T00:00:00.0000000" lastUpdate="2026-05-05T19:00:00.0000000Z" checksum="" fullyQualifiedName="CajaEstado" moduleGuid="afa47377-41d5-4ae8-9755-6f53150aa361" guid="e259b34f-2178-4389-913a-a1b9d10ef87a" name="CajaEstado" type="00972a17-9975-449e-aab1-d26165d51393" description="CajaEstado">
+  <Part type="babf62c5-0111-49e9-a1c3-cc004d90900a">
+    <Properties />
+  </Part>
+  <Properties>
+    <Property>
+      <Name>Name</Name>
+      <Value>CajaEstado</Value>
+    </Property>
+    <Property>
+      <Name>ATTCUSTOMTYPE</Name>
+      <Value>bas:Character</Value>
+    </Property>
+    <Property>
+      <Name>Length</Name>
+      <Value>1</Value>
+    </Property>
+    <Property>
+      <Name>ENUM_VALUES</Name>
+      <Value>A:Abierta,C:Cerrada,X:Anulada</Value>
+    </Property>
+  </Properties>
+</Object>
+<Object parentGuid="afa47377-41d5-4ae8-9755-6f53150aa361" user="FACTORIAGX\\Sergio" versionDate="0001-01-01T00:00:00.0000000" lastUpdate="2026-05-05T19:00:00.0000000Z" checksum="" fullyQualifiedName="Caja" moduleGuid="afa47377-41d5-4ae8-9755-6f53150aa361" guid="5563a999-f468-42f9-b294-422c0ff06a8f" name="Caja" type="1db606f2-af09-4cf9-a3b5-b481519d28f6" description="Caja">
+  <Part type="264be5fb-1b28-4b25-a598-6ca900dd059f">
+    <Level Name="Caja" Type="Caja" Description="Caja" Guid="5563a999-f468-42f9-b294-422c0ff06a8f">
+      <Properties />
+      <Attribute key="True" guid="d8747a67-d8b0-4d3e-8e39-c4d8808facd7">CajaId</Attribute>
+      <Attribute key="False" guid="dca098b4-00e2-4c1d-a26f-b2a670dbb073">CajaDescripcion</Attribute>
+      <Attribute key="False" guid="00393a75-9355-41f8-9e1b-71b2f932cac3">CajaEstado</Attribute>
+      <Attribute key="False" guid="a064627a-778f-44c9-8762-05a40bc55c12">CajaSaldoInicial</Attribute>
+      <Attribute key="False" guid="80f556ae-38aa-4541-885a-d76bc303e360">CajaTotalIngresos</Attribute>
+      <Attribute key="False" guid="891a7d85-c6c1-4724-9315-f02287690ce8">CajaTotalEgresos</Attribute>
+      <Attribute key="False" guid="5faf2f35-4e8f-4f0c-a634-0b1f1334305d">CajaSaldoActual</Attribute>
+    </Level>
+    <Properties />
+  </Part>
+  <Part type="9b0a32a3-de6d-4be1-a4dd-1b85d3741534">
+    <Source><![CDATA[default(CajaEstado, "A");
+CajaSaldoActual = CajaSaldoInicial + CajaTotalIngresos - CajaTotalEgresos;]]></Source>
+    <Properties />
+  </Part>
+  <Part type="e4c4ade7-53f0-4a56-bdfd-843735b66f47">
+    <Properties />
+  </Part>
+  <Properties>
+    <Property>
+      <Name>Name</Name>
+      <Value>Caja</Value>
+    </Property>
+    <Property>
+      <Name>Description</Name>
+      <Value>Caja</Value>
+    </Property>
+    <Property>
+      <Name>idISBUSINESSCOMPONENT</Name>
+      <Value>True</Value>
+    </Property>
+  </Properties>
+</Object>
+<Object parentGuid="afa47377-41d5-4ae8-9755-6f53150aa361" user="FACTORIAGX\\Sergio" versionDate="0001-01-01T00:00:00.0000000" lastUpdate="2026-05-05T19:00:00.0000000Z" checksum="" fullyQualifiedName="MovimientoCaja" moduleGuid="afa47377-41d5-4ae8-9755-6f53150aa361" guid="6a9c88ee-cfd5-4f50-8911-924b3891f5a4" name="MovimientoCaja" type="1db606f2-af09-4cf9-a3b5-b481519d28f6" description="MovimientoCaja">
+  <Part type="264be5fb-1b28-4b25-a598-6ca900dd059f">
+    <Level Name="MovimientoCaja" Type="MovimientoCaja" Description="MovimientoCaja" Guid="6a9c88ee-cfd5-4f50-8911-924b3891f5a4">
+      <Properties />
+      <Attribute key="True" guid="5b24ae5a-af30-4ca1-b097-eae00faf7cd9">MovimientoCajaId</Attribute>
+      <Attribute key="False" guid="d8747a67-d8b0-4d3e-8e39-c4d8808facd7">CajaId</Attribute>
+      <Attribute key="False" guid="b693a46e-35e5-4b51-a1a4-b885f5004a53">MovimientoCajaTipo</Attribute>
+      <Attribute key="False" guid="32a71eb0-8d01-4f85-b39c-2c8b025222f2">MovimientoCajaDescripcion</Attribute>
+      <Attribute key="False" guid="c66dc3c2-fb0b-459e-a3b8-a2fb7a597740">MovimientoCajaComprobante</Attribute>
+      <Attribute key="False" guid="d4a05a73-3c08-4888-be98-7d0f1b675585">MovimientoCajaImporte</Attribute>
+    </Level>
+    <Properties />
+  </Part>
+  <Part type="9b0a32a3-de6d-4be1-a4dd-1b85d3741534">
+    <Source><![CDATA[error("El importe debe ser mayor a cero") if MovimientoCajaImporte <= 0;]]></Source>
+    <Properties />
+  </Part>
+  <Part type="e4c4ade7-53f0-4a56-bdfd-843735b66f47">
+    <Properties />
+  </Part>
+  <Properties>
+    <Property>
+      <Name>Name</Name>
+      <Value>MovimientoCaja</Value>
+    </Property>
+    <Property>
+      <Name>Description</Name>
+      <Value>MovimientoCaja</Value>
+    </Property>
+    <Property>
+      <Name>idISBUSINESSCOMPONENT</Name>
+      <Value>True</Value>
+    </Property>
+  </Properties>
+</Object>
+  </Objects>
+  <Attributes>
+<Attribute parentGuid="00000000-0000-0000-0000-000000000000" user="FACTORIAGX\Sergio" versionDate="0001-01-01T00:00:00.0000000" lastUpdate="2026-05-05T19:00:00.0000000Z" checksum="" fullyQualifiedName="CajaId" moduleGuid="00000000-0000-0000-0000-000000000000" guid="d8747a67-d8b0-4d3e-8e39-c4d8808facd7" name="CajaId" description="Caja Id (Fecha)">
+  <Part type="babf62c5-0111-49e9-a1c3-cc004d90900a">
+    <Properties />
+  </Part>
+  <Properties>
+    <Property><Name>Name</Name><Value>CajaId</Value></Property>
+    <Property><Name>ATTCUSTOMTYPE</Name><Value>bas:Date</Value></Property>
+    <Property><Name>IsDefault</Name><Value>False</Value></Property>
+  </Properties>
+</Attribute>
+<Attribute parentGuid="00000000-0000-0000-0000-000000000000" user="FACTORIAGX\Sergio" versionDate="0001-01-01T00:00:00.0000000" lastUpdate="2026-05-05T19:00:00.0000000Z" checksum="" fullyQualifiedName="CajaDescripcion" moduleGuid="00000000-0000-0000-0000-000000000000" guid="dca098b4-00e2-4c1d-a26f-b2a670dbb073" name="CajaDescripcion" description="Caja Descripcion">
+  <Part type="babf62c5-0111-49e9-a1c3-cc004d90900a">
+    <Properties />
+  </Part>
+  <Properties>
+    <Property><Name>Name</Name><Value>CajaDescripcion</Value></Property>
+    <Property><Name>ATTCUSTOMTYPE</Name><Value>bas:VarChar</Value></Property>
+    <Property><Name>Length</Name><Value>60</Value></Property>
+    <Property><Name>IsDefault</Name><Value>False</Value></Property>
+  </Properties>
+</Attribute>
+<Attribute parentGuid="00000000-0000-0000-0000-000000000000" user="FACTORIAGX\Sergio" versionDate="0001-01-01T00:00:00.0000000" lastUpdate="2026-05-05T19:00:00.0000000Z" checksum="" fullyQualifiedName="CajaEstado" moduleGuid="00000000-0000-0000-0000-000000000000" guid="00393a75-9355-41f8-9e1b-71b2f932cac3" name="CajaEstado" description="Caja Estado">
+  <Part type="babf62c5-0111-49e9-a1c3-cc004d90900a">
+    <Properties />
+  </Part>
+  <Properties>
+    <Property><Name>Name</Name><Value>CajaEstado</Value></Property>
+    <Property><Name>idBasedOn</Name><Value>Domain:CajaEstado</Value></Property>
+    <Property><Name>IsDefault</Name><Value>False</Value></Property>
+  </Properties>
+</Attribute>
+<Attribute parentGuid="00000000-0000-0000-0000-000000000000" user="FACTORIAGX\Sergio" versionDate="0001-01-01T00:00:00.0000000" lastUpdate="2026-05-05T19:00:00.0000000Z" checksum="" fullyQualifiedName="CajaSaldoInicial" moduleGuid="00000000-0000-0000-0000-000000000000" guid="a064627a-778f-44c9-8762-05a40bc55c12" name="CajaSaldoInicial" description="Caja Saldo Inicial">
+  <Part type="babf62c5-0111-49e9-a1c3-cc004d90900a">
+    <Properties />
+  </Part>
+  <Properties>
+    <Property><Name>Name</Name><Value>CajaSaldoInicial</Value></Property>
+    <Property><Name>idBasedOn</Name><Value>Domain:Importe</Value></Property>
+    <Property><Name>IsDefault</Name><Value>False</Value></Property>
+  </Properties>
+</Attribute>
+<Attribute parentGuid="00000000-0000-0000-0000-000000000000" user="FACTORIAGX\Sergio" versionDate="0001-01-01T00:00:00.0000000" lastUpdate="2026-05-05T19:00:00.0000000Z" checksum="" fullyQualifiedName="CajaTotalIngresos" moduleGuid="00000000-0000-0000-0000-000000000000" guid="80f556ae-38aa-4541-885a-d76bc303e360" name="CajaTotalIngresos" description="Caja Total Ingresos">
+  <Part type="babf62c5-0111-49e9-a1c3-cc004d90900a">
+    <Properties />
+  </Part>
+  <Properties>
+    <Property><Name>Name</Name><Value>CajaTotalIngresos</Value></Property>
+    <Property><Name>idBasedOn</Name><Value>Domain:Importe</Value></Property>
+    <Property><Name>IsDefault</Name><Value>False</Value></Property>
+  </Properties>
+</Attribute>
+<Attribute parentGuid="00000000-0000-0000-0000-000000000000" user="FACTORIAGX\Sergio" versionDate="0001-01-01T00:00:00.0000000" lastUpdate="2026-05-05T19:00:00.0000000Z" checksum="" fullyQualifiedName="CajaTotalEgresos" moduleGuid="00000000-0000-0000-0000-000000000000" guid="891a7d85-c6c1-4724-9315-f02287690ce8" name="CajaTotalEgresos" description="Caja Total Egresos">
+  <Part type="babf62c5-0111-49e9-a1c3-cc004d90900a">
+    <Properties />
+  </Part>
+  <Properties>
+    <Property><Name>Name</Name><Value>CajaTotalEgresos</Value></Property>
+    <Property><Name>idBasedOn</Name><Value>Domain:Importe</Value></Property>
+    <Property><Name>IsDefault</Name><Value>False</Value></Property>
+  </Properties>
+</Attribute>
+<Attribute parentGuid="00000000-0000-0000-0000-000000000000" user="FACTORIAGX\Sergio" versionDate="0001-01-01T00:00:00.0000000" lastUpdate="2026-05-05T19:00:00.0000000Z" checksum="" fullyQualifiedName="CajaSaldoActual" moduleGuid="00000000-0000-0000-0000-000000000000" guid="5faf2f35-4e8f-4f0c-a634-0b1f1334305d" name="CajaSaldoActual" description="Caja Saldo Actual">
+  <Part type="babf62c5-0111-49e9-a1c3-cc004d90900a">
+    <Properties />
+  </Part>
+  <Properties>
+    <Property><Name>Name</Name><Value>CajaSaldoActual</Value></Property>
+    <Property><Name>idBasedOn</Name><Value>Domain:Importe</Value></Property>
+    <Property><Name>IsDefault</Name><Value>False</Value></Property>
+  </Properties>
+</Attribute>
+<Attribute parentGuid="00000000-0000-0000-0000-000000000000" user="FACTORIAGX\Sergio" versionDate="0001-01-01T00:00:00.0000000" lastUpdate="2026-05-05T19:00:00.0000000Z" checksum="" fullyQualifiedName="MovimientoCajaId" moduleGuid="00000000-0000-0000-0000-000000000000" guid="5b24ae5a-af30-4ca1-b097-eae00faf7cd9" name="MovimientoCajaId" description="Movimiento Caja Id">
+  <Part type="babf62c5-0111-49e9-a1c3-cc004d90900a">
+    <Properties />
+  </Part>
+  <Properties>
+    <Property><Name>Name</Name><Value>MovimientoCajaId</Value></Property>
+    <Property><Name>idBasedOn</Name><Value>Domain:Codigo</Value></Property>
+    <Property><Name>IsDefault</Name><Value>False</Value></Property>
+  </Properties>
+</Attribute>
+<Attribute parentGuid="00000000-0000-0000-0000-000000000000" user="FACTORIAGX\Sergio" versionDate="0001-01-01T00:00:00.0000000" lastUpdate="2026-05-05T19:00:00.0000000Z" checksum="" fullyQualifiedName="MovimientoCajaTipo" moduleGuid="00000000-0000-0000-0000-000000000000" guid="b693a46e-35e5-4b51-a1a4-b885f5004a53" name="MovimientoCajaTipo" description="Movimiento Caja Tipo">
+  <Part type="babf62c5-0111-49e9-a1c3-cc004d90900a">
+    <Properties />
+  </Part>
+  <Properties>
+    <Property><Name>Name</Name><Value>MovimientoCajaTipo</Value></Property>
+    <Property><Name>ATTCUSTOMTYPE</Name><Value>bas:Character</Value></Property>
+    <Property><Name>Length</Name><Value>1</Value></Property>
+    <Property><Name>ENUM_VALUES</Name><Value>I:Ingreso,E:Egreso</Value></Property>
+    <Property><Name>IsDefault</Name><Value>False</Value></Property>
+  </Properties>
+</Attribute>
+<Attribute parentGuid="00000000-0000-0000-0000-000000000000" user="FACTORIAGX\Sergio" versionDate="0001-01-01T00:00:00.0000000" lastUpdate="2026-05-05T19:00:00.0000000Z" checksum="" fullyQualifiedName="MovimientoCajaDescripcion" moduleGuid="00000000-0000-0000-0000-000000000000" guid="32a71eb0-8d01-4f85-b39c-2c8b025222f2" name="MovimientoCajaDescripcion" description="Movimiento Caja Descripcion">
+  <Part type="babf62c5-0111-49e9-a1c3-cc004d90900a">
+    <Properties />
+  </Part>
+  <Properties>
+    <Property><Name>Name</Name><Value>MovimientoCajaDescripcion</Value></Property>
+    <Property><Name>ATTCUSTOMTYPE</Name><Value>bas:VarChar</Value></Property>
+    <Property><Name>Length</Name><Value>60</Value></Property>
+    <Property><Name>IsDefault</Name><Value>False</Value></Property>
+  </Properties>
+</Attribute>
+<Attribute parentGuid="00000000-0000-0000-0000-000000000000" user="FACTORIAGX\Sergio" versionDate="0001-01-01T00:00:00.0000000" lastUpdate="2026-05-05T19:00:00.0000000Z" checksum="" fullyQualifiedName="MovimientoCajaComprobante" moduleGuid="00000000-0000-0000-0000-000000000000" guid="c66dc3c2-fb0b-459e-a3b8-a2fb7a597740" name="MovimientoCajaComprobante" description="Movimiento Caja Comprobante">
+  <Part type="babf62c5-0111-49e9-a1c3-cc004d90900a">
+    <Properties />
+  </Part>
+  <Properties>
+    <Property><Name>Name</Name><Value>MovimientoCajaComprobante</Value></Property>
+    <Property><Name>ATTCUSTOMTYPE</Name><Value>bas:Character</Value></Property>
+    <Property><Name>Length</Name><Value>20</Value></Property>
+    <Property><Name>IsDefault</Name><Value>False</Value></Property>
+  </Properties>
+</Attribute>
+<Attribute parentGuid="00000000-0000-0000-0000-000000000000" user="FACTORIAGX\Sergio" versionDate="0001-01-01T00:00:00.0000000" lastUpdate="2026-05-05T19:00:00.0000000Z" checksum="" fullyQualifiedName="MovimientoCajaImporte" moduleGuid="00000000-0000-0000-0000-000000000000" guid="d4a05a73-3c08-4888-be98-7d0f1b675585" name="MovimientoCajaImporte" description="Movimiento Caja Importe">
+  <Part type="babf62c5-0111-49e9-a1c3-cc004d90900a">
+    <Properties />
+  </Part>
+  <Properties>
+    <Property><Name>Name</Name><Value>MovimientoCajaImporte</Value></Property>
+    <Property><Name>idBasedOn</Name><Value>Domain:Importe</Value></Property>
+    <Property><Name>IsDefault</Name><Value>False</Value></Property>
+  </Properties>
+</Attribute>
+  </Attributes>
+  <Dependencies />
+  <ObjectsIdentityMapping />
+</ExportFile>

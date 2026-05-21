@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Object parentGuid="00000000-0000-0000-0000-000000000000" user="FACTORIAGX\Sergio" versionDate="0001-01-01T00:00:00.0000000" lastUpdate="2026-05-05T17:19:57.0000000Z" checksum="fd2accb6731dc6de6fc23fee383ac8e1" fullyQualifiedName="Main Programs" moduleGuid="00000000-0000-0000-0000-000000000000" guid="a7ccc3ad-5574-4898-9a1d-c6b74633f3d1" name="Main Programs" type="00000000-0000-0000-0000-000000000006" description="Main Programs">
+  <Part type="babf62c5-0111-49e9-a1c3-cc004d90900a">
+    <Properties />
+  </Part>
+  <Properties>
+    <Property>
+      <Name>Name</Name>
+      <Value>Main Programs</Value>
+    </Property>
+    <Property>
+      <Name>ShowInModelTree</Name>
+      <Value>True</Value>
+    </Property>
+    <Property>
+      <Name>Query</Name>
+      <Value />
+    </Property>
+    <Property>
+      <Name>Properties</Name>
+      <Value>main_program=true</Value>
+    </Property>
+    <Property>
+      <Name>IsDefault</Name>
+      <Value>False</Value>
+    </Property>
+  </Properties>
+</Object>

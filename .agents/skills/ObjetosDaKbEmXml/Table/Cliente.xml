@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Object parentGuid="afa47377-41d5-4ae8-9755-6f53150aa361" user="FACTORIAGX\Sergio" versionDate="0001-01-01T00:00:00.0000000" lastUpdate="2026-05-05T17:25:20.0000000Z" checksum="487c46b485844cc379cc7801bc48bfee" fullyQualifiedName="Cliente" moduleGuid="afa47377-41d5-4ae8-9755-6f53150aa361" guid="3ea4ff1c-af42-48ed-b5e0-7c1e938c387d" name="Cliente" type="857ca50e-7905-0000-0007-c5d9ff2975ec" description="Cliente">
+  <Part type="00000000-0000-0000-0002-000000000004">
+    <Key>
+      <Item guid="d77533e4-4947-4d59-8905-fce0306319b8">ClienteCodigo</Item>
+    </Key>
+    <Properties />
+  </Part>
+  <Part type="a5c0e770-560d-0001-0001-7fe71c260de3">
+    <Indexes>
+      <TableIndex>
+        <Index Type="Unique" Source="Automatic" parentGuid="00000000-0000-0000-0000-000000000000" user="FACTORIAGX\Sergio" versionDate="0001-01-01T00:00:00.0000000" lastUpdate="2026-05-05T17:24:00.0000000Z" checksum="6e0455c5ed62549646ed61e28c71542c" fullyQualifiedName="ICliente" moduleGuid="00000000-0000-0000-0000-000000000000" guid="59806def-41a0-43b0-b2ef-78534118b3dd" name="ICliente" type="9e750647-3679-0000-0100-2529de263960" description="ICliente">
+          <Part type="62cfa789-c127-0001-0100-77676175e433">
+            <Members>
+              <Member Order="Ascending">ClienteCodigo</Member>
+            </Members>
+            <Properties />
+          </Part>
+          <Properties>
+            <Property>
+              <Name>Name</Name>
+              <Value>ICliente</Value>
+            </Property>
+          </Properties>
+        </Index>
+      </TableIndex>
+      <TableIndex>
+        <Index Type="Duplicate" Source="Automatic" parentGuid="00000000-0000-0000-0000-000000000000" user="FACTORIAGX\Sergio" versionDate="0001-01-01T00:00:00.0000000" lastUpdate="2026-05-05T17:24:26.0000000Z" checksum="0ec8d1948595e698e2e6b1ead76378d0" fullyQualifiedName="ICliente1" moduleGuid="00000000-0000-0000-0000-000000000000" guid="59e553d7-4df3-48da-a26f-cce78b157e0a" name="ICliente1" type="9e750647-3679-0000-0100-2529de263960" description="ICliente1">
+          <Part type="62cfa789-c127-0001-0100-77676175e433">
+            <Members>
+              <Member Order="Ascending">ZonaCodigo</Member>
+            </Members>
+            <Properties />
+          </Part>
+          <Properties>
+            <Property>
+              <Name>Name</Name>
+              <Value>ICliente1</Value>
+            </Property>
+          </Properties>
+        </Index>
+      </TableIndex>
+      <TableIndex>
+        <Index Type="Duplicate" Source="Automatic" parentGuid="00000000-0000-0000-0000-000000000000" user="FACTORIAGX\Sergio" versionDate="0001-01-01T00:00:00.0000000" lastUpdate="2026-05-05T17:25:20.0000000Z" checksum="f6caa304fd49ec836ffe4aa057d4ce03" fullyQualifiedName="ICliente2" moduleGuid="00000000-0000-0000-0000-000000000000" guid="75750d75-e794-47e1-9aba-65b40d8197b1" name="ICliente2" type="9e750647-3679-0000-0100-2529de263960" description="ICliente2">
+          <Part type="62cfa789-c127-0001-0100-77676175e433">
+            <Members>
+              <Member Order="Ascending">CategoriaCodigo</Member>
+            </Members>
+            <Properties />
+          </Part>
+          <Properties>
+            <Property>
+              <Name>Name</Name>
+              <Value>ICliente2</Value>
+            </Property>
+          </Properties>
+        </Index>
+      </TableIndex>
+    </Indexes>
+    <Properties />
+  </Part>
+  <Properties>
+    <Property>
+      <Name>Name</Name>
+      <Value>Cliente</Value>
+    </Property>
+  </Properties>
+</Object>

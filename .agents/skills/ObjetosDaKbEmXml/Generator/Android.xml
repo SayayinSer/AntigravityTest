@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Object parentGuid="00000000-0000-0000-0000-000000000000" user="FACTORIAGX\Sergio" versionDate="0001-01-01T00:00:00.0000000" lastUpdate="2026-05-05T17:21:24.0000000Z" checksum="274311643b249964e2fb231601edbe96" fullyQualifiedName="Android" moduleGuid="00000000-0000-0000-0000-000000000000" guid="16d6dd4a-d4d5-42ec-bee3-79094da386e7" name="Android" type="ecececec-dfe0-4a57-ae8f-c6e31b0dcbc0" description="Android">
+  <Properties>
+    <Property>
+      <Name>IsUser</Name>
+      <Value>True</Value>
+    </Property>
+    <Property>
+      <Name>DefaultType</Name>
+      <Value>28</Value>
+    </Property>
+    <Property>
+      <Name>Name</Name>
+      <Value>Android</Value>
+    </Property>
+    <Property>
+      <Name>IsDefault</Name>
+      <Value>False</Value>
+    </Property>
+  </Properties>
+</Object>

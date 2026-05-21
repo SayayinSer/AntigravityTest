@@ -1,0 +1,13 @@
+<Project DefaultTargets="ImportXPZ" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(GX_PROGRAM_DIR)\Genexus.Tasks.targets" />
+  <PropertyGroup>
+    <KBPath Condition="'$(KBPath)' == ''">C:\Models\MyKB</KBPath>
+    <XPZPath Condition="'$(XPZPath)' == ''">C:\Envio_XPZ\package.xpz</XPZPath>
+    <PreviewMode Condition="'$(PreviewMode)' == ''">false</PreviewMode>
+  </PropertyGroup>
+  <Target Name="ImportXPZ">
+    <OpenKnowledgeBase Directory="$(KBPath)" />
+    <Import File="$(XPZPath)" PreviewMode="$(PreviewMode)" />
+    <CloseKnowledgeBase />
+  </Target>
+</Project>

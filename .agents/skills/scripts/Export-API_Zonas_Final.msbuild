@@ -1,0 +1,8 @@
+<Project DefaultTargets="ExportFinal" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="C:\Program Files (x86)\GeneXus\GeneXus18\Genexus.Tasks.targets" />
+  <Target Name="ExportFinal">
+    <OpenKnowledgeBase Directory="D:\Models\77Lab\AngularV1" />
+    <Export File="d:\aaProyectos\Entorno04\Envio_XPZ\API_Zonas_Final.xpz" 
+            Objects="API:API_Zonas;Procedure:Zona_Insertar;Procedure:Zona_Modificar;Procedure:Zona_Borrar;DataProvider:Zona_DP;DataProvider:ZonaLista_DP;SDT:Zona_SDT;SDT:ZonaListaSDT" />
+  </Target>
+</Project>

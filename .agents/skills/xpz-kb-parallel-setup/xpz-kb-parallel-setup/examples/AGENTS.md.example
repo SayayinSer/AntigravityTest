@@ -1,0 +1,173 @@
+# AGENTS.md - <NomeKb>
+<!-- PREENCHER: substitua <NomeKb> pelo nome real da KB -->
+
+## Identificacao
+
+- Nome da KB: `<NomeKb>`
+- Pasta paralela da KB: `C:\Dev\Prod\Gx_<NomeKb>`
+- Pasta nativa da KB vista pelo GeneXus: `C:\KBs\<NomeKb>`
+- Verificacao inicial: a pasta nativa da KB existia e estava acessivel em
+  <YYYY-MM-DD>.
+<!-- PREENCHER: data no formato YYYY-MM-DD -->
+
+## Regra crítica da pasta nativa da KB
+
+`C:\KBs\<NomeKb>` é terreno proibido para gravação por agentes.
+
+Agentes não devem criar, editar, mover, renomear ou excluir arquivos nessa pasta.
+Leitura é permitida apenas quando o fluxo operacional explícito realmente exigir.
+
+Invocar o GeneXus via MSBuild headless (ex: `Invoke-GeneXusKbBuildAll.ps1`,
+`Invoke-GeneXusKbSpecifyGenerate.ps1`) não é gravação por agentes — é o GeneXus
+operando a KB como parte do seu funcionamento normal. O agente é o chamador do
+processo; quem grava na KB é o próprio GeneXus. Essa distinção é intencional:
+proibir o agente de manipular arquivos diretamente não proíbe invocar operações
+GeneXus autorizadas pelo usuário.
+
+## Estrutura funcional da pasta paralela da KB
+
+- `scripts`: wrappers locais finos que delegam ao motor compartilhado.
+- `Temp`: temporarios e relatorios descartaveis.
+- `XpzExportadosPelaIDE`: entrada de `.xpz` exportados pela IDE GeneXus.
+- `ObjetosDaKbEmXml`: snapshot oficial materializado; somente leitura para
+  agentes fora do fluxo oficial.
+- `KbIntelligence`: indice derivado regeneravel.
+- `ObjetosGeradosParaImportacaoNaKbNoGenexus`: area de trabalho para XMLs de
+  importacao. Cada frente ativa deve usar subpasta
+  `NomeCurto_GUID_YYYYMMDD`.
+- `PacotesGeradosParaImportacaoNaKbNoGenexus`: saida plana de pacotes finais.
+
+## Estado operacional
+
+Estado atual: `<estado>`.
+<!-- PREENCHER: um de: estrutura_criada | bootstrap_incompleto |
+     pronto_para_primeira_materializacao | materializado_e_indice_validado |
+     wrappers_atualizados -->
+
+`last_xpz_materialization_run_at`: `<YYYY-MM-DDTHH:MM:SS.0000000Z>`.
+
+`last_index_build_run_at`: `<YYYY-MM-DDTHH:MM:SS.000000+00:00>`.
+
+Como o indice esta posterior a materializacao, triagem ampla e consultas por
+`KbIntelligence` estao liberadas.
+
+## Wrappers locais
+
+Os wrappers em `scripts` usam a base compartilhada:
+
+```text
+C:\Dev\Knowledge\GeneXus-XPZ-Skills
+```
+
+Wrappers esperados:
+
+- `Test-<NomeKb>KbSetupFreshness.ps1`: PRE-CONDICAO do gatilho global — compara
+  `last_setup_audit_run_at` com a data de ultima modificacao do repositorio de
+  skills e retorna `GATE_ONLY` ou `AUDIT_REQUIRED: <motivo>`.
+- `Update-<NomeKb>KbFromXpz.ps1`: materializa XPZ/XML em `ObjetosDaKbEmXml`,
+  grava `kb-source-metadata.md` e chama o refresh do indice quando nao estiver
+  em `VerifyOnly`.
+- `Test-<NomeKb>KbFullSnapshot.ps1`: conferencia full em modo somente verificacao.
+- `Rebuild-<NomeKb>KbIntelligenceIndex.ps1`: regenera e valida
+  `KbIntelligence\kb-intelligence.sqlite`.
+- `Query-<NomeKb>KbIntelligence.ps1`: consulta o indice derivado, inclusive
+  `index-metadata`.
+- `Test-<NomeKb>KbIndexGate.ps1`: gate de frescor — verifica estrutura, SQLite,
+  timestamps e retorna `GATE_OK` ou lanca `BLOCK: <motivo>`; deve ser o unico
+  ponto de execucao do gate.
+- `Test-<NomeKb>KbSourceSanity.ps1`: wrapper consultivo para XMLs locais da
+  frente antes do empacotamento; delega ao script compartilhado de sanidade do
+  `Source` e devolve `xmlWellFormed`, `sourceSanityStatus` e
+  `probablyImportable`.
+- `New-<NomeKb>KbImportPackage.ps1`: wrapper recomendado quando o empacotamento
+  local for recorrente; delega ao motor compartilhado `New-XpzImportPackage.ps1`
+  para criar `import_file.xml` a partir da subpasta ativa da frente em
+  `ObjetosGeradosParaImportacaoNaKbNoGenexus`, com `NN` explícito e
+  `TemplatePackagePath` opcional para `import_file.xml` ou `.xpz` real
+  comparável; quando o template trouxer `Attributes` de topo e a frente nao
+  trouxer atributos explicitos, o motor preserva esses `Attributes`.
+- `Get-<NomeKb>KbMetadata.ps1`: le campos-chave de `kb-source-metadata.md` sem
+  regex inline nos chamadores; expoe ao menos `last_xpz_materialization_run_at`,
+  `kb_name` e `source_guid`.
+- `Resolve-<NomeKb>KbIdentity.ps1`: wrapper recomendado quando for preciso
+  reconciliar identidade estavel da KB nativa local porque o XPZ exportado veio
+  com `Source` vazio ou incompleto; delega ao motor compartilhado
+  `Resolve-GeneXusKbIdentity.ps1` em modo somente leitura e, quando chamado com
+  opcao explicita de atualizacao, ao motor
+  `Update-XpzKbSourceMetadataIdentity.ps1`.
+- `Test-<NomeKb>KbMetadataWrapper.ps1`: valida o contrato funcional do
+  `Get-<NomeKb>KbMetadata.ps1` contra `kb-source-metadata.md`; retorna
+  `METADATA_WRAPPER_OK`, `PENDENTE_DE_DADOS` ou `BLOCK: ...`.
+- `Test-<NomeKb>KbStructure.ps1`: relatorio de presenca/ausencia de pastas,
+  scripts e artefatos esperados; retorna `STRUCTURE_OK` ou lista componentes
+  ausentes. Na auditoria de naming, `Attribute` pode ser identificado pela raiz
+  `<Attribute>` sem depender de `Object/@type`.
+- `Notify-TaskComplete.ps1`: helper opcional de notificacao operacional.
+
+Scripts do motor com parâmetros totalmente dinâmicos por execução (ex:
+`Watch-GeneXusMsBuildLog.ps1`, cujo `-Pid` e `-LogPath` variam a cada build)
+nao requerem wrapper local — sao chamados diretamente pelo caminho absoluto
+do motor.
+
+## Triagem Por Indice
+
+Para qualquer pergunta sobre existencia, localizacao, impacto tecnico, dependentes,
+dependencias ou investigacao funcional curta sobre objetos desta KB, usar
+`xpz-index-triage`. O gate e o unico ponto de entrada para o indice:
+
+1. Verificar se `scripts/Test-<NomeKb>KbIndexGate.ps1` existe.
+   - Se ausente: encerrar a consulta e oferecer atualizacao via
+     `xpz-kb-parallel-setup`.
+2. Executar o gate:
+   ```powershell
+   & "C:\Dev\Prod\Gx_<NomeKb>\scripts\Test-<NomeKb>KbIndexGate.ps1" #gate
+   ```
+   - `GATE_OK` → prosseguir com `xpz-index-triage`.
+   - `BLOCK: <motivo>` → encerrar a consulta e oferecer rebuild do indice.
+3. Nunca acessar `KbIntelligence\kb-intelligence.sqlite` diretamente por
+   nenhuma ferramenta — Python, sqlite3, PowerShell inline, Bash ou qualquer
+   outro meio.
+4. Nunca compensar gate bloqueado com leitura manual de SQLite, JSON de
+   validacao, `kb-source-metadata.md` isolado, datas de arquivo ou XML oficial.
+5. `ObjetosDaKbEmXml` e a fonte normativa; so consultar apos gate liberado e
+   apenas para o conjunto minimo necessario indicado pela triagem.
+
+## Regras GeneXus/XPZ
+
+- Em tarefas GeneXus, usar a skill `nexa`.
+- Em tarefas XPZ, `import_file.xml`, XML exportado da KB, pacote de importacao
+  ou `ObjectsIdentityMapping`, usar a skill `xpz-*` aplicavel.
+- Em importacao headless via MSBuild (`Invoke-GeneXusXpzImport.ps1` do motor
+  compartilhado) e em qualquer diagnostico de sub-estado de import — incluindo
+  classificacao apos exception interna do wrapper, leitura de
+  `__IMPORTED_ITEM__` no log bruto (`msbuild.stdout.log`) e identificacao de
+  `postProcessingFailed=true` ou `diagnosticDegraded=true` no `import.json` —, usar `xpz-msbuild-import-export`;
+  nao reinterpretar sub-estados de import localmente. Em particular: falha de
+  pos-processamento do wrapper com evidencia de import no log bruto NAO e falha
+  de import — e o sub-estado nomeado
+  `importacao real efetiva provada por evidencia de stdout (falha no
+  pos-processamento do wrapper)`.
+- Em diagnostico degradado de import/export MSBuild, quando existir
+  `executionEvidence.msBuildExitCode`, tratar esse campo como fonte canonica do
+  exit bruto do MSBuild; `msBuildExitCode` top-level e compatibilidade transitoria.
+- `diagnosticDegraded=true` pode aparecer sem `postProcessingFailed=true`; nesse caso,
+  tratar a rodada como diagnostico parcial/degradado, nao como sucesso limpo nem como
+  falha operacional automatica.
+- Em exportacao headless via MSBuild (`Invoke-GeneXusXpzExport.ps1` do motor
+  compartilhado) e em qualquer diagnostico de sub-estado de export — incluindo
+  classificacao apos exception interna do wrapper, leitura de
+  `__EXPORTED_FILE__` no log bruto (`msbuild.stdout.log`) e identificacao de
+  `postProcessingFailed=true` no `export.json` —, usar `xpz-msbuild-import-export`;
+  nao reinterpretar sub-estados de export localmente. Em particular: falha de
+  pos-processamento do wrapper com `Export Sucesso` + `__EXPORTED_FILE__` no log
+  bruto e arquivo XPZ existente NAO e falha de export — e o sub-estado nomeado
+  `exportacao headless concluida e XPZ gerado (falha no pos-processamento do
+  wrapper)`.
+- `ObjetosDaKbEmXml` e o snapshot oficial materializado; `KbIntelligence` e
+  apenas camada derivada e regeneravel.
+- antes de gerar `import_file.xml` localmente a partir de
+  `ObjetosGeradosParaImportacaoNaKbNoGenexus`, preferir passar o XML ou a
+  subpasta ativa da frente por `Test-<NomeKb>KbSourceSanity.ps1`.
+- `last_xpz_materialization_run_at` deve existir em `kb-source-metadata.md`.
+- `last_index_build_run_at`, no SQLite, deve ser igual ou posterior a
+  `last_xpz_materialization_run_at` antes de triagem ampla ou geracao de objetos.

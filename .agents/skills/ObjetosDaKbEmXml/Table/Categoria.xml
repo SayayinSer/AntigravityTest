@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Object parentGuid="afa47377-41d5-4ae8-9755-6f53150aa361" user="FACTORIAGX\Sergio" versionDate="0001-01-01T00:00:00.0000000" lastUpdate="2026-05-05T17:25:20.0000000Z" checksum="1f5fe69f2ccca58944654f251aecb897" fullyQualifiedName="Categoria" moduleGuid="afa47377-41d5-4ae8-9755-6f53150aa361" guid="3adda0f0-44c8-4d28-b973-2d1261e551dd" name="Categoria" type="857ca50e-7905-0000-0007-c5d9ff2975ec" description="Categoria">
+  <Part type="00000000-0000-0000-0002-000000000004">
+    <Key>
+      <Item guid="73c743ef-0c15-4c0d-9c55-fb27c1a6ae3d">CategoriaCodigo</Item>
+    </Key>
+    <Properties />
+  </Part>
+  <Part type="a5c0e770-560d-0001-0001-7fe71c260de3">
+    <Indexes>
+      <TableIndex>
+        <Index Type="Unique" Source="Automatic" parentGuid="00000000-0000-0000-0000-000000000000" user="FACTORIAGX\Sergio" versionDate="0001-01-01T00:00:00.0000000" lastUpdate="2026-05-05T17:25:20.0000000Z" checksum="474d1be0e160a6da5e3fc2b3331b5677" fullyQualifiedName="ICategoria" moduleGuid="00000000-0000-0000-0000-000000000000" guid="1234c3e4-e64e-4680-bd70-e0478a36c60b" name="ICategoria" type="9e750647-3679-0000-0100-2529de263960" description="ICategoria">
+          <Part type="62cfa789-c127-0001-0100-77676175e433">
+            <Members>
+              <Member Order="Ascending">CategoriaCodigo</Member>
+            </Members>
+            <Properties />
+          </Part>
+          <Properties>
+            <Property>
+              <Name>Name</Name>
+              <Value>ICategoria</Value>
+            </Property>
+          </Properties>
+        </Index>
+      </TableIndex>
+    </Indexes>
+    <Properties />
+  </Part>
+  <Properties>
+    <Property>
+      <Name>Name</Name>
+      <Value>Categoria</Value>
+    </Property>
+  </Properties>
+</Object>

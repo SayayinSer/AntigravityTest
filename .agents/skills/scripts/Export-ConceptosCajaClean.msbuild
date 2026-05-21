@@ -1,0 +1,9 @@
+<Project DefaultTargets="ExportClean" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="C:\Program Files (x86)\GeneXus\GeneXus18\Genexus.Tasks.targets" />
+  <Target Name="ExportClean">
+    <OpenKnowledgeBase Directory="D:\Models\77Lab\AngularV1" />
+    <Export File="d:\aaProyectos\Entorno04\Temp\ConceptosCajaClean.xml" 
+            Objects="API:API_ConceptosCaja;Procedure:ConceptosCaja_Insertar;Procedure:ConceptosCaja_Modificar;Procedure:ConceptosCaja_Borrar;DataProvider:ConceptosCaja_DP;DataProvider:ConceptosCajaLista_DP;SDT:ConceptosCaja_SDT;SDT:ConceptosCajaListaSDT" 
+            IncludeReference="False" />
+  </Target>
+</Project>

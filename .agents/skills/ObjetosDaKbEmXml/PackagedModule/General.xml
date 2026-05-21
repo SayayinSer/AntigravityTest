@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Object parentGuid="afa47377-41d5-4ae8-9755-6f53150aa361" user="FACTORIAGX\Sergio" versionDate="0001-01-01T00:00:00.0000000" lastUpdate="2026-05-05T17:20:00.0000000Z" checksum="" fullyQualifiedName="General" moduleGuid="afa47377-41d5-4ae8-9755-6f53150aa361" guid="c940501b-c1aa-4da5-a3ef-e8f497343e2e" name="General" type="c88fffcd-b6f8-0000-8fec-00b5497e2117" description="General">
+  <Part type="ed1b7b1c-2aaf-46eb-9ec5-db348f6fa3fc">
+    <Properties />
+  </Part>
+  <Part type="a5e6a251-2df0-44d8-adab-1da237574326">
+    <Properties />
+  </Part>
+  <Part type="babf62c5-0111-49e9-a1c3-cc004d90900a">
+    <Properties />
+  </Part>
+  <Properties>
+    <Property>
+      <Name>Name</Name>
+      <Value>General</Value>
+    </Property>
+    <Property>
+      <Name>IsDefault</Name>
+      <Value>False</Value>
+    </Property>
+  </Properties>
+</Object>

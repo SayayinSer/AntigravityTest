@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Object parentGuid="afa47377-41d5-4ae8-9755-6f53150aa361" user="FACTORIAGX\Sergio" versionDate="0001-01-01T00:00:00.0000000" lastUpdate="2026-05-05T17:27:33.0000000Z" checksum="2793b36649cd6506419d2b4b0cc59d90" fullyQualifiedName="PageNext" moduleGuid="afa47377-41d5-4ae8-9755-6f53150aa361" guid="79fa1664-787e-4383-b25d-145254849709" name="PageNext" type="9fb193d9-64a4-4d30-b129-ff7c76830f7e" description="Page Next">
+  <Part type="36f350de-f768-425f-ac20-773749f331bf">
+    <Images>
+      <ImageItem>
+        <Image name="PageNext.gif" description="Page Next.gif" />
+        <Properties>
+          <Property>
+            <Name>Name</Name>
+            <Value>PageNext.gif</Value>
+          </Property>
+          <Property>
+            <Name>IsExternalImage</Name>
+            <Value>True</Value>
+          </Property>
+          <Property>
+            <Name>ThemeReference</Name>
+            <Value>NULL</Value>
+          </Property>
+          <Property>
+            <Name>LanguageReference</Name>
+            <Value>NULL</Value>
+          </Property>
+          <Property>
+            <Name>ImageOriginalFullPath</Name>
+            <Value>PageNext.gif</Value>
+          </Property>
+        </Properties>
+      </ImageItem>
+    </Images>
+    <Properties>
+      <Property>
+        <Name>IsDefault</Name>
+        <Value>False</Value>
+      </Property>
+    </Properties>
+  </Part>
+  <Part type="babf62c5-0111-49e9-a1c3-cc004d90900a">
+    <Properties />
+  </Part>
+  <Properties>
+    <Property>
+      <Name>Name</Name>
+      <Value>PageNext</Value>
+    </Property>
+    <Property>
+      <Name>IsDefault</Name>
+      <Value>False</Value>
+    </Property>
+  </Properties>
+</Object>

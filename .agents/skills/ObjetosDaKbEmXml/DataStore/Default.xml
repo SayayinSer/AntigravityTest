@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Object parentGuid="00000000-0000-0000-0000-000000000000" user="FACTORIAGX\Sergio" versionDate="0001-01-01T00:00:00.0000000" lastUpdate="2026-05-05T17:19:57.0000000Z" checksum="e47e4fcdde5331228e954dbc2fb8df5a" fullyQualifiedName="Default" moduleGuid="00000000-0000-0000-0000-000000000000" guid="d8a52d89-abfd-4e27-907f-dd596aa5d190" name="Default" type="dcdcdcdc-dfe0-4a57-ae8f-c6e31b0dcbc0" description="Default">
+  <Properties>
+    <Property>
+      <Name>IsDefaultCategory</Name>
+      <Value>True</Value>
+    </Property>
+    <Property>
+      <Name>Name</Name>
+      <Value>Default</Value>
+    </Property>
+    <Property>
+      <Name>IsDefault</Name>
+      <Value>False</Value>
+    </Property>
+  </Properties>
+</Object>
